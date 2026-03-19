@@ -77,9 +77,10 @@
 .hero__img {
   width: 100%;
   border-radius: $radius-lg;
-  object-fit: cover;
-  aspect-ratio: 4 / 3;
   background: $cream-dark;
+  object-fit: cover;
+  object-position: center 80%;
+  aspect-ratio: 4/3;
 }
 
 // ===========================

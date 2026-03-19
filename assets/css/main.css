@@ -209,10 +209,12 @@
 .hero__img {
   width: 100%;
   border-radius: 12px;
+  background: #f0ebe3;
   -o-object-fit: cover;
      object-fit: cover;
+  -o-object-position: center 80%;
+     object-position: center 80%;
   aspect-ratio: 4/3;
-  background: #f0ebe3;
 }
 
 .stats {
@@ -392,6 +394,230 @@
   }
   .stats__grid {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+.page-header {
+  background: #f0ebe3;
+  padding: 48px 32px;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.page-header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 8px 0 12px;
+}
+
+.page-header__sub {
+  font-size: 0.9375rem;
+  color: #9a8878;
+  max-width: 500px;
+}
+
+.menus-page {
+  background: #faf6f1;
+  padding: 48px 32px;
+}
+
+.menus-page__container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.filters {
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  padding: 28px;
+  height: -moz-fit-content;
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+}
+
+.filters__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.filters__group {
+  margin-bottom: 24px;
+}
+
+.filters__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: #5a4a3a;
+  margin-bottom: 8px;
+}
+
+.filters__sublabel {
+  display: block;
+  font-size: 0.6875rem;
+  color: #9a8878;
+  margin-bottom: 4px;
+}
+
+.filters__range {
+  width: 100%;
+  accent-color: #c85a2a;
+  cursor: pointer;
+}
+
+.filters__range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filters__range-value {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: #9a8878;
+}
+
+.filters__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.filters__input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e8e0d5;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #1a1a1a;
+  background: #faf6f1;
+  transition: border-color 0.25s ease;
+}
+
+.filters__input:focus {
+  border-color: #c85a2a;
+  outline: none;
+}
+
+.filters__select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #e8e0d5;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  color: #1a1a1a;
+  background: #faf6f1;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+}
+
+.filters__select:focus {
+  border-color: #c85a2a;
+  outline: none;
+}
+
+.filters__reset {
+  margin-top: 8px;
+}
+
+.menus-list__header {
+  margin-bottom: 20px;
+}
+
+.menus-list__count {
+  font-size: 0.8125rem;
+  color: #9a8878;
+}
+
+.menus-list__count span {
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+.menus-list__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.menus-list__empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 48px;
+  color: #9a8878;
+}
+
+.menus-list__empty p {
+  margin-bottom: 16px;
+}
+
+.menu-card__desc {
+  font-size: 0.8125rem;
+  color: #9a8878;
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.menu-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.menu-card__price {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #c85a2a;
+}
+
+.menu-card__persons {
+  font-size: 0.75rem;
+  color: #9a8878;
+}
+
+@media (max-width: 1024px) {
+  .menus-list__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .menus-page {
+    padding: 32px 16px;
+  }
+  .menus-page__container {
+    grid-template-columns: 1fr;
+  }
+  .filters {
+    position: static;
+  }
+  .page-header {
+    padding: 32px 16px;
+  }
+  .page-header__title {
+    font-size: 1.75rem;
+  }
+}
+@media (max-width: 480px) {
+  .menus-list__grid {
+    grid-template-columns: 1fr;
   }
 }
 .btn {

@@ -1,0 +1,430 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Découvrez tous les menus traiteur de Vite & Gourmand — filtrez par thème, régime, prix et nombre de personnes."
+    />
+    <title>Nos menus — Vite & Gourmand</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR (identique à index.html) -->
+    <header class="navbar" role="banner">
+      <div class="navbar__container">
+        <a
+          href="index.html"
+          class="navbar__logo"
+          aria-label="Vite & Gourmand — Accueil"
+        >
+          Vite <em>&</em> Gourmand
+        </a>
+
+        <nav class="navbar__nav" aria-label="Navigation principale">
+          <ul class="navbar__links">
+            <li><a href="index.html" class="navbar__link">Accueil</a></li>
+            <li>
+              <a href="menus.html" class="navbar__link navbar__link--active"
+                >Nos menus</a
+              >
+            </li>
+            <li><a href="contact.html" class="navbar__link">Contact</a></li>
+          </ul>
+        </nav>
+
+        <a href="connexion.html" class="navbar__cta">Connexion</a>
+
+        <button
+          class="navbar__burger"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="navbar__mobile" id="mobile-menu" aria-hidden="true">
+        <ul class="navbar__mobile-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="menus.html">Nos menus</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="connexion.html" class="navbar__cta">Connexion</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <!-- PAGE HEADER -->
+      <section class="page-header" aria-label="En-tête de page">
+        <div class="page-header__container">
+          <span class="section-eyebrow">Traiteur bordelais</span>
+          <h1 class="page-header__title">Nos menus</h1>
+          <p class="page-header__sub">
+            Découvrez nos menus faits maison — filtrez selon vos envies et vos
+            contraintes.
+          </p>
+        </div>
+      </section>
+
+      <!-- MENUS + FILTRES -->
+      <section class="menus-page" aria-labelledby="menus-page-title">
+        <div class="menus-page__container">
+          <!-- FILTRES -->
+          <aside class="filters" aria-label="Filtres de recherche">
+            <h2 class="filters__title" id="filters-title">Filtrer les menus</h2>
+
+            <div class="filters__group">
+              <label class="filters__label" for="filter-prix-max"
+                >Prix maximum</label
+              >
+              <div class="filters__range-wrapper">
+                <input
+                  type="range"
+                  id="filter-prix-max"
+                  class="filters__range"
+                  min="0"
+                  max="200"
+                  value="200"
+                  step="5"
+                  aria-label="Prix maximum"
+                />
+                <div class="filters__range-value">
+                  <span>0€</span>
+                  <span id="prix-max-value">200€</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="filters__group">
+              <label class="filters__label">Fourchette de prix</label>
+              <div class="filters__row">
+                <div class="filters__input-wrapper">
+                  <label class="filters__sublabel" for="filter-prix-min"
+                    >Min (€)</label
+                  >
+                  <input
+                    type="number"
+                    id="filter-prix-min"
+                    class="filters__input"
+                    min="0"
+                    max="200"
+                    value="0"
+                    placeholder="0"
+                  />
+                </div>
+                <div class="filters__input-wrapper">
+                  <label class="filters__sublabel" for="filter-prix-max2"
+                    >Max (€)</label
+                  >
+                  <input
+                    type="number"
+                    id="filter-prix-max2"
+                    class="filters__input"
+                    min="0"
+                    max="200"
+                    value="200"
+                    placeholder="200"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="filters__group">
+              <label class="filters__label" for="filter-theme">Thème</label>
+              <select
+                id="filter-theme"
+                class="filters__select"
+                aria-label="Filtrer par thème"
+              >
+                <option value="">Tous les thèmes</option>
+                <option value="noel">Noël</option>
+                <option value="paques">Pâques</option>
+                <option value="classique">Classique</option>
+                <option value="evenement">Événement</option>
+              </select>
+            </div>
+
+            <div class="filters__group">
+              <label class="filters__label" for="filter-regime">Régime</label>
+              <select
+                id="filter-regime"
+                class="filters__select"
+                aria-label="Filtrer par régime"
+              >
+                <option value="">Tous les régimes</option>
+                <option value="classique">Classique</option>
+                <option value="vegetarien">Végétarien</option>
+                <option value="vegan">Vegan</option>
+                <option value="sans-gluten">Sans gluten</option>
+              </select>
+            </div>
+
+            <div class="filters__group">
+              <label class="filters__label" for="filter-personnes"
+                >Nombre de personnes min.</label
+              >
+              <input
+                type="number"
+                id="filter-personnes"
+                class="filters__input"
+                min="1"
+                value=""
+                placeholder="Ex: 6"
+                aria-label="Nombre de personnes minimum"
+              />
+            </div>
+
+            <button
+              class="filters__reset btn btn--secondary btn--full"
+              id="filters-reset"
+              type="button"
+            >
+              Réinitialiser les filtres
+            </button>
+          </aside>
+
+          <!-- LISTE DES MENUS -->
+          <div class="menus-list">
+            <div class="menus-list__header">
+              <p class="menus-list__count">
+                <span id="menus-count">6</span> menus disponibles
+              </p>
+            </div>
+
+            <div class="menus-list__grid" id="menus-grid">
+              <!-- Sera généré dynamiquement via PHP -->
+              <!-- Cards statiques pour le front -->
+
+              <article class="menu-card">
+                <div class="menu-card__img-wrapper">
+                  <img
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    alt="Menu des Fêtes"
+                    class="menu-card__img"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="menu-card__body">
+                  <span class="menu-card__tag">Noël</span>
+                  <h3 class="menu-card__title">Menu des Fêtes</h3>
+                  <p class="menu-card__desc">
+                    Un repas festif et généreux pour célébrer les fêtes de fin
+                    d'année en famille.
+                  </p>
+                  <div class="menu-card__meta">
+                    <span class="menu-card__price">À partir de 45€</span>
+                    <span class="menu-card__persons">8 pers. min.</span>
+                  </div>
+                  <a href="menu-detail.html" class="btn btn--outline btn--full"
+                    >Voir le détail</a
+                  >
+                </div>
+              </article>
+
+              <article class="menu-card">
+                <div class="menu-card__img-wrapper">
+                  <img
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    alt="Menu Tradition"
+                    class="menu-card__img"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="menu-card__body">
+                  <span class="menu-card__tag">Classique</span>
+                  <h3 class="menu-card__title">Menu Tradition</h3>
+                  <p class="menu-card__desc">
+                    Les classiques de la cuisine française revisités avec des
+                    produits du terroir girondin.
+                  </p>
+                  <div class="menu-card__meta">
+                    <span class="menu-card__price">À partir de 35€</span>
+                    <span class="menu-card__persons">6 pers. min.</span>
+                  </div>
+                  <a href="menu-detail.html" class="btn btn--outline btn--full"
+                    >Voir le détail</a
+                  >
+                </div>
+              </article>
+
+              <article class="menu-card">
+                <div class="menu-card__img-wrapper">
+                  <img
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    alt="Menu Printanier"
+                    class="menu-card__img"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="menu-card__body">
+                  <span class="menu-card__tag">Pâques</span>
+                  <h3 class="menu-card__title">Menu Printanier</h3>
+                  <p class="menu-card__desc">
+                    Fraîcheur et légèreté au rendez-vous pour célébrer le retour
+                    du printemps.
+                  </p>
+                  <div class="menu-card__meta">
+                    <span class="menu-card__price">À partir de 40€</span>
+                    <span class="menu-card__persons">6 pers. min.</span>
+                  </div>
+                  <a href="menu-detail.html" class="btn btn--outline btn--full"
+                    >Voir le détail</a
+                  >
+                </div>
+              </article>
+
+              <article class="menu-card">
+                <div class="menu-card__img-wrapper">
+                  <img
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    alt="Menu Végétarien"
+                    class="menu-card__img"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="menu-card__body">
+                  <span class="menu-card__tag">Végétarien</span>
+                  <h3 class="menu-card__title">Menu Végétarien</h3>
+                  <p class="menu-card__desc">
+                    Un menu complet et savoureux sans viande, élaboré avec des
+                    légumes de saison.
+                  </p>
+                  <div class="menu-card__meta">
+                    <span class="menu-card__price">À partir de 30€</span>
+                    <span class="menu-card__persons">4 pers. min.</span>
+                  </div>
+                  <a href="menu-detail.html" class="btn btn--outline btn--full"
+                    >Voir le détail</a
+                  >
+                </div>
+              </article>
+
+              <article class="menu-card">
+                <div class="menu-card__img-wrapper">
+                  <img
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    alt="Menu Événement"
+                    class="menu-card__img"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="menu-card__body">
+                  <span class="menu-card__tag">Événement</span>
+                  <h3 class="menu-card__title">Menu Événement</h3>
+                  <p class="menu-card__desc">
+                    Idéal pour vos séminaires, anniversaires ou repas
+                    d'entreprise.
+                  </p>
+                  <div class="menu-card__meta">
+                    <span class="menu-card__price">À partir de 55€</span>
+                    <span class="menu-card__persons">10 pers. min.</span>
+                  </div>
+                  <a href="menu-detail.html" class="btn btn--outline btn--full"
+                    >Voir le détail</a
+                  >
+                </div>
+              </article>
+
+              <article class="menu-card">
+                <div class="menu-card__img-wrapper">
+                  <img
+                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    alt="Menu Vegan"
+                    class="menu-card__img"
+                    loading="lazy"
+                  />
+                </div>
+                <div class="menu-card__body">
+                  <span class="menu-card__tag">Vegan</span>
+                  <h3 class="menu-card__title">Menu Vegan</h3>
+                  <p class="menu-card__desc">
+                    100% végétal, gourmand et respectueux de l'environnement.
+                  </p>
+                  <div class="menu-card__meta">
+                    <span class="menu-card__price">À partir de 32€</span>
+                    <span class="menu-card__persons">4 pers. min.</span>
+                  </div>
+                  <a href="menu-detail.html" class="btn btn--outline btn--full"
+                    >Voir le détail</a
+                  >
+                </div>
+              </article>
+
+              <!-- Message si aucun résultat (caché par défaut) -->
+              <div
+                class="menus-list__empty"
+                id="menus-empty"
+                aria-live="polite"
+                hidden
+              >
+                <p>Aucun menu ne correspond à vos critères.</p>
+                <button
+                  class="btn btn--primary"
+                  id="reset-from-empty"
+                  type="button"
+                >
+                  Réinitialiser les filtres
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER (identique à index.html) -->
+    <footer class="footer" role="contentinfo">
+      <div class="footer__container">
+        <div class="footer__col">
+          <p class="footer__logo">Vite <em>&</em> Gourmand</p>
+          <p class="footer__desc">
+            Traiteur bordelais depuis 1999. Julie &amp; José cuisinent avec
+            passion pour tous vos événements.
+          </p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Horaires</h4>
+          <ul class="footer__hours">
+            <li><span>Lundi – Vendredi</span><span>9h00 – 18h00</span></li>
+            <li><span>Samedi</span><span>10h00 – 16h00</span></li>
+            <li><span>Dimanche</span><span>10h00 – 13h00</span></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Navigation</h4>
+          <ul class="footer__nav">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="menus.html">Nos menus</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Légal</h4>
+          <ul class="footer__nav">
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales de vente</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2025 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>
