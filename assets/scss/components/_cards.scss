@@ -1,0 +1,84 @@
+.menu-card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.menu-card__img-wrapper {
+  overflow: hidden;
+}
+
+.menu-card__img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  background: $cream-dark;
+  transition: transform 0.35s ease;
+}
+
+.menu-card:hover .menu-card__img {
+  transform: scale(1.04);
+}
+
+.menu-card__body {
+  padding: 20px;
+}
+
+.menu-card__tag {
+  display: inline-block;
+  background: $terra-light;
+  color: $terracotta;
+  font-size: 0.625rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: $radius-sm;
+  margin-bottom: 10px;
+}
+
+.menu-card__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: $charcoal;
+  margin-bottom: 6px;
+}
+
+.menu-card__info {
+  font-size: 0.8125rem;
+  color: $brown-light;
+  margin-bottom: 16px;
+}
+
+// ===========================
+// AVIS CARD
+// ===========================
+
+.avis-card {
+  background: $cream-dark;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 28px;
+}
+
+.avis-card__stars {
+  color: $terracotta;
+  font-size: 0.875rem;
+  margin-bottom: 8px;
+}
+
+.avis-card__text {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 0.875rem;
+  font-style: italic;
+  color: $charcoal;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.avis-card__author {
+  font-size: 0.75rem;
+  color: $brown-light;
+}

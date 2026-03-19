@@ -1,5 +1,10 @@
 @import "abstracts/variables";
-@import "components/navbar";
+@import "layout/navbar";
+@import "pages/home";
+@import "components/buttons";
+@import "components/cards";
+@import "components/utils";
+@import "layout/footer";
 
 // RESET GLOBAL
 * {
