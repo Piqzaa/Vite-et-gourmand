@@ -2,8 +2,8 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: #ffffff;
-  border-bottom: 1px solid #e8e0d5;
+  background: $white;
+  border-bottom: 1px solid $border;
 }
 
 .navbar__container {
@@ -11,58 +11,59 @@
   align-items: center;
   justify-content: space-between;
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 $space-xl;
   height: 64px;
 }
 
 .navbar__logo {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1.125rem;
-  color: #1a1a1a;
+  color: $charcoal;
   letter-spacing: 0.3px;
 }
 
 .navbar__logo em {
-  color: #c85a2a;
+  color: $terracotta;
   font-style: italic;
 }
 
 .navbar__links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: $space-xl;
   list-style: none;
 }
 
 .navbar__link {
   font-size: 0.8125rem;
-  color: #5a4a3a;
+  color: $brown-mid;
   transition: color 0.25s ease;
 }
 
 .navbar__link:hover {
-  color: #1a1a1a;
+  color: $charcoal;
 }
 
 .navbar__link--active {
-  color: #1a1a1a;
+  color: $charcoal;
   font-weight: 500;
 }
 
 .navbar__cta {
-  background: #c85a2a;
-  color: #ffffff;
+  background: $terracotta;
+  color: $white;
   font-size: 0.8125rem;
   font-weight: 500;
-  padding: 8px 18px;
-  border-radius: 4px;
+  padding: $space-sm 18px;
+  border-radius: $radius-sm;
   transition: background 0.25s ease;
 }
 
 .navbar__cta:hover {
-  background: #a34520;
+  background: $terra-dark;
 }
 
+// Burger — caché sur desktop
 .navbar__burger {
   display: none;
   flex-direction: column;
@@ -77,7 +78,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: #1a1a1a;
+  background: $charcoal;
   border-radius: 2px;
   transition: 0.25s ease;
 }
@@ -94,11 +95,12 @@
   transform: translateY(-7px) rotate(-45deg);
 }
 
+// Menu mobile — caché par défaut
 .navbar__mobile {
   display: none;
-  background: #ffffff;
-  border-top: 1px solid #e8e0d5;
-  padding: 16px 32px;
+  background: $white;
+  border-top: 1px solid $border;
+  padding: $space-md $space-xl;
 }
 
 .navbar__mobile.is-open {
@@ -108,60 +110,34 @@
 .navbar__mobile-links {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: $space-md;
   list-style: none;
 }
 
 .navbar__mobile-links a {
   font-size: 0.9375rem;
-  color: #5a4a3a;
+  color: $brown-mid;
   transition: color 0.25s ease;
 }
 
 .navbar__mobile-links a:hover {
-  color: #1a1a1a;
+  color: $charcoal;
 }
 
-@media (max-width: 768px) {
+// ===========================
+// RESPONSIVE
+// ===========================
+
+@media (max-width: $bp-tablet) {
   .navbar__nav {
     display: none;
   }
+
   .navbar__cta {
     display: none;
   }
+
   .navbar__burger {
     display: flex;
   }
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: "DM Sans", sans-serif;
-  background-color: #faf6f1;
-  color: #1a1a1a;
-  font-size: 1rem;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-ul {
-  list-style: none;
 }

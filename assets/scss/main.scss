@@ -1,3 +1,7 @@
+@import "abstracts/variables";
+@import "components/navbar";
+
+// RESET GLOBAL
 * {
   margin: 0;
   padding: 0;
@@ -9,13 +13,24 @@ html {
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "DM Sans", sans-serif;
+  background-color: #faf6f1;
+  color: #1a1a1a;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  display: block;
+  max-width: 100%;
 }
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
-li {
+ul {
   list-style: none;
 }
