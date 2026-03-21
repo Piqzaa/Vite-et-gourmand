@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Commander un menu traiteur — Vite & Gourmand."
+    />
+    <title>Commander — Vite & Gourmand</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <script src="assets/js/main.js" type="module" defer></script>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <div class="navbar__container">
+        <a
+          href="index.html"
+          class="navbar__logo"
+          aria-label="Vite & Gourmand — Accueil"
+        >
+          Vite <em>&</em> Gourmand
+        </a>
+        <nav class="navbar__nav" aria-label="Navigation principale">
+          <ul class="navbar__links">
+            <li><a href="index.html" class="navbar__link">Accueil</a></li>
+            <li><a href="menus.html" class="navbar__link">Nos menus</a></li>
+            <li><a href="contact.html" class="navbar__link">Contact</a></li>
+          </ul>
+        </nav>
+        <a href="connexion.html" class="navbar__cta">Connexion</a>
+        <button
+          class="navbar__burger"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="navbar__mobile" id="mobile-menu" aria-hidden="true">
+        <ul class="navbar__mobile-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="menus.html">Nos menus</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="connexion.html" class="navbar__cta">Connexion</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <section class="page-header">
+        <div class="page-header__container">
+          <span class="section-eyebrow">Espace commande</span>
+          <h1 class="page-header__title">Commander un menu</h1>
+          <p class="page-header__sub">
+            Remplissez le formulaire ci-dessous pour finaliser votre commande.
+          </p>
+        </div>
+      </section>
+
+      <section class="commande-page">
+        <div class="commande-page__container">
+          <!-- FORMULAIRE COMMANDE -->
+          <div class="commande-form-wrapper">
+            <!-- STEPPER -->
+            <div class="stepper" aria-label="Étapes de la commande">
+              <div class="stepper__item stepper__item--active">
+                <span class="stepper__number">1</span>
+                <span class="stepper__label">Mes informations</span>
+              </div>
+              <div class="stepper__divider"></div>
+              <div class="stepper__item">
+                <span class="stepper__number">2</span>
+                <span class="stepper__label">Mon menu</span>
+              </div>
+              <div class="stepper__divider"></div>
+              <div class="stepper__item">
+                <span class="stepper__number">3</span>
+                <span class="stepper__label">Récapitulatif</span>
+              </div>
+            </div>
+
+            <form
+              class="auth-form"
+              action="php/commande/create.php"
+              method="POST"
+              novalidate
+              id="commande-form"
+            >
+              <!-- ÉTAPE 1 : INFOS CLIENT -->
+              <div class="commande-step" id="step-1">
+                <h2 class="commande-step__title">Informations client</h2>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="prenom">Prénom</label>
+                    <input
+                      type="text"
+                      id="prenom"
+                      name="prenom"
+                      class="form-input"
+                      placeholder="Julie"
+                      required
+                      autocomplete="given-name"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="nom">Nom</label>
+                    <input
+                      type="text"
+                      id="nom"
+                      name="nom"
+                      class="form-input"
+                      placeholder="Dupont"
+                      required
+                      autocomplete="family-name"
+                    />
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="email">Email</label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-input"
+                    placeholder="votre@email.com"
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="gsm">Téléphone</label>
+                  <input
+                    type="tel"
+                    id="gsm"
+                    name="gsm"
+                    class="form-input"
+                    placeholder="06 12 34 56 78"
+                    required
+                    autocomplete="tel"
+                  />
+                </div>
+
+                <h2 class="commande-step__title">Informations de livraison</h2>
+
+                <div class="form-group">
+                  <label class="form-label" for="adresse-livraison"
+                    >Adresse de livraison</label
+                  >
+                  <input
+                    type="text"
+                    id="adresse-livraison"
+                    name="adresse_livraison"
+                    class="form-input"
+                    placeholder="12 rue des Lilas, Bordeaux"
+                    required
+                    autocomplete="street-address"
+                  />
+                  <p class="form-hint">
+                    Livraison gratuite à Bordeaux. Hors Bordeaux : 5€ +
+                    0,59€/km.
+                  </p>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label" for="date-livraison"
+                      >Date de la prestation</label
+                    >
+                    <input
+                      type="date"
+                      id="date-livraison"
+                      name="date_livraison"
+                      class="form-input"
+                      required
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="heure-livraison"
+                      >Heure souhaitée</label
+                    >
+                    <input
+                      type="time"
+                      id="heure-livraison"
+                      name="heure_livraison"
+                      class="form-input"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <!-- ÉTAPE 2 : MENU -->
+              <div class="commande-step" id="step-2">
+                <h2 class="commande-step__title">Choix du menu</h2>
+
+                <div class="form-group">
+                  <label class="form-label" for="menu-choisi"
+                    >Menu sélectionné</label
+                  >
+                  <select
+                    id="menu-choisi"
+                    name="menu_id"
+                    class="filters__select"
+                    required
+                  >
+                    <option value="">Choisir un menu</option>
+                    <!-- Options générées dynamiquement via PHP -->
+                    <option value="1">
+                      Menu des Fêtes — 45€ / 8 pers. min.
+                    </option>
+                    <option value="2">
+                      Menu Tradition — 35€ / 6 pers. min.
+                    </option>
+                    <option value="3">
+                      Menu Printanier — 40€ / 6 pers. min.
+                    </option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="nb-personnes"
+                    >Nombre de personnes</label
+                  >
+                  <input
+                    type="number"
+                    id="nb-personnes"
+                    name="nb_personnes"
+                    class="form-input"
+                    min="1"
+                    placeholder="Ex: 10"
+                    required
+                  />
+                  <p class="form-hint" id="personnes-hint">
+                    Minimum requis selon le menu choisi.
+                  </p>
+                </div>
+
+                <!-- Conditions du menu sélectionné -->
+                <div class="menu-conditions" id="commande-conditions">
+                  <div class="menu-conditions__header">
+                    <span class="menu-conditions__icon">⚠️</span>
+                    <h3 class="menu-conditions__title">
+                      Conditions de ce menu
+                    </h3>
+                  </div>
+                  <ul class="menu-conditions__list">
+                    <li>
+                      Ce menu doit être commandé
+                      <strong>minimum 72h avant</strong> la prestation.
+                    </li>
+                    <li>
+                      Conservation au réfrigérateur, à consommer dans les
+                      <strong>24h</strong> après livraison.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <!-- ÉTAPE 3 : RECAP -->
+              <div class="commande-step" id="step-3">
+                <h2 class="commande-step__title">
+                  Récapitulatif de votre commande
+                </h2>
+
+                <div class="commande-recap">
+                  <div class="commande-recap__row">
+                    <span>Menu sélectionné</span>
+                    <span id="recap-menu">—</span>
+                  </div>
+                  <div class="commande-recap__row">
+                    <span>Nombre de personnes</span>
+                    <span id="recap-personnes">—</span>
+                  </div>
+                  <div class="commande-recap__row">
+                    <span>Date de livraison</span>
+                    <span id="recap-date">—</span>
+                  </div>
+                  <div class="commande-recap__row">
+                    <span>Adresse</span>
+                    <span id="recap-adresse">—</span>
+                  </div>
+                  <div class="commande-recap__divider"></div>
+                  <div class="commande-recap__row">
+                    <span>Prix du menu</span>
+                    <span id="recap-prix-menu">—</span>
+                  </div>
+                  <div class="commande-recap__row">
+                    <span>Frais de livraison</span>
+                    <span id="recap-livraison">Gratuit</span>
+                  </div>
+                  <div class="commande-recap__row" id="recap-reduction-row">
+                    <span>Réduction 10%</span>
+                    <span id="recap-reduction">—</span>
+                  </div>
+                  <div class="commande-recap__divider"></div>
+                  <div class="commande-recap__row commande-recap__row--total">
+                    <span>Total</span>
+                    <span id="recap-total">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- NAVIGATION ENTRE ÉTAPES -->
+              <div class="commande-nav">
+                <button
+                  type="button"
+                  class="btn btn--secondary"
+                  id="btn-prev"
+                  style="display: none"
+                >
+                  ← Étape précédente
+                </button>
+                <button type="button" class="btn btn--primary" id="btn-next">
+                  Étape suivante →
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn--primary"
+                  id="btn-submit"
+                  style="display: none"
+                >
+                  Confirmer la commande
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- RECAP PRIX (sticky) -->
+          <aside class="commande-aside">
+            <div class="commande-aside__card">
+              <h2 class="commande-aside__title">Votre commande</h2>
+
+              <div class="commande-aside__row">
+                <span>Menu</span>
+                <span id="aside-menu">—</span>
+              </div>
+              <div class="commande-aside__row">
+                <span>Personnes</span>
+                <span id="aside-personnes">—</span>
+              </div>
+              <div class="commande-aside__row">
+                <span>Livraison</span>
+                <span id="aside-livraison">—</span>
+              </div>
+              <div class="commande-aside__row">
+                <span>Réduction</span>
+                <span id="aside-reduction">—</span>
+              </div>
+
+              <div class="commande-aside__divider"></div>
+
+              <div class="commande-aside__total">
+                <span>Total</span>
+                <span id="aside-total">—</span>
+              </div>
+
+              <p class="commande-aside__note">
+                Un email de confirmation vous sera envoyé après validation.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__col">
+          <p class="footer__logo">Vite <em>&</em> Gourmand</p>
+          <p class="footer__desc">
+            Traiteur bordelais depuis 1999. Julie &amp; José cuisinent avec
+            passion pour tous vos événements.
+          </p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Horaires</h4>
+          <ul class="footer__hours">
+            <li><span>Lundi – Vendredi</span><span>9h00 – 18h00</span></li>
+            <li><span>Samedi</span><span>10h00 – 16h00</span></li>
+            <li><span>Dimanche</span><span>10h00 – 13h00</span></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Navigation</h4>
+          <ul class="footer__nav">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="menus.html">Nos menus</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Légal</h4>
+          <ul class="footer__nav">
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales de vente</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2025 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
+      </div>
+    </footer>
+  </body>
+</html>
