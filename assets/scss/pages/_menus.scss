@@ -1,6 +1,4 @@
-// ===========================
 // PAGE HEADER
-// ===========================
 
 .page-header {
   background: $cream-dark;
@@ -27,9 +25,7 @@
   max-width: 500px;
 }
 
-// ===========================
 // LAYOUT MENUS + FILTRES
-// ===========================
 
 .menus-page {
   background: $cream;
@@ -44,9 +40,7 @@
   margin: 0 auto;
 }
 
-// ===========================
 // FILTRES
-// ===========================
 
 .filters {
   background: $white;
@@ -150,9 +144,7 @@
   margin-top: 8px;
 }
 
-// ===========================
 // LISTE DES MENUS
-// ===========================
 
 .menus-list__header {
   margin-bottom: 20px;
@@ -185,9 +177,7 @@
   margin-bottom: 16px;
 }
 
-// ===========================
-// RESPONSIVE
-// ===========================
+// MEDIA QUERIES
 
 @media (max-width: $bp-desktop) {
   .menus-list__grid {
