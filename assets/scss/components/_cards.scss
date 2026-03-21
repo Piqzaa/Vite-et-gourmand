@@ -23,19 +23,20 @@
 
 .menu-card__body {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .menu-card__tag {
-  display: inline-block;
   background: $terra-light;
   color: $terracotta;
-  font-size: 0.625rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
   padding: 3px 9px;
   border-radius: $radius-sm;
-  margin-bottom: 10px;
 }
 
 .menu-card__title {
@@ -43,13 +44,34 @@
   font-size: 1rem;
   font-weight: 400;
   color: $charcoal;
-  margin-bottom: 6px;
 }
 
 .menu-card__info {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: $brown-light;
-  margin-bottom: 16px;
+}
+
+.menu-card__desc {
+  font-size: 0.9rem;
+  color: $brown-light;
+  line-height: 1.6;
+}
+
+.menu-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.menu-card__price {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $terracotta;
+}
+
+.menu-card__persons {
+  font-size: 0.75rem;
+  color: $brown-light;
 }
 
 // ===========================
@@ -61,21 +83,22 @@
   border: 1px solid $border;
   border-radius: $radius-md;
   padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .avis-card__stars {
   color: $terracotta;
-  font-size: 0.875rem;
-  margin-bottom: 8px;
+  font-size: 1rem;
 }
 
 .avis-card__text {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-style: italic;
   color: $charcoal;
   line-height: 1.7;
-  margin-bottom: 16px;
 }
 
 .avis-card__author {

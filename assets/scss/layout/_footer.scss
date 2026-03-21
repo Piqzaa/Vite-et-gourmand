@@ -14,7 +14,7 @@
 
 .footer__logo {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.125rem;
+  font-size: 1.2rem;
   color: $white;
   margin-bottom: 12px;
 }
@@ -25,14 +25,14 @@
 }
 
 .footer__desc {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: $brown-light;
   line-height: 1.7;
 }
 
 .footer__heading {
   font-family: "DM Sans", sans-serif;
-  font-size: 0.6875rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -51,7 +51,7 @@
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   color: $white;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .footer__nav a {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: $brown-light;
   transition: color 0.25s ease;
 }

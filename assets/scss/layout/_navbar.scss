@@ -18,7 +18,7 @@
 
 .navbar__logo {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: 1.125rem;
+  font-size: 1.2rem;
   color: $charcoal;
   letter-spacing: 0.3px;
 }
@@ -36,7 +36,7 @@
 }
 
 .navbar__link {
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   color: $brown-mid;
   transition: color 0.25s ease;
 }
@@ -53,7 +53,7 @@
 .navbar__cta {
   background: $terracotta;
   color: $white;
-  font-size: 0.8125rem;
+  font-size: 0.9rem;
   font-weight: 500;
   padding: $space-sm 18px;
   border-radius: $radius-sm;
@@ -116,7 +116,7 @@
 }
 
 .navbar__mobile-links a {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: $brown-mid;
   transition: color 0.25s ease;
 }

@@ -17,13 +17,14 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="assets/css/main.css" />
+    <script src="assets/js/main.js" type="module" defer></script>
   </head>
 
   <body>
     <!-- ================================
     NAVBAR
     ================================ -->
-    <header class="navbar" role="banner">
+    <header class="navbar">
       <div class="navbar__container">
         <a
           href="index.html"
@@ -75,10 +76,10 @@
       <!-- ================================
       HERO
       ================================ -->
-      <section class="hero" aria-label="Présentation">
+      <section class="hero">
         <div class="hero__container">
           <div class="hero__content">
-            <div class="hero__badge" aria-hidden="true">
+            <div class="hero__badge">
               <span class="hero__badge-dot"></span>
               Traiteur bordelais depuis 1999
             </div>
@@ -101,12 +102,11 @@
             </div>
           </div>
 
-          <div class="hero__visual" aria-hidden="true">
+          <div class="hero__visual">
             <img
               src="assets/img/hero-img.jpg"
               alt="Plat traiteur Vite & Gourmand"
               class="hero__img"
-              loading="eager"
             />
           </div>
         </div>
@@ -203,7 +203,6 @@
                   src="assets/img/menu-placeholder.jpg"
                   alt="Menu des Fêtes"
                   class="menu-card__img"
-                  loading="lazy"
                 />
               </div>
               <div class="menu-card__body">
@@ -224,7 +223,6 @@
                   src="assets/img/menu-placeholder.jpg"
                   alt="Menu Tradition"
                   class="menu-card__img"
-                  loading="lazy"
                 />
               </div>
               <div class="menu-card__body">
@@ -245,7 +243,6 @@
                   src="assets/img/menu-placeholder.jpg"
                   alt="Menu Printanier"
                   class="menu-card__img"
-                  loading="lazy"
                 />
               </div>
               <div class="menu-card__body">
@@ -321,7 +318,7 @@
     <!-- ================================
     FOOTER
     ================================ -->
-    <footer class="footer" role="contentinfo">
+    <footer class="footer">
       <div class="footer__container">
         <div class="footer__col">
           <p class="footer__logo">Vite <em>&</em> Gourmand</p>
@@ -359,11 +356,8 @@
       </div>
 
       <div class="footer__bottom">
-        <p>&copy; 2025 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
+        <p>&copy; 2026 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
       </div>
     </footer>
-
-    <!-- JS -->
-    <script src="assets/js/main.js"></script>
   </body>
 </html>

@@ -20,8 +20,7 @@
   </head>
 
   <body>
-    <!-- NAVBAR (identique à index.html) -->
-    <header class="navbar" role="banner">
+    <header class="navbar">
       <div class="navbar__container">
         <a
           href="index.html"
@@ -69,7 +68,7 @@
 
     <main id="main-content">
       <!-- PAGE HEADER -->
-      <section class="page-header" aria-label="En-tête de page">
+      <section class="page-header">
         <div class="page-header__container">
           <span class="section-eyebrow">Traiteur bordelais</span>
           <h1 class="page-header__title">Nos menus</h1>
@@ -81,7 +80,7 @@
       </section>
 
       <!-- MENUS + FILTRES -->
-      <section class="menus-page" aria-labelledby="menus-page-title">
+      <section class="menus-page">
         <div class="menus-page__container">
           <!-- FILTRES -->
           <aside class="filters" aria-label="Filtres de recherche">
@@ -99,8 +98,6 @@
                   min="0"
                   max="200"
                   value="200"
-                  step="5"
-                  aria-label="Prix maximum"
                 />
                 <div class="filters__range-value">
                   <span>0€</span>
@@ -145,11 +142,7 @@
 
             <div class="filters__group">
               <label class="filters__label" for="filter-theme">Thème</label>
-              <select
-                id="filter-theme"
-                class="filters__select"
-                aria-label="Filtrer par thème"
-              >
+              <select id="filter-theme" class="filters__select">
                 <option value="">Tous les thèmes</option>
                 <option value="noel">Noël</option>
                 <option value="paques">Pâques</option>
@@ -160,11 +153,7 @@
 
             <div class="filters__group">
               <label class="filters__label" for="filter-regime">Régime</label>
-              <select
-                id="filter-regime"
-                class="filters__select"
-                aria-label="Filtrer par régime"
-              >
+              <select id="filter-regime" class="filters__select">
                 <option value="">Tous les régimes</option>
                 <option value="classique">Classique</option>
                 <option value="vegetarien">Végétarien</option>
@@ -184,7 +173,6 @@
                 min="1"
                 value=""
                 placeholder="Ex: 6"
-                aria-label="Nombre de personnes minimum"
               />
             </div>
 
@@ -215,7 +203,6 @@
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
                     alt="Menu des Fêtes"
                     class="menu-card__img"
-                    loading="lazy"
                   />
                 </div>
                 <div class="menu-card__body">
@@ -241,7 +228,6 @@
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
                     alt="Menu Tradition"
                     class="menu-card__img"
-                    loading="lazy"
                   />
                 </div>
                 <div class="menu-card__body">
@@ -267,7 +253,6 @@
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
                     alt="Menu Printanier"
                     class="menu-card__img"
-                    loading="lazy"
                   />
                 </div>
                 <div class="menu-card__body">
@@ -293,7 +278,6 @@
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
                     alt="Menu Végétarien"
                     class="menu-card__img"
-                    loading="lazy"
                   />
                 </div>
                 <div class="menu-card__body">
@@ -319,7 +303,6 @@
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
                     alt="Menu Événement"
                     class="menu-card__img"
-                    loading="lazy"
                   />
                 </div>
                 <div class="menu-card__body">
@@ -345,7 +328,6 @@
                     src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
                     alt="Menu Vegan"
                     class="menu-card__img"
-                    loading="lazy"
                   />
                 </div>
                 <div class="menu-card__body">
@@ -386,8 +368,7 @@
       </section>
     </main>
 
-    <!-- FOOTER (identique à index.html) -->
-    <footer class="footer" role="contentinfo">
+    <footer class="footer">
       <div class="footer__container">
         <div class="footer__col">
           <p class="footer__logo">Vite <em>&</em> Gourmand</p>

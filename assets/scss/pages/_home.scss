@@ -19,13 +19,17 @@
   flex: 1.2;
 }
 
+.hero__visual {
+  flex: 0.8;
+}
+
 .hero__badge {
   display: inline-flex;
   align-items: center;
   gap: 7px;
   background: $terra-light;
   color: $terracotta;
-  font-size: 0.6875rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -44,7 +48,7 @@
 
 .hero__title {
   font-family: "Playfair Display", Georgia, serif;
-  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  font-size: 3rem;
   font-weight: 400;
   line-height: 1.15;
   color: $charcoal;
@@ -57,7 +61,7 @@
 }
 
 .hero__sub {
-  font-size: 0.9375rem;
+  font-size: 1rem;
   color: $brown-light;
   line-height: 1.75;
   max-width: 440px;
@@ -68,10 +72,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.hero__visual {
-  flex: 0.8;
 }
 
 .hero__img {
@@ -121,7 +121,7 @@
 }
 
 .stats__label {
-  font-size: 0.6875rem;
+  font-size: 0.7rem;
   color: $brown-light;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -154,7 +154,7 @@
 }
 
 .pillar__icon {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   margin-bottom: $space-md;
 }
 
@@ -167,7 +167,7 @@
 }
 
 .pillar__text {
-  font-size: 0.8125rem;
+  font-size: 1rem;
   color: $brown-light;
   line-height: 1.7;
 }
@@ -194,7 +194,7 @@
 }
 
 .menus-home__link {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   font-weight: 500;
   letter-spacing: 1px;
   text-transform: uppercase;
