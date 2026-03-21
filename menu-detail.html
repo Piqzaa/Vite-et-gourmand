@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Détail du menu — Vite & Gourmand, traiteur bordelais."
+    />
+    <title>Menu des Fêtes — Vite & Gourmand</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+  </head>
+
+  <body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+      <div class="navbar__container">
+        <a
+          href="index.html"
+          class="navbar__logo"
+          aria-label="Vite & Gourmand — Accueil"
+        >
+          Vite <em>&</em> Gourmand
+        </a>
+
+        <nav class="navbar__nav" aria-label="Navigation principale">
+          <ul class="navbar__links">
+            <li><a href="index.html" class="navbar__link">Accueil</a></li>
+            <li>
+              <a href="menus.html" class="navbar__link navbar__link--active"
+                >Nos menus</a
+              >
+            </li>
+            <li><a href="contact.html" class="navbar__link">Contact</a></li>
+          </ul>
+        </nav>
+
+        <a href="connexion.html" class="navbar__cta">Connexion</a>
+
+        <button
+          class="navbar__burger"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+
+      <nav class="navbar__mobile" id="mobile-menu" aria-hidden="true">
+        <ul class="navbar__mobile-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="menus.html">Nos menus</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="connexion.html" class="navbar__cta">Connexion</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <div class="menu-detail__nav">
+        <a href="menus.html" class="menu-detail__back">← Retour aux menus</a>
+      </div>
+      <!-- DETAIL MENU -->
+      <section class="menu-detail">
+        <div class="menu-detail__container">
+          <div class="menu-detail__left">
+            <div class="menu-gallery">
+              <div class="menu-gallery__main">
+                <img
+                  src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800"
+                  alt="Menu des Fêtes — photo principale"
+                  class="menu-gallery__img"
+                  id="gallery-main-img"
+                />
+              </div>
+              <div class="menu-gallery__thumbs">
+                <img
+                  src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200"
+                  alt="Photo 1"
+                  class="menu-gallery__thumb menu-gallery__thumb--active"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=200"
+                  alt="Photo 2"
+                  class="menu-gallery__thumb"
+                />
+                <img
+                  src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=200"
+                  alt="Photo 3"
+                  class="menu-gallery__thumb"
+                />
+              </div>
+            </div>
+
+            <!-- Plats -->
+            <div class="menu-plats">
+              <h2 class="menu-plats__title">Composition du menu</h2>
+
+              <div class="menu-plats__group">
+                <h3 class="menu-plats__category">Entrées</h3>
+                <ul class="menu-plats__list">
+                  <li class="menu-plat">
+                    <span class="menu-plat__name"
+                      >Foie gras maison sur toast brioché</span
+                    >
+                    <div class="menu-plat__allergenes">
+                      <span class="allergene">Gluten</span>
+                      <span class="allergene">Œufs</span>
+                    </div>
+                  </li>
+                  <li class="menu-plat">
+                    <span class="menu-plat__name"
+                      >Velouté de châtaignes et crème fouettée</span
+                    >
+                    <div class="menu-plat__allergenes">
+                      <span class="allergene">Lait</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="menu-plats__group">
+                <h3 class="menu-plats__category">Plats</h3>
+                <ul class="menu-plats__list">
+                  <li class="menu-plat">
+                    <span class="menu-plat__name"
+                      >Magret de canard rôti, sauce aux cèpes</span
+                    >
+                    <div class="menu-plat__allergenes">
+                      <span class="allergene">Sulfites</span>
+                    </div>
+                  </li>
+                  <li class="menu-plat">
+                    <span class="menu-plat__name"
+                      >Gratin dauphinois et haricots verts</span
+                    >
+                    <div class="menu-plat__allergenes">
+                      <span class="allergene">Lait</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="menu-plats__group">
+                <h3 class="menu-plats__category">Desserts</h3>
+                <ul class="menu-plats__list">
+                  <li class="menu-plat">
+                    <span class="menu-plat__name"
+                      >Bûche de Noël vanille et fruits rouges</span
+                    >
+                    <div class="menu-plat__allergenes">
+                      <span class="allergene">Gluten</span>
+                      <span class="allergene">Œufs</span>
+                      <span class="allergene">Lait</span>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-detail__right">
+            <div class="menu-detail__header">
+              <div class="menu-detail__tags">
+                <span class="menu-card__tag">Noël</span>
+                <span class="menu-card__tag">Classique</span>
+              </div>
+              <h1 class="menu-detail__title">Menu des Fêtes</h1>
+              <p class="menu-detail__desc">
+                Un repas festif et généreux pour célébrer les fêtes de fin
+                d'année en famille. Julie et José vous proposent une sélection
+                de plats traditionnels revisités avec des produits frais du
+                terroir girondin.
+              </p>
+            </div>
+
+            <div class="menu-detail__infos">
+              <div class="menu-info">
+                <span class="menu-info__label">Prix de base</span>
+                <span class="menu-info__value menu-info__value--price"
+                  >45€</span
+                >
+              </div>
+              <div class="menu-info">
+                <span class="menu-info__label">Personnes minimum</span>
+                <span class="menu-info__value">8 personnes</span>
+              </div>
+              <div class="menu-info">
+                <span class="menu-info__label">Régime</span>
+                <span class="menu-info__value">Classique</span>
+              </div>
+              <div class="menu-info">
+                <span class="menu-info__label">Stock disponible</span>
+                <span class="menu-info__value">5 commandes restantes</span>
+              </div>
+            </div>
+
+            <div class="menu-conditions">
+              <div class="menu-conditions__header">
+                <span class="menu-conditions__icon" aria-hidden="true">⚠️</span>
+                <h2 class="menu-conditions__title">Conditions importantes</h2>
+              </div>
+              <ul class="menu-conditions__list">
+                <li>
+                  Ce menu doit être commandé
+                  <strong>minimum 72h avant</strong> la prestation.
+                </li>
+                <li>
+                  Conservation au réfrigérateur obligatoire, à consommer dans
+                  les <strong>24h</strong> après livraison.
+                </li>
+                <li>
+                  En cas de retour de matériel prêté, celui-ci doit être
+                  restitué sous <strong>10 jours ouvrés</strong>. Passé ce
+                  délai, des frais de <strong>600€</strong> seront facturés
+                  (voir CGV).
+                </li>
+              </ul>
+            </div>
+
+            <div class="menu-detail__cta">
+              <a href="commande.html?menu=1" class="btn btn--primary btn--full">
+                Commander ce menu
+              </a>
+              <p class="menu-detail__cta-note">
+                Vous devez être connecté pour commander.
+                <a href="connexion.html">Se connecter</a> ou
+                <a href="inscription.html">créer un compte</a>.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__col">
+          <p class="footer__logo">Vite <em>&</em> Gourmand</p>
+          <p class="footer__desc">
+            Traiteur bordelais depuis 1999. Julie &amp; José cuisinent avec
+            passion pour tous vos événements.
+          </p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Horaires</h4>
+          <ul class="footer__hours">
+            <li><span>Lundi – Vendredi</span><span>9h00 – 18h00</span></li>
+            <li><span>Samedi</span><span>10h00 – 16h00</span></li>
+            <li><span>Dimanche</span><span>10h00 – 13h00</span></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Navigation</h4>
+          <ul class="footer__nav">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="menus.html">Nos menus</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Légal</h4>
+          <ul class="footer__nav">
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales de vente</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2025 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+  </body>
+</html>

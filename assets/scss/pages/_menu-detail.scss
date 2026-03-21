@@ -1,0 +1,286 @@
+.menu-detail__nav {
+  background: $cream-dark;
+  border-bottom: 1px solid $border;
+  padding: 12px $space-xl;
+}
+.menu-detail__back {
+  font-size: 0.9rem;
+  color: $brown-light;
+  transition: color 0.25s ease;
+
+  &:hover {
+    color: $charcoal;
+  }
+}
+// Layout detail
+
+.menu-detail {
+  background: $cream;
+  padding: 48px $space-xl;
+}
+
+.menu-detail__container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+// GALERIE
+.menu-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-gallery__main {
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.menu-gallery__img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
+
+.menu-gallery__thumbs {
+  display: flex;
+  gap: 8px;
+}
+
+.menu-gallery__thumb {
+  width: 80px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: $radius-sm;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+
+  &:hover {
+    border-color: $brown-light;
+  }
+}
+
+.menu-gallery__thumb--active {
+  border-color: $terracotta;
+}
+
+//Plats
+
+.menu-plats {
+  margin-top: 40px;
+}
+
+.menu-plats__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  color: $charcoal;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $border;
+}
+
+.menu-plats__group {
+  margin-bottom: 24px;
+}
+
+.menu-plats__category {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $terracotta;
+  margin-bottom: 12px;
+}
+
+.menu-plats__list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  list-style: none;
+}
+
+.menu-plat {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.menu-plat__name {
+  font-size: 0.9rem;
+  color: $charcoal;
+}
+
+.menu-plat__allergenes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.allergene {
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  background: #fff3e0;
+  color: #e65100;
+  padding: 2px 7px;
+  border-radius: $radius-sm;
+}
+
+//Colonne droite
+
+.menu-detail__right {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.menu-detail__header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-detail__tags {
+  display: flex;
+  gap: 8px;
+}
+
+.menu-detail__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2rem;
+  font-weight: 400;
+  color: $charcoal;
+  line-height: 1.2;
+}
+
+.menu-detail__desc {
+  font-size: 0.9rem;
+  color: $brown-light;
+  line-height: 1.7;
+}
+
+//Infos
+
+.menu-detail__infos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: $border;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.menu-info {
+  background: $white;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.menu-info__label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $brown-light;
+}
+
+.menu-info__value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: $charcoal;
+}
+
+.menu-info__value--price {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.5rem;
+  color: $terracotta;
+}
+
+// Conditions
+
+.menu-conditions {
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  border-radius: $radius-md;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-conditions__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.menu-conditions__icon {
+  font-size: 1rem;
+}
+
+.menu-conditions__title {
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #92400e;
+}
+
+.menu-conditions__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  list-style: none;
+  padding-left: 4px;
+}
+
+.menu-conditions__list li {
+  font-size: 0.9rem;
+  color: #92400e;
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid #fcd34d;
+}
+
+//CTA
+
+.menu-detail__cta {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.menu-detail__cta-note {
+  font-size: 0.8rem;
+  color: $brown-light;
+  text-align: center;
+}
+
+.menu-detail__cta-note a {
+  color: $terracotta;
+  text-decoration: underline;
+}
+
+//Media queries
+
+@media (max-width: $bp-tablet) {
+  .menu-detail {
+    padding: 32px $space-md;
+  }
+
+  .menu-detail__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .menu-detail__right {
+    position: static;
+  }
+}
