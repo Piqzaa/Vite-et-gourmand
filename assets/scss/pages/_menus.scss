@@ -1,30 +1,3 @@
-// PAGE HEADER
-
-.page-header {
-  background: $cream-dark;
-  padding: 48px $space-xl;
-  border-bottom: 1px solid $border;
-}
-
-.page-header__container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.page-header__title {
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 2.5rem;
-  font-weight: 400;
-  color: $charcoal;
-  margin: 8px 0 12px;
-}
-
-.page-header__sub {
-  font-size: 1rem;
-  color: $brown-light;
-  max-width: 500px;
-}
-
 // LAYOUT MENUS + FILTRES
 
 .menus-page {

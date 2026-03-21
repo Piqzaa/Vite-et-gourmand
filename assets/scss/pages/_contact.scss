@@ -1,0 +1,82 @@
+.contact-page {
+  background: $cream;
+  padding: 48px $space-xl;
+}
+
+.contact-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  gap: 40px;
+  flex-direction: column;
+}
+
+.contact-form-wrapper {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 40px;
+}
+
+.contact-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.contact-info-block {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-info-block__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: $charcoal;
+}
+
+.contact-info-block__label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $terracotta;
+}
+
+.contact-info-block__text {
+  font-size: 1rem;
+  color: $charcoal;
+}
+
+.contact-hours {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+}
+
+.contact-hours li {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: $charcoal;
+}
+
+// RESPONSIVE
+
+@media (max-width: $bp-tablet) {
+  .contact-page {
+    padding: 32px $space-md;
+  }
+
+  .contact-page__container {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-form-wrapper {
+    padding: 24px 20px;
+  }
+}

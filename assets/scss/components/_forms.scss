@@ -1,0 +1,153 @@
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $brown-mid;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  font-size: 0.9rem;
+  color: $charcoal;
+  background: $white;
+  transition: border-color 0.25s ease;
+}
+
+.form-input:focus {
+  border-color: $terracotta;
+  outline: none;
+}
+
+.form-input::placeholder {
+  color: $brown-light;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: $brown-light;
+}
+
+.form-link {
+  font-size: 0.85rem;
+  color: $terracotta;
+  text-decoration: underline;
+  transition: color 0.25s ease;
+}
+
+.form-link:hover {
+  color: $terra-dark;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: $brown-mid;
+  cursor: pointer;
+}
+
+.form-checkbox input[type="checkbox"] {
+  margin-top: 2px;
+  accent-color: $terracotta;
+  flex-shrink: 0;
+}
+
+// AUTH PAGE
+
+.auth-page {
+  background: $cream;
+  min-height: calc(100vh - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px $space-xl;
+}
+
+.auth-card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.auth-card--wide {
+  max-width: 560px;
+}
+
+.auth-card__header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-card__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.8rem;
+  font-weight: 400;
+  color: $charcoal;
+}
+
+.auth-card__sub {
+  font-size: 0.9rem;
+  color: $brown-light;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.auth-card__footer {
+  font-size: 0.85rem;
+  color: $brown-light;
+  text-align: center;
+}
+
+// RESPONSIVE
+
+@media (max-width: $bp-tablet) {
+  .auth-page {
+    padding: 32px $space-md;
+    align-items: flex-start;
+  }
+
+  .auth-card {
+    padding: 28px 20px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
