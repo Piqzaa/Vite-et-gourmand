@@ -919,6 +919,219 @@
     padding: 24px 20px;
   }
 }
+.commande-page {
+  background: #faf6f1;
+  padding: 48px 32px;
+}
+
+.commande-page__container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.commande-form-wrapper {
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+}
+
+.stepper__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.stepper__number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #f0ebe3;
+  border: 1px solid #e8e0d5;
+  color: #9a8878;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+.stepper__label {
+  font-size: 0.8rem;
+  color: #9a8878;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+.stepper__divider {
+  flex: 1;
+  height: 1px;
+  background: #e8e0d5;
+  margin: 0 12px;
+}
+
+.stepper__item--active .stepper__number {
+  background: #c85a2a;
+  border-color: #c85a2a;
+  color: #ffffff;
+}
+
+.stepper__item--active .stepper__label {
+  color: #1a1a1a;
+}
+
+.stepper__item--done .stepper__number {
+  background: #f0ebe3;
+  border-color: #c85a2a;
+  color: #c85a2a;
+}
+
+.commande-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.commande-step.is-hidden {
+  display: none;
+}
+
+.commande-step__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.commande-recap {
+  background: #faf6f1;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.commande-recap__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: #1a1a1a;
+}
+
+.commande-recap__row--total {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+#recap-total {
+  color: #c85a2a;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.commande-recap__divider {
+  height: 1px;
+  background: #e8e0d5;
+}
+
+.commande-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #e8e0d5;
+}
+
+.commande-aside {
+  position: sticky;
+  top: 80px;
+}
+
+.commande-aside__card {
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.commande-aside__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #1a1a1a;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.commande-aside__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #9a8878;
+}
+
+.commande-aside__divider {
+  height: 1px;
+  background: #e8e0d5;
+}
+
+.commande-aside__total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1a1a1a;
+}
+
+#aside-total {
+  color: #c85a2a;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.commande-aside__note {
+  font-size: 0.75rem;
+  color: #9a8878;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .commande-page {
+    padding: 32px 16px;
+  }
+  .commande-page__container {
+    grid-template-columns: 1fr;
+  }
+  .commande-aside {
+    display: none;
+  }
+  .commande-form-wrapper {
+    padding: 24px 20px;
+  }
+  .stepper__label {
+    display: none;
+  }
+}
 .btn {
   display: inline-block;
   font-family: "DM Sans", sans-serif;
