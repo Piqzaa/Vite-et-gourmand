@@ -135,6 +135,46 @@
   text-align: center;
 }
 
+// FORMULAIRE AVIS
+
+.avis-form {
+  background: $cream;
+  border-radius: $radius-md;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.avis-form__title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $charcoal;
+}
+
+.avis-form__stars {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 4px;
+}
+
+.avis-form__stars input {
+  display: none;
+}
+
+.avis-form__stars label {
+  font-size: 1.5rem;
+  color: $border;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.avis-form__stars input:checked ~ label,
+.avis-form__stars label:hover,
+.avis-form__stars label:hover ~ label {
+  color: $terracotta;
+}
+
 // RESPONSIVE
 
 @media (max-width: $bp-tablet) {

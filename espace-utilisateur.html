@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Mon espace — Vite & Gourmand." />
+    <title>Mon espace — Vite & Gourmand</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <script src="assets/js/main.js" type="module" defer></script>
+  </head>
+
+  <body>
+    <header class="navbar">
+      <div class="navbar__container">
+        <a
+          href="index.html"
+          class="navbar__logo"
+          aria-label="Vite & Gourmand — Accueil"
+        >
+          Vite <em>&</em> Gourmand
+        </a>
+        <nav class="navbar__nav" aria-label="Navigation principale">
+          <ul class="navbar__links">
+            <li><a href="index.html" class="navbar__link">Accueil</a></li>
+            <li><a href="menus.html" class="navbar__link">Nos menus</a></li>
+            <li><a href="contact.html" class="navbar__link">Contact</a></li>
+          </ul>
+        </nav>
+        <!-- PHP : remplacer par nom utilisateur + déconnexion -->
+        <a href="php/auth/logout.php" class="navbar__cta">Déconnexion</a>
+        <button
+          class="navbar__burger"
+          aria-label="Ouvrir le menu"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <nav class="navbar__mobile" id="mobile-menu" aria-hidden="true">
+        <ul class="navbar__mobile-links">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="menus.html">Nos menus</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li>
+            <a href="php/auth/logout.php" class="navbar__cta">Déconnexion</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+    <main id="main-content">
+      <div class="dashboard">
+        <!-- SIDEBAR -->
+        <aside class="dashboard__sidebar">
+          <div class="dashboard__user">
+            <div class="dashboard__avatar">JD</div>
+            <div>
+              <p class="dashboard__username">Julie Dupont</p>
+              <p class="dashboard__role">Utilisateur</p>
+            </div>
+          </div>
+
+          <nav
+            class="dashboard__nav"
+            aria-label="Navigation espace utilisateur"
+          >
+            <ul class="dashboard__nav-list">
+              <li>
+                <a
+                  href="#commandes"
+                  class="dashboard__nav-link dashboard__nav-link--active"
+                >
+                  Mes commandes
+                </a>
+              </li>
+              <li>
+                <a href="#profil" class="dashboard__nav-link"> Mon profil </a>
+              </li>
+            </ul>
+          </nav>
+        </aside>
+
+        <!-- CONTENU PRINCIPAL -->
+        <div class="dashboard__content">
+          <!-- MES COMMANDES -->
+          <section class="dashboard__section" id="commandes">
+            <div class="dashboard__section-header">
+              <h1 class="dashboard__section-title">Mes commandes</h1>
+            </div>
+
+            <!-- Commande en cours -->
+            <div class="commande-card">
+              <div class="commande-card__header">
+                <div>
+                  <span class="commande-card__id">#CMD-2025-001</span>
+                  <h2 class="commande-card__menu">Menu des Fêtes</h2>
+                </div>
+                <span
+                  class="commande-card__status commande-card__status--en-preparation"
+                  >En préparation</span
+                >
+              </div>
+
+              <div class="commande-card__infos">
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Date</span>
+                  <span>25 décembre 2025 à 12h00</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Adresse</span>
+                  <span>12 rue des Lilas, Bordeaux</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Personnes</span>
+                  <span>10 personnes</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Total</span>
+                  <span class="commande-card__price">405€</span>
+                </div>
+              </div>
+
+              <!-- Suivi commande (visible quand statut = accepté) -->
+              <div class="commande-suivi">
+                <h3 class="commande-suivi__title">Suivi de la commande</h3>
+                <ol class="commande-suivi__timeline">
+                  <li class="commande-suivi__step commande-suivi__step--done">
+                    <span class="commande-suivi__dot"></span>
+                    <div>
+                      <p class="commande-suivi__label">Commande reçue</p>
+                      <p class="commande-suivi__date">20/12/2025 à 14h32</p>
+                    </div>
+                  </li>
+                  <li class="commande-suivi__step commande-suivi__step--done">
+                    <span class="commande-suivi__dot"></span>
+                    <div>
+                      <p class="commande-suivi__label">Acceptée</p>
+                      <p class="commande-suivi__date">20/12/2025 à 16h00</p>
+                    </div>
+                  </li>
+                  <li class="commande-suivi__step commande-suivi__step--active">
+                    <span class="commande-suivi__dot"></span>
+                    <div>
+                      <p class="commande-suivi__label">En préparation</p>
+                      <p class="commande-suivi__date">24/12/2025 à 08h00</p>
+                    </div>
+                  </li>
+                  <li class="commande-suivi__step">
+                    <span class="commande-suivi__dot"></span>
+                    <div>
+                      <p class="commande-suivi__label">En cours de livraison</p>
+                    </div>
+                  </li>
+                  <li class="commande-suivi__step">
+                    <span class="commande-suivi__dot"></span>
+                    <div>
+                      <p class="commande-suivi__label">Terminée</p>
+                    </div>
+                  </li>
+                </ol>
+              </div>
+            </div>
+
+            <!-- Commande en attente (modifiable/annulable) -->
+            <div class="commande-card">
+              <div class="commande-card__header">
+                <div>
+                  <span class="commande-card__id">#CMD-2025-002</span>
+                  <h2 class="commande-card__menu">Menu Tradition</h2>
+                </div>
+                <span
+                  class="commande-card__status commande-card__status--en-attente"
+                  >En attente</span
+                >
+              </div>
+
+              <div class="commande-card__infos">
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Date</span>
+                  <span>31 décembre 2025 à 20h00</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Adresse</span>
+                  <span>5 avenue des Chartrons, Bordeaux</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Personnes</span>
+                  <span>6 personnes</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Total</span>
+                  <span class="commande-card__price">210€</span>
+                </div>
+              </div>
+
+              <!-- Actions disponibles tant que pas acceptée -->
+              <div class="commande-card__actions">
+                <a
+                  href="commande.html?edit=2"
+                  class="btn btn--secondary btn--sm"
+                  >Modifier</a
+                >
+                <button
+                  type="button"
+                  class="btn btn--primary btn--sm"
+                  data-id="2"
+                >
+                  Annuler
+                </button>
+              </div>
+            </div>
+
+            <!-- Commande terminée avec avis -->
+            <div class="commande-card commande-card--done">
+              <div class="commande-card__header">
+                <div>
+                  <span class="commande-card__id">#CMD-2025-003</span>
+                  <h2 class="commande-card__menu">Menu Printanier</h2>
+                </div>
+                <span
+                  class="commande-card__status commande-card__status--terminee"
+                  >Terminée</span
+                >
+              </div>
+
+              <div class="commande-card__infos">
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Date</span>
+                  <span>15 avril 2025 à 13h00</span>
+                </div>
+                <div class="commande-card__info">
+                  <span class="commande-card__info-label">Total</span>
+                  <span class="commande-card__price">240€</span>
+                </div>
+              </div>
+
+              <!-- Formulaire avis (visible quand terminée et pas encore noté) -->
+              <div class="avis-form">
+                <h3 class="avis-form__title">Donner votre avis</h3>
+                <form action="php/avis/create.php" method="POST">
+                  <input type="hidden" name="commande_id" value="3" />
+                  <div class="form-group">
+                    <label class="form-label">Note</label>
+                    <div class="avis-form__stars">
+                      <input
+                        type="radio"
+                        name="note"
+                        id="star5"
+                        value="5"
+                      /><label for="star5">★</label>
+                      <input
+                        type="radio"
+                        name="note"
+                        id="star4"
+                        value="4"
+                      /><label for="star4">★</label>
+                      <input
+                        type="radio"
+                        name="note"
+                        id="star3"
+                        value="3"
+                      /><label for="star3">★</label>
+                      <input
+                        type="radio"
+                        name="note"
+                        id="star2"
+                        value="2"
+                      /><label for="star2">★</label>
+                      <input
+                        type="radio"
+                        name="note"
+                        id="star1"
+                        value="1"
+                      /><label for="star1">★</label>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="commentaire"
+                      >Commentaire</label
+                    >
+                    <textarea
+                      id="commentaire"
+                      name="commentaire"
+                      class="form-input form-textarea"
+                      rows="3"
+                      placeholder="Partagez votre expérience..."
+                    ></textarea>
+                  </div>
+                  <div class="space-sm"></div>
+                  <button type="submit" class="btn btn--primary btn--sm">
+                    Envoyer mon avis
+                  </button>
+                </form>
+              </div>
+            </div>
+          </section>
+
+          <!-- MON PROFIL -->
+          <section class="dashboard__section" id="profil">
+            <div class="dashboard__section-header">
+              <h1 class="dashboard__section-title">Mon profil</h1>
+            </div>
+
+            <form class="auth-form" action="php/user/update.php" method="POST">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="profil-prenom">Prénom</label>
+                  <input
+                    type="text"
+                    id="profil-prenom"
+                    name="prenom"
+                    class="form-input"
+                    value="Julie"
+                    required
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="profil-nom">Nom</label>
+                  <input
+                    type="text"
+                    id="profil-nom"
+                    name="nom"
+                    class="form-input"
+                    value="Dupont"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profil-email">Email</label>
+                <input
+                  type="email"
+                  id="profil-email"
+                  name="email"
+                  class="form-input"
+                  value="julie.dupont@email.com"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profil-gsm">Téléphone</label>
+                <input
+                  type="tel"
+                  id="profil-gsm"
+                  name="gsm"
+                  class="form-input"
+                  value="06 12 34 56 78"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profil-adresse"
+                  >Adresse postale</label
+                >
+                <input
+                  type="text"
+                  id="profil-adresse"
+                  name="adresse"
+                  class="form-input"
+                  value="12 rue des Lilas, Bordeaux"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profil-password"
+                  >Nouveau mot de passe</label
+                >
+                <input
+                  type="password"
+                  id="profil-password"
+                  name="password"
+                  class="form-input"
+                  placeholder="Laisser vide pour ne pas modifier"
+                />
+              </div>
+
+              <button type="submit" class="btn btn--primary">
+                Enregistrer les modifications
+              </button>
+            </form>
+          </section>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__col">
+          <p class="footer__logo">Vite <em>&</em> Gourmand</p>
+          <p class="footer__desc">
+            Traiteur bordelais depuis 1999. Julie &amp; José cuisinent avec
+            passion pour tous vos événements.
+          </p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Horaires</h4>
+          <ul class="footer__hours">
+            <li><span>Lundi – Vendredi</span><span>9h00 – 18h00</span></li>
+            <li><span>Samedi</span><span>10h00 – 16h00</span></li>
+            <li><span>Dimanche</span><span>10h00 – 13h00</span></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Navigation</h4>
+          <ul class="footer__nav">
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="menus.html">Nos menus</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Légal</h4>
+          <ul class="footer__nav">
+            <li><a href="mentions-legales.html">Mentions légales</a></li>
+            <li><a href="cgv.html">Conditions générales de vente</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2025 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
+      </div>
+    </footer>
+  </body>
+</html>

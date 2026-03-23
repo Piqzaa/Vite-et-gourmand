@@ -74,9 +74,7 @@
   color: $brown-light;
 }
 
-// ===========================
 // AVIS CARD
-// ===========================
 
 .avis-card {
   background: $cream-dark;
@@ -104,4 +102,122 @@
 .avis-card__author {
   font-size: 0.75rem;
   color: $brown-light;
+}
+
+// COMMAND CARD
+
+.commande-card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.commande-card--done {
+  opacity: 0.85;
+}
+
+.commande-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.commande-card__id {
+  font-size: 0.75rem;
+  color: $brown-light;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.commande-card__menu {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: $charcoal;
+}
+
+.commande-card__status {
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: $radius-full;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.commande-card__status--en-attente {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.commande-card__status--accepte {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.commande-card__status--en-preparation {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.commande-card__status--en-livraison {
+  background: #ede9fe;
+  color: #5b21b6;
+}
+
+.commande-card__status--terminee {
+  background: $cream-dark;
+  color: $brown-mid;
+}
+
+.commande-card__status--annulee {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.commande-card__infos {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.commande-card__info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.commande-card__info-label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $brown-light;
+}
+
+.commande-card__price {
+  font-weight: 500;
+  color: $terracotta;
+}
+
+.commande-card__actions {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: $bp-tablet) {
+  .commande-card__infos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .commande-card__infos {
+    grid-template-columns: 1fr;
+  }
 }
