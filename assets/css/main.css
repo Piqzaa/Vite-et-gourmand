@@ -1375,6 +1375,128 @@
     padding: 24px 16px;
   }
 }
+.employe-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.employe-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  overflow: hidden;
+  font-size: 0.9rem;
+}
+
+.employe-table thead {
+  background: #f0ebe3;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.employe-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #9a8878;
+}
+
+.employe-table td {
+  padding: 14px 16px;
+  color: #1a1a1a;
+  border-bottom: 1px solid #e8e0d5;
+}
+
+.employe-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.employe-table tbody tr:hover {
+  background: #faf6f1;
+}
+
+.employe-table__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.employe-table__delete {
+  border: 1px solid #c82a2a;
+  color: #c82a2a;
+}
+
+.employe-table__delete:hover {
+  background: #c82a2a;
+  color: #ffffff;
+}
+
+.commande-card__employe-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e8e0d5;
+}
+
+.commande-card__employe-actions .form-group {
+  flex: 1;
+}
+
+.avis-moderation {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.avis-moderation__card {
+  background: #ffffff;
+  border: 1px solid #e8e0d5;
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.avis-moderation__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.avis-moderation__author {
+  font-size: 0.8rem;
+  color: #9a8878;
+  margin-top: 4px;
+}
+
+.avis-moderation__actions {
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 768px) {
+  .employe-filters {
+    grid-template-columns: 1fr;
+  }
+  .employe-table {
+    display: block;
+    overflow-x: auto;
+  }
+  .commande-card__employe-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
 .btn {
   display: inline-block;
   font-family: "DM Sans", sans-serif;
