@@ -1,18 +1,19 @@
 @import "abstracts/variables";
-@import "layout/navbar";
-@import "pages/home";
-@import "pages/menus";
-@import "pages/menu-detail";
-@import "pages/contact";
-@import "pages/commande";
-@import "pages/legal-page";
-@import "pages/dashboard";
-@import "pages/employe";
+@import "components/navbar";
 @import "components/buttons";
 @import "components/cards";
 @import "components/forms";
 @import "components/utils";
-@import "layout/footer";
+@import "components/footer";
+@import "components/dashboard";
+@import "components/timeline";
+@import "pages/home";
+@import "pages/menus";
+@import "pages/menu-detail";
+@import "pages/commande";
+@import "pages/contact";
+@import "pages/employe";
+@import "pages/legal";
 
 // RESET GLOBAL
 * {
