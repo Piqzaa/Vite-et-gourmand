@@ -107,6 +107,83 @@
   gap: 8px;
 }
 
+// ADMIN
+
+.admin-stats-filters {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr auto;
+  gap: 16px;
+  align-items: flex-end;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 20px;
+}
+
+.admin-ca {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.admin-ca__card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-ca__label {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $brown-light;
+}
+
+.admin-ca__value {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.75rem;
+  font-weight: 400;
+  color: $terracotta;
+}
+
+.admin-chart {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 24px;
+}
+
+.admin-chart__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: $charcoal;
+  margin-bottom: 20px;
+}
+
+// CRÉER EMPLOYÉ
+
+.admin-create-employe {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.admin-create-employe__title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: $charcoal;
+}
+
 @media (max-width: $bp-tablet) {
   .employe-filters {
     grid-template-columns: 1fr;
@@ -120,5 +197,19 @@
   .commande-card__employe-actions {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .admin-stats-filters {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .admin-ca {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .admin-stats-filters {
+    grid-template-columns: 1fr;
   }
 }

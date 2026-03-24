@@ -111,6 +111,16 @@
   color: $charcoal;
 }
 
+.dashboard__empty {
+  font-size: 0.9rem;
+  color: $brown-light;
+  text-align: center;
+  padding: 40px;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+}
+
 @media (max-width: $bp-tablet) {
   .dashboard {
     grid-template-columns: 1fr;
