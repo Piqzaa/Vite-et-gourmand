@@ -98,14 +98,29 @@
 
 // Menu mobile — caché par défaut
 .navbar__mobile {
-  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
   background: $white;
-  border-top: 1px solid $border;
+
   padding: $space-md $space-xl;
+  z-index: 999;
+
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    border-top 0.3s ease;
 }
 
 .navbar__mobile.is-open {
-  display: block;
+  opacity: 1;
+  transform: translateY(0);
+  border-top: 1px solid $border;
+  pointer-events: auto;
 }
 
 .navbar__mobile-links {

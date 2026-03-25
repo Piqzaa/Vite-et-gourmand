@@ -1,10 +1,10 @@
 @import "abstracts/variables";
-@import "components/navbar";
+@import "layout/navbar";
 @import "components/buttons";
 @import "components/cards";
 @import "components/forms";
 @import "components/utils";
-@import "components/footer";
+@import "layout/footer";
 @import "components/dashboard";
 @import "components/timeline";
 @import "pages/home";
@@ -13,7 +13,7 @@
 @import "pages/commande";
 @import "pages/contact";
 @import "pages/espace-membre";
-@import "pages/legal";
+@import "pages/legal-page";
 
 // RESET GLOBAL
 * {
