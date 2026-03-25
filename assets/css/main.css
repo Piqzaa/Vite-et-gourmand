@@ -599,7 +599,6 @@
 @media (max-width: 768px) {
   .auth-page {
     padding: 32px 16px;
-    align-items: flex-start;
   }
   .auth-card {
     padding: 28px 20px;
