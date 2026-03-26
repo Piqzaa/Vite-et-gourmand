@@ -67,6 +67,9 @@
 
 .menu-gallery__thumb--active {
   border-color: $terracotta;
+  &:hover {
+    border-color: $terracotta;
+  }
 }
 
 //Plats

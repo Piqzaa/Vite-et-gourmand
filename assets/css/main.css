@@ -1494,6 +1494,9 @@
 .menu-gallery__thumb--active {
   border-color: #c85a2a;
 }
+.menu-gallery__thumb--active:hover {
+  border-color: #c85a2a;
+}
 
 .menu-plats {
   margin-top: 40px;
