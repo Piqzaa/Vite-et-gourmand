@@ -16,7 +16,6 @@
       <!-- MENUS + FILTRES -->
       <section class="menus-page">
         <div class="menus-page__container">
-          <!-- FILTRES -->
           <aside class="filters" aria-label="Filtres de recherche">
             <h2 class="filters__title" id="filters-title">Filtrer les menus</h2>
 
