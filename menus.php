@@ -1,3 +1,16 @@
+<?php
+  require_once __DIR__ . '/assets/php/config/db.php';
+    $pdo = getDB();
+    $stmt = $pdo->query('
+    SELECT m.menu_id, m.titre, m.description, m.nombre_personne_min,
+            m.prix_base, m.stock_disponible,
+            t.libelle AS theme,
+            r.libelle AS regime
+            FROM menu m
+            LEFT JOIN theme t ON m.theme_id = t.theme_id
+            LEFT JOIN regime r ON m.regime_id = r.regime_id
+                ');
+            $menus = $stmt->fetchAll(); ?>
 <?php include __DIR__ . '/includes/header.php'; ?>
 <body>
     <main id="main-content">
@@ -127,20 +140,7 @@
             </div>
 
             <div class="menus-list__grid" id="menus-grid">
-              <?php
-                require_once __DIR__ . '/assets/php/config/db.php';
-
-                $pdo = getDB();
-                $stmt = $pdo->query('
-                    SELECT m.menu_id, m.titre, m.description, m.nombre_personne_min,
-                          m.prix_base, m.stock_disponible,
-                          t.libelle AS theme,
-                          r.libelle AS regime
-                    FROM menu m
-                    LEFT JOIN theme t ON m.theme_id = t.theme_id
-                    LEFT JOIN regime r ON m.regime_id = r.regime_id
-                ');
-                $menus = $stmt->fetchAll(); ?>
+              
 
               <?php foreach ($menus as $menu): ?>
               <article class="menu-card">
