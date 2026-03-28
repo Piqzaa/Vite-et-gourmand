@@ -12,7 +12,7 @@ $pdo = getDB();
 
 $stmt = $pdo->prepare('
     SELECT m.menu_id, m.titre, m.description, m.nombre_personne_min,
-          m.prix_base, m.stock_disponible, m.conditions_particulier,
+          m.prix_base, m.stock_disponible, m.conditions_particulieres,
           t.libelle AS theme,
           r.libelle AS regime
     FROM menu m
@@ -68,13 +68,13 @@ if (!$menu) {
           </div>
         </div>
 
-        <?php if ($menu['conditions_particulier']): ?>
+        <?php if ($menu['conditions_particulieres']): ?>
         <div class="menu-conditions">
           <div class="menu-conditions__header">
             <span class="menu-conditions__icon" aria-hidden="true">⚠️</span>
             <h2 class="menu-conditions__title">Conditions importantes</h2>
           </div>
-          <p><?= htmlspecialchars($menu['conditions_particulier']) ?></p>
+          <p><?= htmlspecialchars($menu['conditions_particulieres']) ?></p>
         </div>
         <?php endif; ?>
 
