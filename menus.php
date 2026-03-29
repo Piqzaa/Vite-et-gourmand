@@ -14,9 +14,11 @@
 
 <!doctype html>
 <html lang="fr">
-<?php include __DIR__ . '/includes/head.php'; ?>
+<?php 
+$title = 'Nos menus';
+require __DIR__ . '/includes/head.php'; ?>
 <body>
-<?php include __DIR__ . '/includes/header.php'; ?>
+<?php require __DIR__ . '/includes/header.php'; ?>
 
     <main id="main-content">
       <!-- PAGE HEADER -->

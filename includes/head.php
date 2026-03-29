@@ -6,7 +6,7 @@
       name="description"
       content="Découvrez tous les menus traiteur de Vite & Gourmand — filtrez par thème, régime, prix et nombre de personnes."
     />
-    <title>Nos menus — Vite & Gourmand</title>
+    <title><?= isset($title) ? htmlspecialchars($title) . ' — Vite & Gourmand' : 'Vite & Gourmand' ?></title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

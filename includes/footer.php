@@ -18,16 +18,16 @@
         <div class="footer__col">
           <h4 class="footer__heading">Navigation</h4>
           <ul class="footer__nav">
-            <li><a href="index.html">Accueil</a></li>
-            <li><a href="menus.html">Nos menus</a></li>
-            <li><a href="contact.html">Contact</a></li>
+            <li><a href="index.php">Accueil</a></li>
+            <li><a href="menus.php">Nos menus</a></li>
+            <li><a href="contact.php">Contact</a></li>
           </ul>
         </div>
         <div class="footer__col">
           <h4 class="footer__heading">Légal</h4>
           <ul class="footer__nav">
-            <li><a href="mentions-legales.html">Mentions légales</a></li>
-            <li><a href="cgv.html">Conditions générales de vente</a></li>
+            <li><a href="mentions-legales.php">Mentions légales</a></li>
+            <li><a href="cgv.php">Conditions générales de vente</a></li>
           </ul>
         </div>
       </div>
