@@ -12,9 +12,9 @@
         </a>
         <nav class="navbar__nav" aria-label="Navigation principale">
           <ul class="navbar__links">
-            <?= nav_item('index.php', 'Accueil', $current) ?>
-            <?= nav_item('menus.php', 'Nos menus', $current) ?>
-            <?= nav_item('contact.php', 'Contact', $current) ?>
+            <?= nav_item('index.php', 'Accueil') ?>
+            <?= nav_item('menus.php', 'Nos menus') ?>
+            <?= nav_item('contact.php', 'Contact') ?>
           </ul>
         </nav>
         <div class="navbar__spacer">

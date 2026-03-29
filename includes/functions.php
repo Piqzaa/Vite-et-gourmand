@@ -1,9 +1,9 @@
 <?php
 
-function nav_item(string $lien, string $titre, string $current): string
+function nav_item(string $lien, string $titre): string
 {
     $classe = 'navbar__link';
-    if ($current === $lien) {
+    if ((basename($_SERVER['SCRIPT_NAME']) === $lien)) {
         $classe .= ' navbar__link--active';
     }
 
@@ -14,5 +14,4 @@ function nav_item(string $lien, string $titre, string $current): string
     HTML;
 }
 
-$current = basename($_SERVER['SCRIPT_NAME']);
 ?>
