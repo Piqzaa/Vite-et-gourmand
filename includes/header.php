@@ -1,4 +1,7 @@
-<?php require_once __DIR__ . '/functions.php'; ?>
+<?php 
+session_start();
+require_once __DIR__ . '/functions.php'; 
+?>
 
 
   <header class="navbar">
@@ -18,8 +21,15 @@
           </ul>
         </nav>
         <div class="navbar__spacer">
-        <a href="connexion.php" class="navbar__cta">Connexion</a>
-        <a href="inscription.php" class="navbar__cta--secondary">Inscription</a>
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <a href="espace-utilisateur.php" class="navbar__cta--secondary">
+              <?= htmlspecialchars($_SESSION['user_prenom']) ?>
+          </a>
+          <a href="assets/php/auth/logout.php" class="navbar__cta">Déconnexion</a>
+        <?php else: ?>
+            <a href="connexion.php" class="navbar__cta">Connexion</a>
+            <a href="inscription.php" class="navbar__cta--secondary">Inscription</a>
+        <?php endif; ?>
         </div>
         
 
