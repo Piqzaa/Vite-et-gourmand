@@ -27,6 +27,28 @@ if (!$menu) {
     header('Location: menus.php');
     exit;
 }
+
+$stmtPlats = $pdo->prepare('
+    SELECT p.plat_id, p.libelle AS plat_titre, p.type,
+          GROUP_CONCAT(a.libelle SEPARATOR ", ") AS allergenes
+    FROM compose_menu cm
+    JOIN plat p ON cm.plat_id = p.plat_id
+    LEFT JOIN plat_allergene pa ON p.plat_id = pa.plat_id
+    LEFT JOIN allergene a ON pa.allergene_id = a.allergene_id
+    WHERE cm.menu_id = :id
+    GROUP BY p.plat_id, p.libelle, p.type
+');
+$stmtPlats->execute([':id' => $id]);
+$plats = $stmtPlats->fetchAll();
+
+$platsByType = ['entrée' => [], 'plat' => [], 'dessert' => []];
+foreach ($plats as $plat) {
+    $type = $plat['type'];
+    if (isset($platsByType[$type])) {
+        $platsByType[$type][] = $plat;
+    }
+}
+?>
 ?>
 <!doctype html>
 <html lang="fr">
@@ -44,7 +66,48 @@ require __DIR__ . '/includes/head.php'; ?>
 
   <section class="menu-detail">
     <div class="menu-detail__container">
+      <div class="menu-detail__left">
+    <!-- Galerie statique pour l'instant -->
+    <div class="menu-gallery">
+        <div class="menu-gallery__main">
+            <img
+                src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800"
+                alt="<?= htmlspecialchars($menu['titre']) ?>"
+                class="menu-gallery__img"
+                id="gallery-main-img"
+            />
+        </div>
+    </div>
 
+    <!-- Plats depuis la BDD -->
+    <div class="menu-plats">
+        <h2 class="menu-plats__title">Composition du menu</h2>
+
+        <?php
+        $labels = ['entrée' => 'Entrées', 'plat' => 'Plats', 'dessert' => 'Desserts'];
+        foreach ($platsByType as $type => $items):
+            if (empty($items)) continue;
+        ?>
+        <div class="menu-plats__group">
+            <h3 class="menu-plats__category"><?= $labels[$type] ?></h3>
+            <ul class="menu-plats__list">
+                <?php foreach ($items as $item): ?>
+                <li class="menu-plat">
+                    <span class="menu-plat__name"><?= htmlspecialchars($item['plat_titre']) ?></span>
+                    <?php if ($item['allergenes']): ?>
+                    <div class="menu-plat__allergenes">
+                        <?php foreach (explode(', ', $item['allergenes']) as $allergene): ?>
+                        <span class="allergene"><?= htmlspecialchars($allergene) ?></span>
+                        <?php endforeach; ?>
+                    </div>
+                    <?php endif; ?>
+                </li>
+                <?php endforeach; ?>
+            </ul>
+        </div>
+        <?php endforeach; ?>
+    </div>
+</div>
       <div class="menu-detail__right">
         <div class="menu-detail__header">
           <div class="menu-detail__tags">
