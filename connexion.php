@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <?php 
-$title = 'Détails du menu ';
+$title = 'Connexion ';
 require __DIR__ . '/includes/head.php'; ?>
 <body>
 <?php require __DIR__ . '/includes/header.php'; ?>
@@ -17,10 +17,21 @@ require __DIR__ . '/includes/head.php'; ?>
 
           <form
             class="auth-form"
-            action="php/auth/login.php"
+            action="assets/php/auth/login.php"
             method="POST"
-            novalidate
+            
           >
+            <?php if (isset($_GET['error'])): ?>
+              <p class="form__error">
+                  <?php
+                  $errors = [
+                      'champs_vides'           => 'Veuillez remplir tous les champs.',
+                      'identifiants_invalides' => 'Email ou mot de passe incorrect.',
+                  ];
+                  echo $errors[$_GET['error']] ?? 'Une erreur est survenue.';
+                  ?>
+              </p>
+            <?php endif; ?>
             <div class="form-group">
               <label class="form-label" for="email">Adresse email</label>
               <input
@@ -37,7 +48,7 @@ require __DIR__ . '/includes/head.php'; ?>
             <div class="form-group">
               <div class="form-group__row">
                 <label class="form-label" for="password">Mot de passe</label>
-                <a href="reset-password.html" class="form-link"
+                <a href="reset-password.php" class="form-link"
                   >Mot de passe oublié ?</a
                 >
               </div>
@@ -59,7 +70,7 @@ require __DIR__ . '/includes/head.php'; ?>
 
           <p class="auth-card__footer">
             Pas encore de compte ?
-            <a href="inscription.html" class="form-link">Créer un compte</a>
+            <a href="inscription.php" class="form-link">Créer un compte</a>
           </p>
         </div>
       </section>
