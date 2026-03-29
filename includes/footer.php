@@ -35,5 +35,4 @@
         <p>&copy; 2025 Vite &amp; Gourmand · Bordeaux · Tous droits réservés</p>
       </div>
     </footer>
-  
-</html>
+

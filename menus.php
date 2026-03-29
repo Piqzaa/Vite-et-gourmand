@@ -11,8 +11,13 @@
             LEFT JOIN regime r ON m.regime_id = r.regime_id
                 ');
             $menus = $stmt->fetchAll(); ?>
-<?php include __DIR__ . '/includes/header.php'; ?>
+
+<!doctype html>
+<html lang="fr">
+<?php include __DIR__ . '/includes/head.php'; ?>
 <body>
+<?php include __DIR__ . '/includes/header.php'; ?>
+
     <main id="main-content">
       <!-- PAGE HEADER -->
       <section class="page-header">
@@ -186,7 +191,9 @@
         </div>
       </section>
     </main>
-  </body>
+
 <?php include __DIR__ . '/includes/footer.php'; ?>
+</body>
+</html>
 
 

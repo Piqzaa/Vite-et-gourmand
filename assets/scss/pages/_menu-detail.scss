@@ -17,6 +17,9 @@
 .menu-detail {
   background: $cream;
   padding: 48px $space-xl;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .menu-detail__container {

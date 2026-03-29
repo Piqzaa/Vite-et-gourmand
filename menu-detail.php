@@ -28,8 +28,12 @@ if (!$menu) {
     exit;
 }
 ?>
-
+<!doctype html>
+<html lang="fr">
+<?php include __DIR__ . '/includes/head.php'; ?>
+<body>
 <?php include __DIR__ . '/includes/header.php'; ?>
+
 
 <main id="main-content">
   <div class="menu-detail__nav">
@@ -90,3 +94,5 @@ if (!$menu) {
 </main>
 
 <?php include __DIR__ . '/includes/footer.php'; ?>
+</body>
+</html>

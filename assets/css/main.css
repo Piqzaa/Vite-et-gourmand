@@ -1443,6 +1443,9 @@
 .menu-detail {
   background: #faf6f1;
   padding: 48px 32px;
+  flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .menu-detail__container {
@@ -2253,6 +2256,15 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 img {
