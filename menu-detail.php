@@ -29,14 +29,14 @@ if (!$menu) {
 }
 
 $stmtPlats = $pdo->prepare('
-    SELECT p.plat_id, p.libelle AS plat_titre, p.type,
+    SELECT p.plat_id, p.libelle AS plat_titre, p.type, p.image_path,
           GROUP_CONCAT(a.libelle SEPARATOR ", ") AS allergenes
     FROM compose_menu cm
     JOIN plat p ON cm.plat_id = p.plat_id
     LEFT JOIN plat_allergene pa ON p.plat_id = pa.plat_id
     LEFT JOIN allergene a ON pa.allergene_id = a.allergene_id
     WHERE cm.menu_id = :id
-    GROUP BY p.plat_id, p.libelle, p.type
+    GROUP BY p.plat_id, p.libelle, p.type, p.image_path
 ');
 $stmtPlats->execute([':id' => $id]);
 $plats = $stmtPlats->fetchAll();
@@ -69,15 +69,33 @@ require __DIR__ . '/includes/head.php'; ?>
       <div class="menu-detail__left">
     <!-- Galerie statique pour l'instant -->
     <div class="menu-gallery">
-        <div class="menu-gallery__main">
-            <img
-                src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800"
-                alt="<?= htmlspecialchars($menu['titre']) ?>"
-                class="menu-gallery__img"
-                id="gallery-main-img"
-            />
-        </div>
+    <div class="menu-gallery__main">
+        <?php 
+        // Première image disponible comme image principale
+        $firstImg = !empty($plats) && $plats[0]['image_path'] 
+            ? 'assets/img/' . htmlspecialchars($plats[0]['image_path'])
+            : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800';
+        ?>
+        <img
+            src="<?= $firstImg ?>"
+            alt="<?= htmlspecialchars($menu['titre']) ?>"
+            class="menu-gallery__img"
+            id="gallery-main-img"
+        />
     </div>
+    <div class="menu-gallery__thumbs">
+        <?php foreach ($plats as $i => $plat): 
+            if (!$plat['image_path']) continue;
+            $imgPath = 'assets/img/' . htmlspecialchars($plat['image_path']);
+        ?>
+        <img
+            src="<?= $imgPath ?>"
+            alt="<?= htmlspecialchars($plat['plat_titre']) ?>"
+            class="menu-gallery__thumb <?= $i === 0 ? 'menu-gallery__thumb--active' : '' ?>"
+        />
+        <?php endforeach; ?>
+    </div>
+</div>
 
     <!-- Plats depuis la BDD -->
     <div class="menu-plats">
