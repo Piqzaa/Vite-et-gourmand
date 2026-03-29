@@ -17,7 +17,11 @@
             <?= nav_item('contact.php', 'Contact', $current) ?>
           </ul>
         </nav>
+        <div class="navbar__spacer">
         <a href="connexion.php" class="navbar__cta">Connexion</a>
+        <a href="inscription.php" class="navbar__cta--secondary">Inscription</a>
+        </div>
+        
 
         <button
           class="navbar__burger"

@@ -50,6 +50,12 @@
   font-weight: 500;
 }
 
+.navbar__spacer {
+  display: flex;
+  align-items: center;
+  gap: $space-sm;
+}
+
 .navbar__cta {
   background: $terracotta;
   color: $white;
@@ -58,10 +64,23 @@
   padding: $space-sm 18px;
   border-radius: $radius-sm;
   transition: background 0.25s ease;
+  &:hover {
+    background: $terra-dark;
+  }
 }
 
-.navbar__cta:hover {
-  background: $terra-dark;
+.navbar__cta--secondary {
+  background: $white;
+  color: $charcoal;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: $space-sm 18px;
+  border-radius: $radius-sm;
+  transition: background 0.25s ease;
+  border: 1px solid $border;
+  &:hover {
+    border: 1px solid $charcoal;
+  }
 }
 
 // Burger — caché sur desktop

@@ -50,6 +50,12 @@
   font-weight: 500;
 }
 
+.navbar__spacer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .navbar__cta {
   background: #c85a2a;
   color: #ffffff;
@@ -59,9 +65,22 @@
   border-radius: 4px;
   transition: background 0.25s ease;
 }
-
 .navbar__cta:hover {
   background: #a34520;
+}
+
+.navbar__cta--secondary {
+  background: #ffffff;
+  color: #1a1a1a;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  border-radius: 4px;
+  transition: background 0.25s ease;
+  border: 1px solid #e8e0d5;
+}
+.navbar__cta--secondary:hover {
+  border: 1px solid #1a1a1a;
 }
 
 .navbar__burger {
