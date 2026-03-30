@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <?php 
-$title = 'Détails du menu ';
+$title = 'Inscription ';
 require __DIR__ . '/includes/head.php'; ?>
 <body>
 <?php require __DIR__ . '/includes/header.php'; ?>
@@ -19,10 +19,21 @@ require __DIR__ . '/includes/head.php'; ?>
 
           <form
             class="auth-form"
-            action="php/auth/register.php"
+            action="assets/php/auth/register.php"
             method="POST"
-            novalidate
+            
           >
+          <?php if (!empty($_SESSION['register_errors'])): ?>
+            <div class="form-errors">
+              <ul>
+                <?php foreach ($_SESSION['register_errors'] as $error): ?>
+                  <li><?= htmlspecialchars($error) ?></li>
+                <?php endforeach; ?>
+              </ul>
+            </div>
+            <?php unset($_SESSION['register_errors']); ?>
+          <?php endif; ?>
+
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="prenom">Prénom</label>
@@ -31,7 +42,8 @@ require __DIR__ . '/includes/head.php'; ?>
                   id="prenom"
                   name="prenom"
                   class="form-input"
-                  placeholder="Julie"
+                  placeholder="Votre prénom"
+                  value="<?= htmlspecialchars($_SESSION['register_old']['prenom'] ?? '') ?>"
                   required
                   autocomplete="given-name"
                 />
@@ -43,7 +55,8 @@ require __DIR__ . '/includes/head.php'; ?>
                   id="nom"
                   name="nom"
                   class="form-input"
-                  placeholder="Dupont"
+                  placeholder="Votre nom"
+                  value="<?= htmlspecialchars($_SESSION['register_old']['nom'] ?? '') ?>"
                   required
                   autocomplete="family-name"
                 />
@@ -58,6 +71,7 @@ require __DIR__ . '/includes/head.php'; ?>
                 name="email"
                 class="form-input"
                 placeholder="votre@email.com"
+                value="<?= htmlspecialchars($_SESSION['register_old']['email'] ?? '') ?>"
                 required
                 autocomplete="email"
               />
@@ -70,7 +84,8 @@ require __DIR__ . '/includes/head.php'; ?>
                 id="gsm"
                 name="gsm"
                 class="form-input"
-                placeholder="06 12 34 56 78"
+                placeholder="Votre numéro de téléphone"
+                value="<?= htmlspecialchars($_SESSION['register_old']['gsm'] ?? '') ?>"
                 required
                 autocomplete="tel"
               />
@@ -83,7 +98,8 @@ require __DIR__ . '/includes/head.php'; ?>
                 id="adresse"
                 name="adresse"
                 class="form-input"
-                placeholder="12 rue des Lilas"
+                placeholder="Votre adresse"
+                value="<?= htmlspecialchars($_SESSION['register_old']['adresse'] ?? '') ?>"
                 required
                 autocomplete="street-address"
               />
@@ -97,21 +113,10 @@ require __DIR__ . '/includes/head.php'; ?>
                   id="ville"
                   name="ville"
                   class="form-input"
-                  placeholder="Bordeaux"
+                  placeholder="Votre ville"
+                  value="<?= htmlspecialchars($_SESSION['register_old']['ville'] ?? '') ?>"
                   required
                   autocomplete="address-level2"
-                />
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="pays">Pays</label>
-                <input
-                  type="text"
-                  id="pays"
-                  name="pays"
-                  class="form-input"
-                  placeholder="France"
-                  required
-                  autocomplete="country-name"
                 />
               </div>
             </div>
@@ -167,6 +172,7 @@ require __DIR__ . '/includes/head.php'; ?>
             <button type="submit" class="btn btn--primary btn--full">
               Créer mon compte
             </button>
+            <?php unset($_SESSION['register_old']); ?>
           </form>
 
           <p class="auth-card__footer">
