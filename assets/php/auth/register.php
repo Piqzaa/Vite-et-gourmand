@@ -102,14 +102,12 @@ $insert->execute([
     ':role'     => 'utilisateur',
 ]);
 
-// ── 7. Connexion automatique post-inscription ─────────────────────────────────
-$_SESSION['user'] = [
-    'id'     => (int) $pdo->lastInsertId(),
-    'prenom' => $prenom,
-    'nom'    => $nom,
-    'email'  => $email,
-    'role'   => 'utilisateur',
-];
+
+// ── 7. Connexion automatique post-inscription
+$_SESSION['user_id']     = (int) $pdo->lastInsertId();
+$_SESSION['user_prenom'] = $prenom;
+$_SESSION['user_nom']    = $nom;
+$_SESSION['user_role']   = 'utilisateur';
 
 $_SESSION['flash_success'] = 'Bienvenue ' . htmlspecialchars($prenom) . ' ! Votre compte a bien été créé.';
 

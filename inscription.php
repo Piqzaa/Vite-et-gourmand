@@ -158,11 +158,11 @@ require __DIR__ . '/includes/head.php'; ?>
                 <input type="checkbox" name="cgv" required />
                 <span
                   >J'accepte les
-                  <a href="cgv.html" class="form-link"
+                  <a href="cgv.php" class="form-link"
                     >conditions générales de vente</a
                   >
                   et la
-                  <a href="mentions-legales.html" class="form-link"
+                  <a href="mentions-legales.php" class="form-link"
                     >politique de confidentialité</a
                   >.</span
                 >
@@ -177,7 +177,7 @@ require __DIR__ . '/includes/head.php'; ?>
 
           <p class="auth-card__footer">
             Déjà un compte ?
-            <a href="connexion.html" class="form-link">Se connecter</a>
+            <a href="connexion.php" class="form-link">Se connecter</a>
           </p>
         </div>
       </section>
