@@ -152,7 +152,7 @@
   color: #1a1a1a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .navbar__nav {
     display: none;
   }
@@ -431,7 +431,7 @@
   gap: 12px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .commande-card__infos {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -618,7 +618,7 @@
   color: #c85a2a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .auth-page {
     padding: 32px 16px;
   }
@@ -780,7 +780,7 @@
   color: #9a8878;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .footer__container {
     grid-template-columns: 1fr 1fr;
     gap: 32px;
@@ -915,7 +915,7 @@
   border-radius: 8px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .dashboard {
     grid-template-columns: 1fr;
   }
@@ -1228,7 +1228,7 @@
   margin-top: 40px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .hero {
     padding: 48px 16px;
   }
@@ -1425,7 +1425,7 @@
     grid-template-columns: repeat(2, 1fr);
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .menus-page {
     padding: 32px 16px;
   }
@@ -1712,7 +1712,7 @@
   text-decoration: underline;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .menu-detail {
     padding: 32px 16px;
   }
@@ -1920,7 +1920,7 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .commande-page {
     padding: 32px 16px;
   }
@@ -2003,7 +2003,7 @@
   color: #1a1a1a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .contact-page {
     padding: 32px 16px;
   }
@@ -2197,7 +2197,7 @@
   color: #1a1a1a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .employe-filters {
     grid-template-columns: 1fr;
   }
@@ -2247,7 +2247,7 @@
   color: #1a1a1a;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 840px) {
   .legal-page {
     padding: 32px 16px;
   }
