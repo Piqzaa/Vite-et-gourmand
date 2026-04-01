@@ -125,4 +125,6 @@ export function initMenuFilters() {
       console.error("Erreur :", err);
     }
   }
+
+  fetchMenus();
 }
