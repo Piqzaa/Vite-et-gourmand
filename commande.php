@@ -72,7 +72,7 @@ require __DIR__ . '/includes/head.php';
 
             <form
               class="auth-form"
-              action="php/commande/create.php"
+              action="assets/php/commande/create.php"
               method="POST"
               novalidate
               id="commande-form"

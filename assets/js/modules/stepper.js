@@ -172,6 +172,29 @@ export function initStepper() {
 
   btnNext.addEventListener("click", () => {
     if (!validateStep(currentStep)) return;
+
+    // Vérification spécifique à l'étape 2
+    if (currentStep === 1) {
+      const option = menuSelect.options[menuSelect.selectedIndex];
+      const minPersons = parseInt(option.dataset.min) || 1;
+      const nb = parseInt(nbPersonnes.value) || 0;
+
+      if (!option.value) {
+        alert("Veuillez choisir un menu");
+        return;
+      }
+
+      if (nb < minPersons) {
+        nbPersonnes.classList.add("form-input--error");
+        document.getElementById("personnes-hint").textContent =
+          "⚠️ Minimum requis : " + minPersons + " personnes";
+        nbPersonnes.focus();
+        return;
+      }
+
+      nbPersonnes.classList.remove("form-input--error");
+    }
+
     currentStep++;
     showStep(currentStep);
   });
