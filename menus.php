@@ -97,10 +97,10 @@ require __DIR__ . '/includes/head.php'; ?>
               <label class="filters__label" for="filter-theme">Thème</label>
               <select id="filter-theme" class="filters__select">
                 <option value="">Tous les thèmes</option>
-                <option value="noel">Noël</option>
-                <option value="paques">Pâques</option>
-                <option value="classique">Classique</option>
-                <option value="evenement">Événement</option>
+                <option value="1">Noël</option>
+                <option value="2">Pâques</option>
+                <option value="3">Classique</option>
+                <option value="4">Événement</option>
               </select>
             </div>
 
@@ -108,10 +108,10 @@ require __DIR__ . '/includes/head.php'; ?>
               <label class="filters__label" for="filter-regime">Régime</label>
               <select id="filter-regime" class="filters__select">
                 <option value="">Tous les régimes</option>
-                <option value="classique">Classique</option>
-                <option value="vegetarien">Végétarien</option>
-                <option value="vegan">Vegan</option>
-                <option value="sans-gluten">Sans gluten</option>
+                <option value="1">Classique</option>
+                <option value="2">Végétarien</option>
+                <option value="3">Vegan</option>
+                <option value="4">Sans gluten</option>
               </select>
             </div>
 
