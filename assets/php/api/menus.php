@@ -31,7 +31,7 @@ if (!empty($_GET['regime']) && is_numeric($_GET['regime'])) {
 
 // Nombre de personnes
 if (!empty($_GET['personnes']) && is_numeric($_GET['personnes'])) {
-    $where[]  = 'm.nombre_personne_min >= ?';
+    $where[]  = 'm.nombre_personne_min <= ?';
     $params[] = (int)$_GET['personnes'];
 }
 
