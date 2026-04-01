@@ -27,10 +27,15 @@ if (!$user || !password_verify($password, $user['password'])) {
 }
 
 // Connexion OK — on stocke les infos en session
-$_SESSION['user_id']     = $user['utilisateur_id'];
-$_SESSION['user_nom']    = $user['nom'];
-$_SESSION['user_prenom'] = $user['prenom'];
-$_SESSION['user_role']   = $user['role'];
+$_SESSION['user_id']      = $user['utilisateur_id'];
+$_SESSION['user_nom']     = $user['nom'];
+$_SESSION['user_prenom']  = $user['prenom'];
+$_SESSION['user_role']    = $user['role'];
+$_SESSION['user_email']   = $user['email'];
+$_SESSION['user_gsm']     = $user['gsm'];
+$_SESSION['user_adresse'] = $user['adresse_postale'];
+$_SESSION['user_ville']   = $user['ville'];
+
 
 // Redirection selon le rôle
 if ($user['role'] === 'admin') {
