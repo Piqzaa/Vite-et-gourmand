@@ -1,7 +1,11 @@
 import { initBurger } from "./modules/burger.js";
 import { initGallery } from "./modules/gallery.js";
 import { initStepper } from "./modules/stepper.js";
+import { initMenuFilters } from "./modules/filter.js";
 
-initBurger();
-initGallery();
-initStepper();
+document.addEventListener("DOMContentLoaded", () => {
+  initBurger();
+  initGallery();
+  initStepper();
+  initMenuFilters();
+});

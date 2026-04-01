@@ -8,6 +8,9 @@ export function initStepper() {
   const btnPrev = document.getElementById("btn-prev");
   const btnSubmit = document.getElementById("btn-submit");
 
+  const stepperElement = document.querySelector(".stepper");
+  if (!stepperElement) return;
+
   let currentStep = 0;
 
   function showStep(index) {
