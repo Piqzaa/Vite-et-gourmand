@@ -1,11 +1,10 @@
 <?php
 require_once __DIR__ . '/assets/php/config/db.php';
 require_once __DIR__ . '/assets/php/includes/session.php';
-require_once __DIR__ . '/includes/head.php';
-require_once __DIR__ . '/includes/header.php';
+
 sessionStart();
 
-// Redirige si pas connecté
+
 if (!isConnected()) {
     header('Location: connexion.php?redirect=commande.php' . (isset($_GET['menu']) ? '&menu=' . (int)$_GET['menu'] : ''));
     exit;
@@ -35,7 +34,10 @@ $stmtMenus = $pdo->query('
 ');
 $menus = $stmtMenus->fetchAll();
 
+require __DIR__ . '/includes/head.php';
 ?>
+<body>
+<?php require __DIR__ . '/includes/header.php'; ?>
 
     <main id="main-content">
       <section class="page-header">
@@ -163,6 +165,7 @@ $menus = $stmtMenus->fetchAll();
                     required
                     autocomplete="city"
                   />
+                  </div>
                   <p class="form-hint">
                     Livraison gratuite à Bordeaux. Hors Bordeaux : 5€ +
                     0,59€/km.
@@ -206,24 +209,18 @@ $menus = $stmtMenus->fetchAll();
                   <label class="form-label" for="menu-choisi"
                     >Menu sélectionné</label
                   >
-                  <select
-                    id="menu-choisi"
-                    name="menu_id"
-                    class="filters__select"
-                    required
-                  >
+                  <select id="menu-choisi" name="menu_id" class="filters__select" required>
                     <option value="">Choisir un menu</option>
-                    <!-- Options générées dynamiquement via PHP -->
-                    <option value="1">
-                      Menu des Fêtes — 45€ / 8 pers. min.
+                    <?php foreach ($menus as $m): ?>
+                    <option value="<?= $m['menu_id'] ?>"
+                        data-prix="<?= $m['prix_base'] ?>"
+                        data-min="<?= $m['nombre_personne_min'] ?>"
+                        data-conditions="<?= htmlspecialchars($m['conditions_particulieres'] ?? '') ?>"
+                        <?= $menuPreselect === $m['menu_id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($m['titre']) ?> — <?= $m['prix_base'] ?>€ / <?= $m['nombre_personne_min'] ?> pers. min.
                     </option>
-                    <option value="2">
-                      Menu Tradition — 35€ / 6 pers. min.
-                    </option>
-                    <option value="3">
-                      Menu Printanier — 40€ / 6 pers. min.
-                    </option>
-                  </select>
+                    <?php endforeach; ?>
+                </select>
                 </div>
 
                 <div class="form-group">
@@ -333,7 +330,7 @@ $menus = $stmtMenus->fetchAll();
               </div>
             </form>
           </div>
-          </div>
+          
           <!-- RECAP PRIX (sticky) -->
           <aside class="commande-aside">
             <div class="commande-aside__card">
@@ -368,7 +365,7 @@ $menus = $stmtMenus->fetchAll();
               </p>
             </div>
           </aside>
-        
+        </div>
       </section>
     </main>
     <?php include __DIR__ . '/includes/footer.php'; ?>

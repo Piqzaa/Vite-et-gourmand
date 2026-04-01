@@ -43,6 +43,6 @@ if ($user['role'] === 'admin') {
 } elseif ($user['role'] === 'employe') {
     header('Location: ' . BASE_URL . '/espace-employe.php');
 } else {
-    header('Location: /Vite-et-gourmand/espace-utilisateur.php');
+    header('Location: ' . BASE_URL . '/espace-utilisateur.php');
 }
 exit;
