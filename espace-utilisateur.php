@@ -14,7 +14,7 @@ if (!isConnected() || getUserRole() !== 'utilisateur') {
 $userId = getUserId();
 
 // 1. Récupération utilisateur
-$queryUser = "SELECT nom, prenom, email, gsm, adresse_postale FROM utilisateur WHERE utilisateur_id = :id";
+$queryUser = "SELECT nom, prenom, email, gsm, adresse_postale, ville FROM utilisateur WHERE utilisateur_id = :id";
 $stmtUser = $pdo->prepare($queryUser);
 $stmtUser->execute(['id' => $userId]);
 $user = $stmtUser->fetch(PDO::FETCH_ASSOC);
@@ -233,7 +233,7 @@ require __DIR__ . '/includes/head.php';
               <h1 class="dashboard__section-title">Mon profil</h1>
             </div>
 
-            <form class="auth-form" action="php/user/update.php" method="POST">
+            <form class="auth-form" action="assets/php/user/update-profil.php" method="POST">
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label" for="profil-prenom">Prénom</label>
@@ -292,24 +292,36 @@ require __DIR__ . '/includes/head.php';
                   id="profil-adresse"
                   name="adresse"
                   class="form-input"
-                  value="<?= htmlspecialchars($user['adresse_postale']) ?>"
+                  value="<?= htmlspecialchars($user['adresse_postale'] ?? '') ?>"
                   required
                 />
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="profil-password"
-                  >Nouveau mot de passe</label
+                <label class="form-label" for="profil-ville"
+                  >Ville</label
                 >
                 <input
-                  type="password"
-                  id="profil-password"
-                  name="password"
+                  type="text"
+                  id="profil-ville"
+                  name="ville"
                   class="form-input"
-                  value=""
-                  placeholder="Laisser vide pour ne pas modifier"
+                  value="<?= htmlspecialchars($user['ville'] ?? '') ?>"
+                  required
                 />
               </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profil-password">Nouveau mot de passe</label>
+                <input type="password" id="profil-password" name="password" class="form-input"
+                    placeholder="Laisser vide pour ne pas modifier" />
+            </div>
+
+            <div class="form-group" id="confirm-password-group" style="display:none">
+                <label class="form-label" for="profil-password-confirm">Confirmer le mot de passe</label>
+                <input type="password" id="profil-password-confirm" name="password_confirm" class="form-input"
+                    placeholder="Répétez le mot de passe" />
+            </div>
 
               <button type="submit" class="btn btn--primary">
                 Enregistrer les modifications
