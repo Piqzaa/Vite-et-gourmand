@@ -52,5 +52,16 @@ function getRoleMenuLinks(): array {
     }
 }
 
+function getStatusClass(string $status): string {
+    return match($status) {
+        'en attente' => 'commande-card__status--en-attente',
+        'en préparation' => 'commande-card__status--en-preparation',
+        'livraison' => 'commande-card__status--livraison',
+        'terminée' => 'commande-card__status--terminee',
+        'annulée' => 'commande-card__status--annulee',
+        default => ''
+    };
+}
+
 ?>
 
