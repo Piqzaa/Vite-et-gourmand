@@ -173,7 +173,29 @@ export function initStepper() {
   btnNext.addEventListener("click", () => {
     if (!validateStep(currentStep)) return;
 
-    // Vérification spécifique à l'étape 2
+    // Validation spécifique étape 1 — date minimum 72h
+    if (currentStep === 0) {
+      const dateInput = document.getElementById("date-livraison");
+      const dateChoisie = new Date(dateInput.value);
+      const maintenant = new Date();
+      const diff = dateChoisie - maintenant;
+      const heures = diff / (1000 * 60 * 60);
+
+      if (heures < 72) {
+        dateInput.classList.add("form-input--error");
+        dateInput.closest(".form-group").querySelector(".form-hint") ||
+          dateInput.insertAdjacentHTML(
+            "afterend",
+            '<p class="form-hint form-hint--error">⚠️ La prestation doit être commandée au minimum 72h à l\'avance.</p>',
+          );
+        dateInput.focus();
+        return;
+      }
+
+      dateInput.classList.remove("form-input--error");
+    }
+
+    // Validation spécifique étape 2 — nb personnes minimum
     if (currentStep === 1) {
       const option = menuSelect.options[menuSelect.selectedIndex];
       const minPersons = parseInt(option.dataset.min) || 1;

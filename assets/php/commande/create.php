@@ -22,7 +22,16 @@ $nbPersonnes    = (int)($_POST['nb_personnes'] ?? 0);
 $adresse        = trim($_POST['adresse_livraison'] ?? '');
 $ville          = trim($_POST['ville_livraison'] ?? '');
 $datePrestation = $_POST['date_livraison'] ?? '';
-$heure          = $_POST['heure_livraison'] ?? '';
+
+$dateObj  = new DateTime($datePrestation);
+$maintenant = new DateTime();
+$diff = $maintenant->diff($dateObj);
+$heures = ($diff->days * 24) + $diff->h;
+
+if ($dateObj <= $maintenant || $heures < 72) {
+    header('Location: ' . BASE_URL . '/commande.php?error=date_trop_proche');
+    exit;
+}
 
 // Validation basique
 if (!$menuId || !$nbPersonnes || !$adresse || !$ville || !$datePrestation || !$heure) {
