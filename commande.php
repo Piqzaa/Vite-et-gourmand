@@ -1,9 +1,41 @@
-<!doctype html>
-<html lang="fr">
+<?php
+require_once __DIR__ . '/assets/php/config/db.php';
+require_once __DIR__ . '/assets/php/includes/session.php';
 
-<?php 
-$title = 'Détails du menu ';
-require __DIR__ . '/includes/head.php'; ?>
+sessionStart();
+
+
+if (!isConnected()) {
+    header('Location: connexion.php?redirect=commande.php' . (isset($_GET['menu']) ? '&menu=' . (int)$_GET['menu'] : ''));
+    exit;
+}
+
+$pdo = getDB();
+
+$user = [
+    'prenom'         => $_SESSION['user_prenom'] ?? '',
+    'nom'            => $_SESSION['user_nom'] ?? '',
+    'email'          => $_SESSION['user_email'] ?? '',
+    'gsm'            => $_SESSION['user_gsm'] ?? '',
+    'adresse_postale'=> $_SESSION['user_adresse'] ?? '',
+    'ville'          => $_SESSION['user_ville'] ?? '' 
+];
+
+
+// Pré-sélection menu depuis GET
+$menuPreselect = isset($_GET['menu']) ? (int)$_GET['menu'] : 0;
+
+// Récupère tous les menus pour le select
+$stmtMenus = $pdo->query('
+    SELECT menu_id, titre, prix_base, nombre_personne_min, conditions_particulieres
+    FROM menu
+    WHERE stock_disponible > 0
+    ORDER BY titre
+');
+$menus = $stmtMenus->fetchAll();
+
+require __DIR__ . '/includes/head.php';
+?>
 <body>
 <?php require __DIR__ . '/includes/header.php'; ?>
 
@@ -40,7 +72,7 @@ require __DIR__ . '/includes/head.php'; ?>
 
             <form
               class="auth-form"
-              action="php/commande/create.php"
+              action="assets/php/commande/create.php"
               method="POST"
               novalidate
               id="commande-form"
@@ -48,16 +80,18 @@ require __DIR__ . '/includes/head.php'; ?>
               <!-- ÉTAPE 1 : INFOS CLIENT -->
               <div class="commande-step" id="step-1">
                 <h2 class="commande-step__title">Informations client</h2>
-
+                <div class="space-sm"></div>
                 <div class="form-row">
+                  
                   <div class="form-group">
+                    
                     <label class="form-label" for="prenom">Prénom</label>
                     <input
                       type="text"
                       id="prenom"
                       name="prenom"
                       class="form-input"
-                      placeholder="Julie"
+                      value="<?= htmlspecialchars($user['prenom']) ?>"
                       required
                       autocomplete="given-name"
                     />
@@ -69,7 +103,7 @@ require __DIR__ . '/includes/head.php'; ?>
                       id="nom"
                       name="nom"
                       class="form-input"
-                      placeholder="Dupont"
+                      value="<?= htmlspecialchars($user['nom']) ?>"
                       required
                       autocomplete="family-name"
                     />
@@ -83,7 +117,7 @@ require __DIR__ . '/includes/head.php'; ?>
                     id="email"
                     name="email"
                     class="form-input"
-                    placeholder="votre@email.com"
+                    value="<?= htmlspecialchars($user['email']) ?>"
                     required
                     autocomplete="email"
                   />
@@ -96,15 +130,16 @@ require __DIR__ . '/includes/head.php'; ?>
                     id="gsm"
                     name="gsm"
                     class="form-input"
-                    placeholder="06 12 34 56 78"
+                    value="<?= htmlspecialchars($user['gsm']) ?>"
                     required
                     autocomplete="tel"
                   />
                 </div>
-
+                <div class="space-md"></div>
                 <h2 class="commande-step__title">Informations de livraison</h2>
-
+                
                 <div class="form-group">
+                  <div class="space-sm"></div>
                   <label class="form-label" for="adresse-livraison"
                     >Adresse de livraison</label
                   >
@@ -113,10 +148,24 @@ require __DIR__ . '/includes/head.php'; ?>
                     id="adresse-livraison"
                     name="adresse_livraison"
                     class="form-input"
-                    placeholder="12 rue des Lilas, Bordeaux"
+                    value="<?= htmlspecialchars($user['adresse_postale']) ?>"
                     required
                     autocomplete="street-address"
                   />
+                  <div class="form-group">
+                  <label class="form-label" for="ville-livraison"
+                    >Ville</label
+                  >
+                  <input
+                    type="text"
+                    id="ville-livraison"
+                    name="ville_livraison"
+                    class="form-input"
+                    value="<?= htmlspecialchars($user['ville']) ?>"
+                    required
+                    autocomplete="city"
+                  />
+                  </div>
                   <p class="form-hint">
                     Livraison gratuite à Bordeaux. Hors Bordeaux : 5€ +
                     0,59€/km.
@@ -149,6 +198,7 @@ require __DIR__ . '/includes/head.php'; ?>
                     />
                   </div>
                 </div>
+                <div class="space-md"></div>
               </div>
 
               <!-- ÉTAPE 2 : MENU -->
@@ -159,24 +209,18 @@ require __DIR__ . '/includes/head.php'; ?>
                   <label class="form-label" for="menu-choisi"
                     >Menu sélectionné</label
                   >
-                  <select
-                    id="menu-choisi"
-                    name="menu_id"
-                    class="filters__select"
-                    required
-                  >
+                  <select id="menu-choisi" name="menu_id" class="filters__select" required>
                     <option value="">Choisir un menu</option>
-                    <!-- Options générées dynamiquement via PHP -->
-                    <option value="1">
-                      Menu des Fêtes — 45€ / 8 pers. min.
+                    <?php foreach ($menus as $m): ?>
+                    <option value="<?= $m['menu_id'] ?>"
+                        data-prix="<?= $m['prix_base'] ?>"
+                        data-min="<?= $m['nombre_personne_min'] ?>"
+                        data-conditions="<?= htmlspecialchars($m['conditions_particulieres'] ?? '') ?>"
+                        <?= $menuPreselect === $m['menu_id'] ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($m['titre']) ?> — <?= $m['prix_base'] ?>€ / <?= $m['nombre_personne_min'] ?> pers. min.
                     </option>
-                    <option value="2">
-                      Menu Tradition — 35€ / 6 pers. min.
-                    </option>
-                    <option value="3">
-                      Menu Printanier — 40€ / 6 pers. min.
-                    </option>
-                  </select>
+                    <?php endforeach; ?>
+                </select>
                 </div>
 
                 <div class="form-group">
@@ -286,7 +330,7 @@ require __DIR__ . '/includes/head.php'; ?>
               </div>
             </form>
           </div>
-
+          
           <!-- RECAP PRIX (sticky) -->
           <aside class="commande-aside">
             <div class="commande-aside__card">
