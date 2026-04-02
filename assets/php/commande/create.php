@@ -22,6 +22,7 @@ $nbPersonnes    = (int)($_POST['nb_personnes'] ?? 0);
 $adresse        = trim($_POST['adresse_livraison'] ?? '');
 $ville          = trim($_POST['ville_livraison'] ?? '');
 $datePrestation = $_POST['date_livraison'] ?? '';
+$heurePrestation = $_POST['heure_livraison'] ?? '';
 
 $dateObj  = new DateTime($datePrestation);
 $maintenant = new DateTime();
@@ -34,7 +35,7 @@ if ($dateObj <= $maintenant || $heures < 72) {
 }
 
 // Validation basique
-if (!$menuId || !$nbPersonnes || !$adresse || !$ville || !$datePrestation || !$heure) {
+if (!$menuId || !$nbPersonnes || !$adresse || !$ville || !$datePrestation || !$heurePrestation) {
     header('Location: ' . BASE_URL . '/commande.php?error=champs_manquants');
     exit;
 }
@@ -93,7 +94,7 @@ try {
     ');
     $stmt->execute([
         $datePrestation,
-        $heure,
+        $heurePrestation,
         $adresse . ', ' . $ville,
         $estHorsBordeaux,
         $nbPersonnes,
