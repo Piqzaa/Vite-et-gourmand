@@ -1,11 +1,35 @@
-<!doctype html>
-<html lang="fr">
-<?php 
-$title = 'Détails du menu ';
+<?php
+require_once __DIR__ . '/includes/functions.php';
+require_once __DIR__ . '/assets/php/config/db.php';
+require_once __DIR__ . '/assets/php/includes/session.php';
+
+sessionStart();
+
+// 2. Sécurité : Redirection si l'utilisateur n'est pas connecté ou n'a pas le bon rôle
+if (!isConnected() || getUserRole() !== 'utilisateur') {
+    header('Location: connexion.php');
+    exit();
+}
+
+$userId = getUserId();
+
+$queryUser = "SELECT nom, prenom, email, telephone, adresse_postale FROM utilisateur WHERE utilisateur_id = :id";
+$stmtUser = $pdo->prepare($queryUser);
+$stmtUser->execute(['id' => $userId]);
+$user = $stmtUser->fetch(PDO::FETCH_ASSOC);
+
+
+$queryCommandes = "SELECT * FROM commande WHERE utilisateur_id = :id ORDER BY date_commande DESC";
+$stmtCommandes = $pdo->prepare($queryCommandes);
+$stmtCommandes->execute(['id' => $userId]);
+$commandes = $stmtCommandes->fetchAll(PDO::FETCH_ASSOC);
+
+$title = 'Espace Utilisateur';
+require __DIR__ . '/includes/head.php'; 
+?>
 require __DIR__ . '/includes/head.php'; ?>
 <body>
 <?php require __DIR__ . '/includes/header.php'; ?>
-
     <main id="main-content">
       <div class="dashboard">
         <!-- SIDEBAR -->
