@@ -33,13 +33,10 @@ $stmtMenus = $pdo->query('
     ORDER BY titre
 ');
 $menus = $stmtMenus->fetchAll();
-
-require __DIR__ . '/includes/head.php';
+$title = 'Commander un menu';
+$description = 'Remplissez le formulaire pour commander votre menu traiteur sur Vite & Gourmand. Livraison rapide à Bordeaux et ses environs. Choisissez votre menu, indiquez vos informations de livraison, et finalisez votre commande en quelques clics.';
+ob_start();
 ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-    <main id="main-content">
       <section class="page-header">
         <div class="page-header__container">
           <span class="section-eyebrow">Espace commande</span>
@@ -367,7 +364,7 @@ require __DIR__ . '/includes/head.php';
           </aside>
         </div>
       </section>
-    </main>
-    <?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
