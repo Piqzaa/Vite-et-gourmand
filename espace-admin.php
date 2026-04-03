@@ -1,12 +1,8 @@
-<!doctype html>
-<html lang="fr">
-
-<?php 
-$title = 'Détails du menu ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-    <main id="main-content">
+<?php
+$title = 'Espace administrateur';
+$description = 'Bienvenue dans votre espace administrateur sur Vite & Gourmand. Gérez les commandes, les employés, les menus et consultez les statistiques pour offrir la meilleure expérience à nos clients à Bordeaux.';
+ob_start();
+?>
       <div class="dashboard">
         <!-- SIDEBAR -->
         <aside class="dashboard__sidebar">
@@ -472,7 +468,7 @@ require __DIR__ . '/includes/head.php'; ?>
           </section>
         </div>
       </div>
-    </main>
-    <?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
