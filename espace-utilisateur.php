@@ -187,7 +187,7 @@ require __DIR__ . '/includes/head.php';
                         <?php if ($cmd['statut'] === 'en attente'): ?>
                             <div class="commande-card__actions">
                                 <a href="modifier-commande.php?id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
-                                <form action="assets/php/user/cancel-commande.php" method="POST" style="display:inline;" onsubmit="return confirm('Annuler cette commande ?');">
+                                <form action="assets/php/user/cancel-commande.php" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <button type="submit" class="btn btn--primary btn--sm">Annuler</button>
                                 </form>
