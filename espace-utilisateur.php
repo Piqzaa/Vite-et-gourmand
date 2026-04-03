@@ -99,11 +99,10 @@ foreach ($commandesRaw as $cmd) {
 }
 
 $title = 'Espace Utilisateur';
-require __DIR__ . '/includes/head.php'; 
+$description = 'Gérez vos commandes, modifiez votre profil et laissez votre avis sur Vite & Gourmand.';
+
+ob_start();
 ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-    <main id="main-content">
       <div class="dashboard">
         <aside class="dashboard__sidebar">
           <div class="dashboard__user">
@@ -330,7 +329,7 @@ require __DIR__ . '/includes/head.php';
           </section>
         </div>
       </div>
-    </main>
-<?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
