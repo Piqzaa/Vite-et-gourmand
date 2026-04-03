@@ -1,13 +1,8 @@
-<!doctype html>
-<html lang="fr">
-
-<?php 
-$title = 'Détails du menu ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-    <main id="main-content">
+<?php
+$title = 'Mentions légales';
+$description = 'Découvrez les mentions légales de Vite & Gourmand, incluant les informations sur l\'éditeur du site, l\'hébergement, la propriété intellectuelle, les données personnelles (RGPD), les cookies et la responsabilité.';
+ob_start();
+?>
       <section class="page-header">
         <div class="page-header__container">
           <h1 class="page-header__title">Mentions légales</h1>
@@ -99,8 +94,7 @@ require __DIR__ . '/includes/head.php'; ?>
           </div>
         </div>
       </section>
-    </main>
-
-  <?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>

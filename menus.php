@@ -1,12 +1,8 @@
-<!doctype html>
-<html lang="fr">
-<?php 
+<?php
 $title = 'Nos menus';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-    <main id="main-content">
+$description = 'Découvrez tous les menus traiteur de Vite & Gourmand — filtrez par thème, régime, prix et nombre de personnes. Commandez en ligne pour une livraison rapide ou un retrait en magasin à Bordeaux.';
+ob_start();
+?>
       <!-- PAGE HEADER -->
       <section class="page-header">
         <div class="page-header__container">
@@ -152,10 +148,10 @@ require __DIR__ . '/includes/head.php'; ?>
           </div>
         </div>
       </section>
-    </main>
-
-<?php include __DIR__ . '/includes/footer.php'; ?>
-</body>
-</html>
+    
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
 
 
