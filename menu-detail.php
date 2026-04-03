@@ -48,18 +48,10 @@ foreach ($plats as $plat) {
         $platsByType[$type][] = $plat;
     }
 }
-?>
-?>
-<!doctype html>
-<html lang="fr">
-<?php 
 $title = 'Détails du menu ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-
-<main id="main-content">
+$description = 'Détails du menu ' . $menu['titre'];
+ob_start();
+?>
   <div class="menu-detail__nav">
     <a href="menus.php" class="menu-detail__back">← Retour aux menus</a>
   </div>
@@ -174,8 +166,7 @@ require __DIR__ . '/includes/head.php'; ?>
 
     </div>
   </section>
-</main>
-
-<?php include __DIR__ . '/includes/footer.php'; ?>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
