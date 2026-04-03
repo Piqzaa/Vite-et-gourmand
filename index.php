@@ -1,16 +1,8 @@
-<!doctype html>
-<html lang="fr">
-
-<?php 
-$title = 'Détails du menu ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-    <main id="main-content">
-      <!-- ================================
-      HERO
-      ================================ -->
+<?php
+$title = 'Accueil';
+$description = 'Vite & Gourmand, traiteur bordelais depuis 1999. Découvrez nos menus faits maison, adaptés à chaque occasion : Noël, Pâques, anniversaires, repas d\'entreprise. Commandez en ligne et régalez vos invités avec nos plats savoureux et notre service personnalisé.';
+ob_start();
+?>
       <section class="hero">
         <div class="hero__container">
           <div class="hero__content">
@@ -248,8 +240,8 @@ require __DIR__ . '/includes/head.php'; ?>
           </div>
         </div>
       </section>
-    </main>
 
-<?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
