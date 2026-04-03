@@ -1,13 +1,9 @@
-<!doctype html>
-<html lang="fr">
-
-<?php 
-$title = 'Connexion ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-    <main id="main-content">
+<?php
+$title = 'Connexion';
+$description = 'Accédez à votre espace personnel sur Vite & Gourmand. Connectez-vous pour gérer vos commandes, consulter votre historique d\'achats et profiter de nos délicieux menus traiteur à Bordeaux.';
+ob_start();
+?>
+  <!-- AUTH PAGE -->
       <section class="auth-page">
         <div class="auth-card">
           <div class="auth-card__header">
@@ -74,7 +70,7 @@ require __DIR__ . '/includes/head.php'; ?>
           </p>
         </div>
       </section>
-    </main>
-<?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
