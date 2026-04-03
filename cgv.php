@@ -1,11 +1,8 @@
-<!doctype html>
-<html lang="fr">
-<?php 
-$title = 'Détails du menu ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-    <main id="main-content">
+<?php
+$title = 'Conditions générales de vente';
+$description = 'Vite & Gourmand - Conditions générales de vente';
+ob_start();
+?>
       <section class="page-header">
         <div class="page-header__container">
           <h1 class="page-header__title">Conditions générales de vente</h1>
@@ -141,7 +138,7 @@ require __DIR__ . '/includes/head.php'; ?>
           </div>
         </div>
       </section>
-    </main>
-<?php include __DIR__ . '/includes/footer.php'; ?>
-</body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
