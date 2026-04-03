@@ -1,13 +1,8 @@
-<!doctype html>
-<html lang="fr">
-
-<?php 
-$title = 'Inscription ';
-require __DIR__ . '/includes/head.php'; ?>
-<body>
-<?php require __DIR__ . '/includes/header.php'; ?>
-
-    <main id="main-content">
+<?php
+$title = 'Inscription';
+$description = 'Rejoignez Vite & Gourmand pour commander vos menus. Créez votre compte en quelques étapes simples et profitez de nos délicieux plats traiteur à Bordeaux.';
+ob_start();
+?>
       <section class="auth-page">
         <div class="auth-card auth-card--wide">
           <div class="auth-card__header">
@@ -181,8 +176,7 @@ require __DIR__ . '/includes/head.php'; ?>
           </p>
         </div>
       </section>
-    </main>
-
-  <?php include __DIR__ . '/includes/footer.php'; ?>
-  </body>
-</html>
+<?php
+$content = ob_get_clean();
+require_once 'includes/layout.php';
+?>
