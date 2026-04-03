@@ -202,7 +202,7 @@ require __DIR__ . '/includes/head.php';
                             ?>
                             <div class="avis-form">
                                 <h3 class="avis-form__title">Votre avis nous intéresse</h3>
-                                <form action="php/avis/create.php" method="POST">
+                                <form action="assets/php/avis/create.php" method="POST">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <div class="form-group">
                                         <label class="form-label">Note</label>
