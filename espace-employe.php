@@ -252,6 +252,7 @@ ob_start();
                 </tbody>
             </table>
           </section>
+          
 
           <!-- HORAIRES -->
           <section class="dashboard__section" id="horaires">
