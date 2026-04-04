@@ -105,14 +105,14 @@ ob_start();
                 <label class="form-label" for="filtre-statut">Statut</label>
                 <select id="filtre-statut" class="filters__select">
                   <option value="">Tous les statuts</option>
-                  <option value="en-attente">En attente</option>
-                  <option value="accepte">Acceptée</option>
-                  <option value="en-preparation">En préparation</option>
-                  <option value="en-livraison">En cours de livraison</option>
-                  <option value="livre">Livrée</option>
-                  <option value="retour-materiel">Retour matériel</option>
-                  <option value="terminee">Terminée</option>
-                  <option value="annulee">Annulée</option>
+                  <option value="en attente">En attente</option>
+                  <option value="accepté">Acceptée</option>
+                  <option value="en préparation">En préparation</option>
+                  <option value="en cours de livraison">En cours de livraison</option>
+                  <option value="livré">Livrée</option>
+                  <option value="en attente du retour de matériel">Retour matériel</option>
+                  <option value="terminée">Terminée</option>
+                  <option value="annulée">Annulée</option>
                 </select>
               </div>
               <div class="space-sm"></div>
