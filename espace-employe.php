@@ -260,7 +260,7 @@ ob_start();
 
             <form
               class="auth-form"
-              action="php/horaires/update.php"
+              action="assets/php/horaires/update.php"
               method="POST"
             >
               <table class="employe-table">
