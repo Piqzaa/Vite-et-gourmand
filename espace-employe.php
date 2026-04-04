@@ -216,7 +216,10 @@ ob_start();
           <section class="dashboard__section" id="menus">
             <div class="dashboard__section-header">
               <h1 class="dashboard__section-title">Menus &amp; Plats</h1>
+              <div>
               <a href="menu-create.php" class="btn btn--primary btn--sm">+ Nouveau menu</a>
+              <a href="plat-create.php" class="btn btn--secondary btn--sm">+ Nouveau plat</a>
+            </div>
             </div>
 
             <table class="employe-table">
