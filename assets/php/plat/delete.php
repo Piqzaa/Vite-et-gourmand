@@ -22,7 +22,20 @@ if (!$platId) {
     exit;
 }
 
-$pdo->prepare('DELETE FROM plat WHERE plat_id = ?')->execute([$platId]);
+try {
+    $pdo->beginTransaction();
+
+    $pdo->prepare('DELETE FROM plat_allergene WHERE plat_id = ?')->execute([$platId]);
+    $pdo->prepare('DELETE FROM compose_menu WHERE plat_id = ?')->execute([$platId]);
+    $pdo->prepare('DELETE FROM plat WHERE plat_id = ?')->execute([$platId]);
+
+    $pdo->commit();
+
+} catch (Exception $e) {
+    $pdo->rollBack();
+    header('Location: ' . BASE_URL . '/espace-employe.php?error=erreur_serveur#menus');
+    exit;
+}
 
 header('Location: ' . BASE_URL . '/espace-employe.php?success=plat_supprime#menus');
 exit;

@@ -34,6 +34,24 @@ $menus = $pdo->query('
     ORDER BY m.titre
 ')->fetchAll();
 
+$plats = $pdo->query('
+    SELECT plat_id,
+    libelle, type FROM plat ORDER BY type, libelle
+    ')->fetchAll();
+
+// Allergènes par plat
+$platsAvecAllergenes = [];
+foreach ($plats as $plat) {
+    $stmt = $pdo->prepare('
+        SELECT a.libelle FROM allergene a
+        JOIN plat_allergene pa ON a.allergene_id = pa.allergene_id
+        WHERE pa.plat_id = ?
+    ');
+    $stmt->execute([$plat['plat_id']]);
+    $plat['allergenes'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
+    $platsAvecAllergenes[] = $plat;
+}
+
 // Horaires
 $horaires = $pdo->query('
     SELECT * FROM horaire ORDER BY horaire_id ASC
@@ -96,7 +114,7 @@ ob_start();
           <!-- COMMANDES -->
           <section class="dashboard__section" id="commandes">
             <div class="dashboard__section-header">
-              <h1 class="dashboard__section-title">Commandes</h1>
+              <h2 class="dashboard__section-title">Commandes</h2>
             </div>
 
             <!-- Filtres commandes -->
@@ -215,11 +233,11 @@ ob_start();
           <!-- MENUS & PLATS -->
           <section class="dashboard__section" id="menus">
             <div class="dashboard__section-header">
-              <h1 class="dashboard__section-title">Menus &amp; Plats</h1>
-              <div>
+              <h2 class="dashboard__section-title">Menus &amp; Plats</h2>
+              
               <a href="menu-create.php" class="btn btn--primary btn--sm">+ Nouveau menu</a>
-              <a href="plat-create.php" class="btn btn--secondary btn--sm">+ Nouveau plat</a>
-            </div>
+              
+            
             </div>
 
             <table class="employe-table">
@@ -251,13 +269,53 @@ ob_start();
                 <?php endforeach; ?>
                 </tbody>
             </table>
+            <div class="space-md"></div>
+            <div class="dashboard__section-header">
+            <h2 class="dashboard__section-title">Plats</h2>
+            <a href="plat-create.php" class="btn btn--primary btn--sm">+ Nouveau plat</a>
+            </div>
+            <table class="employe-table">
+                <thead>
+                    <tr>
+                        <th>Plat</th>
+                        <th>Type</th>
+                        <th>Allergènes</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($platsAvecAllergenes as $plat): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($plat['libelle']) ?></td>
+                        <td><?= ucfirst($plat['type']) ?></td>
+                        <td>
+                            <?php if (!empty($plat['allergenes'])): ?>
+                                <?php foreach ($plat['allergenes'] as $a): ?>
+                                    <span class="allergene"><?= htmlspecialchars($a) ?></span>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <span>—</span>
+                            <?php endif; ?>
+                        </td>
+                        <td>
+                            <form action="assets/php/plat/delete.php" method="POST" 
+                                  style="display:inline"
+                                  onsubmit="return confirm('Supprimer ce plat ? Il sera retiré de tous les menus associés.')">
+                                <input type="hidden" name="plat_id" value="<?= $plat['plat_id'] ?>">
+                                <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
           </section>
           
 
           <!-- HORAIRES -->
           <section class="dashboard__section" id="horaires">
             <div class="dashboard__section-header">
-              <h1 class="dashboard__section-title">Horaires</h1>
+              <h2 class="dashboard__section-title">Horaires</h2>
             </div>
 
             <form
@@ -302,7 +360,7 @@ ob_start();
           <!-- AVIS CLIENTS -->
           <section class="dashboard__section" id="avis">
             <div class="dashboard__section-header">
-              <h1 class="dashboard__section-title">Avis clients</h1>
+              <h2 class="dashboard__section-title">Avis clients</h2>
             </div>
 
             <div class="avis-moderation">
