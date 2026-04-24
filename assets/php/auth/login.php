@@ -26,6 +26,11 @@ if (!$user || !password_verify($password, $user['password'])) {
     exit;
 }
 
+if (isset($user['actif']) && !$user['actif']) {
+    header('Location: ' . BASE_URL . '/connexion.php?error=compte_desactive');
+    exit;
+}
+
 // Connexion OK — on stocke les infos en session
 $_SESSION['user_id']      = $user['utilisateur_id'];
 $_SESSION['user_nom']     = $user['nom'];
