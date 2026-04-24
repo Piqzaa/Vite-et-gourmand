@@ -15,4 +15,5 @@
   />
   <link rel="stylesheet" href="assets/css/main.css" />
   <script src="assets/js/main.js" type="module" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js" type="module" defer></script>
 </head>

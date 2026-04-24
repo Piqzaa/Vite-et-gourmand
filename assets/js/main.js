@@ -4,6 +4,7 @@ import { initStepper } from "./modules/stepper.js";
 import { initMenuFilters } from "./modules/filter.js";
 import { initProfil } from "./modules/profil.js";
 import { initEmployeFilters } from "./modules/employe.js";
+import { initAdminChart } from "./modules/admin-chart.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initBurger();
@@ -12,4 +13,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initProfil();
   initMenuFilters();
   initEmployeFilters();
+  initAdminChart();
 });
