@@ -1,8 +1,35 @@
 <?php
+require_once __DIR__ . '/assets/php/config/db.php';
+$pdo = getDB();
+
+// 3 menus aléatoires avec stock dispo
+$menus = $pdo->query('
+    SELECT m.menu_id, m.titre, m.prix_base, m.nombre_personne_min,
+           t.libelle AS theme
+    FROM menu m
+    LEFT JOIN theme t ON m.theme_id = t.theme_id
+    WHERE m.stock_disponible > 0
+    ORDER BY RAND()
+    LIMIT 3
+')->fetchAll();
+
+// Avis validés uniquement
+$avis = $pdo->query('
+    SELECT a.note, a.commentaire, u.prenom, u.nom
+    FROM avis a
+    JOIN utilisateur u ON a.utilisateur_id = u.utilisateur_id
+    WHERE a.est_valide = 1
+    ORDER BY a.date_publication DESC
+    LIMIT 3
+')->fetchAll();
+
 $title = 'Accueil';
-$description = 'Vite & Gourmand, traiteur bordelais depuis 1999. Découvrez nos menus faits maison, adaptés à chaque occasion : Noël, Pâques, anniversaires, repas d\'entreprise. Commandez en ligne et régalez vos invités avec nos plats savoureux et notre service personnalisé.';
+$description = 'Vite & Gourmand, traiteur bordelais depuis 1999...';
 ob_start();
 ?>
+    <!-- ================================
+      HERO
+      ================================ -->
       <section class="hero">
         <div class="hero__container">
           <div class="hero__content">
@@ -23,7 +50,7 @@ ob_start();
 
             <div class="hero__actions">
               <a href="menus.php" class="btn btn--primary">Voir nos menus</a>
-              <a href="contact.html" class="btn btn--secondary"
+              <a href="contact.php" class="btn btn--secondary"
                 >Nous contacter</a
               >
             </div>
@@ -122,68 +149,32 @@ ob_start();
           </div>
 
           <div class="menus-home__grid">
-            <!-- Sera généré dynamiquement via PHP -->
-
-            <article class="menu-card">
-              <div class="menu-card__img-wrapper">
-                <img
-                  src="assets/img/menu-placeholder.jpg"
-                  alt="Menu des Fêtes"
-                  class="menu-card__img"
-                />
-              </div>
-              <div class="menu-card__body">
-                <span class="menu-card__tag">Noël</span>
-                <h3 class="menu-card__title">Menu des Fêtes</h3>
-                <p class="menu-card__info">
-                  À partir de 45€ · 8 personnes min.
-                </p>
-                <a href="menu-detail.html" class="btn btn--outline"
-                  >Voir le détail</a
-                >
-              </div>
-            </article>
-
-            <article class="menu-card">
-              <div class="menu-card__img-wrapper">
-                <img
-                  src="assets/img/menu-placeholder.jpg"
-                  alt="Menu Tradition"
-                  class="menu-card__img"
-                />
-              </div>
-              <div class="menu-card__body">
-                <span class="menu-card__tag">Classique</span>
-                <h3 class="menu-card__title">Menu Tradition</h3>
-                <p class="menu-card__info">
-                  À partir de 35€ · 6 personnes min.
-                </p>
-                <a href="menu-detail.html" class="btn btn--outline"
-                  >Voir le détail</a
-                >
-              </div>
-            </article>
-
-            <article class="menu-card">
-              <div class="menu-card__img-wrapper">
-                <img
-                  src="assets/img/menu-placeholder.jpg"
-                  alt="Menu Printanier"
-                  class="menu-card__img"
-                />
-              </div>
-              <div class="menu-card__body">
-                <span class="menu-card__tag">Pâques</span>
-                <h3 class="menu-card__title">Menu Printanier</h3>
-                <p class="menu-card__info">
-                  À partir de 40€ · 6 personnes min.
-                </p>
-                <a href="menu-detail.html" class="btn btn--outline"
-                  >Voir le détail</a
-                >
-              </div>
-            </article>
-          </div>
+            <?php if (empty($menus)): ?>
+                <p>Aucun menu disponible pour le moment.</p>
+            <?php else: ?>
+              <?php foreach ($menus as $menu): ?>
+                  <article class="menu-card">
+                      <div class="menu-card__img-wrapper">
+                          <img
+                              src="assets/img/menu-placeholder.jpg"
+                              alt="<?= htmlspecialchars($menu['titre']) ?>"
+                              class="menu-card__img"
+                          />
+                      </div>
+                      <div class="menu-card__body">
+                          <span class="menu-card__tag"><?= htmlspecialchars($menu['theme'] ?? '—') ?></span>
+                          <h3 class="menu-card__title"><?= htmlspecialchars($menu['titre']) ?></h3>
+                          <p class="menu-card__info">
+                              À partir de <?= $menu['prix_base'] ?>€ · <?= $menu['nombre_personne_min'] ?> personnes min.
+                          </p>
+                          <a href="menu-detail.php?id=<?= $menu['menu_id'] ?>" class="btn btn--outline">
+                              Voir le détail
+                          </a>
+                      </div>
+                  </article>
+                  <?php endforeach; ?>
+              <?php endif; ?>
+            </div>
         </div>
       </section>
 
@@ -199,44 +190,23 @@ ob_start();
           </div>
 
           <div class="avis__grid">
-            <!-- Sera généré dynamiquement via PHP (avis validés uniquement) -->
-
-            <article class="avis-card">
-              <div class="avis-card__stars" aria-label="5 étoiles sur 5">
-                ★★★★★
-              </div>
-              <blockquote class="avis-card__text">
-                "Un grand merci à Julie et José ! Tout était délicieux, nos
-                invités se sont régalés."
-              </blockquote>
-              <footer class="avis-card__author">Marie L. · Anniversaire</footer>
-            </article>
-
-            <article class="avis-card">
-              <div class="avis-card__stars" aria-label="5 étoiles sur 5">
-                ★★★★★
-              </div>
-              <blockquote class="avis-card__text">
-                "Prestation parfaite, saveurs incroyables. On ressent la passion
-                derrière chaque plat."
-              </blockquote>
-              <footer class="avis-card__author">
-                Thomas &amp; Élodie · Baptême
-              </footer>
-            </article>
-
-            <article class="avis-card">
-              <div class="avis-card__stars" aria-label="5 étoiles sur 5">
-                ★★★★★
-              </div>
-              <blockquote class="avis-card__text">
-                "Professionnels et à l'écoute. Menu original et raffiné, tout le
-                monde a adoré."
-              </blockquote>
-              <footer class="avis-card__author">
-                Sophie D. · Repas d'entreprise
-              </footer>
-            </article>
+              <?php if (empty($avis)): ?>
+                  <p>Aucun avis pour le moment.</p>
+              <?php else: ?>
+                  <?php foreach ($avis as $a): ?>
+                  <article class="avis-card">
+                      <div class="avis-card__stars" aria-label="<?= $a['note'] ?> étoiles sur 5">
+                          <?= str_repeat('★', $a['note']) ?><?= str_repeat('☆', 5 - $a['note']) ?>
+                      </div>
+                      <blockquote class="avis-card__text">
+                          "<?= htmlspecialchars($a['commentaire']) ?>"
+                      </blockquote>
+                      <footer class="avis-card__author">
+                          <?= htmlspecialchars($a['prenom'] . ' ' . strtoupper(substr($a['nom'], 0, 1)) . '.') ?>
+                      </footer>
+                  </article>
+                  <?php endforeach; ?>
+              <?php endif; ?>
           </div>
         </div>
       </section>
