@@ -119,6 +119,22 @@ try {
 
     $pdo->commit();
 
+    require_once __DIR__ . '/../includes/mailer.php';
+
+    // Récupère les infos pour le mail
+    $stmtMail = $pdo->prepare('SELECT u.email, u.prenom, m.titre FROM commande c JOIN utilisateur u ON c.utilisateur_id = u.utilisateur_id JOIN menu m ON c.menu_id = m.menu_id WHERE c.commande_id = ?');
+    $stmtMail->execute([$commandeId]);
+    $infosMail = $stmtMail->fetch();
+
+    mailConfirmationCommande($infosMail['email'], $infosMail['prenom'], [
+        'id'        => $commandeId,
+        'menu'      => $infosMail['titre'],
+        'date'      => $datePrestation,
+        'adresse'   => $adresse . ', ' . $ville,
+        'personnes' => $nbPersonnes,
+        'total'     => $prixTotal
+    ]);
+
 } catch (Exception $e) {
     $pdo->rollBack();
     header('Location: ' . BASE_URL . '/commande.php?error=erreur_serveur');
