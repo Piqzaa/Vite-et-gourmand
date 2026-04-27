@@ -43,6 +43,25 @@ try {
 
     $pdo->commit();
 
+    require_once __DIR__ . '/../includes/mailer.php';
+
+    $stmtClient = $pdo->prepare('
+        SELECT u.email, u.prenom 
+        FROM commande c 
+        JOIN utilisateur u ON c.utilisateur_id = u.utilisateur_id 
+        WHERE c.commande_id = ?
+    ');
+    $stmtClient->execute([$commandeId]);
+    $client = $stmtClient->fetch();
+
+    if ($statut === 'en attente du retour de matériel') {
+        mailRetourMateriel($client['email'], $client['prenom']);
+    }
+
+    if ($statut === 'terminée') {
+        mailCommandeTerminee($client['email'], $client['prenom'], $commandeId);
+    }
+
 } catch (Exception $e) {
     $pdo->rollBack();
     header('Location: ' . BASE_URL . '/espace-employe.php?error=erreur_serveur');
