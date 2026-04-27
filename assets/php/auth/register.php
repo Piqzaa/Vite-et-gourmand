@@ -102,6 +102,8 @@ $insert->execute([
     ':role'     => 'utilisateur',
 ]);
 
+require_once __DIR__ . '/../includes/mailer.php';
+mailBienvenue($email, $prenom);
 
 // ── 7. Connexion automatique post-inscription
 $_SESSION['user_id']     = (int) $pdo->lastInsertId();
