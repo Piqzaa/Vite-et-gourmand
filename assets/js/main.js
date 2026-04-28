@@ -5,6 +5,7 @@ import { initMenuFilters } from "./modules/filter.js";
 import { initProfil } from "./modules/profil.js";
 import { initEmployeFilters } from "./modules/employe.js";
 import { initAdminChart } from "./modules/admin-chart.js";
+import { initResetPassword } from "./modules/reset-password.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initBurger();
@@ -14,4 +15,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initMenuFilters();
   initEmployeFilters();
   initAdminChart();
+  initResetPassword();
 });
