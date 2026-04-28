@@ -67,3 +67,16 @@ function mailCommandeTerminee(string $to, string $prenom, int $commandeId): bool
 
     return sendMail($to, $prenom, $subject, $body);
 }
+
+function mailResetPassword(string $to, string $prenom, string $resetUrl): bool {
+    $subject = 'Réinitialisation de votre mot de passe';
+    $body    = "Bonjour $prenom,\n\n"
+             . "Vous avez demandé à réinitialiser votre mot de passe.\n\n"
+             . "Cliquez sur le lien ci-dessous (valable 1 heure) :\n"
+             . $resetUrl . "\n\n"
+             . "Si vous n'êtes pas à l'origine de cette demande, ignorez cet email.\n\n"
+             . "Cordialement,\n"
+             . "Vite & Gourmand";
+
+    return sendMail($to, $prenom, $subject, $body);
+}
