@@ -14,6 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Vérification CSRF
+$csrfToken = $_POST['csrf_token'] ?? '';
+if (!validateCsrfToken($csrfToken)) {
+    header('Location: ' . BASE_URL . '/espace-utilisateur.php?error=csrf_invalide');
+    exit;
+}
+
 $pdo        = getDB();
 $userId     = getUserId();
 $commandeId = (int)($_POST['commande_id'] ?? 0);

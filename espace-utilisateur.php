@@ -187,6 +187,7 @@ ob_start();
                             <div class="commande-card__actions">
                                 <a href="modifier-commande.php?id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                                 <form action="assets/php/user/cancel-commande.php" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <button type="submit" class="btn btn--primary btn--sm">Annuler</button>
                                 </form>
@@ -202,6 +203,7 @@ ob_start();
                             <div class="avis-form">
                                 <h3 class="avis-form__title">Votre avis nous intéresse</h3>
                                 <form action="assets/php/avis/create.php" method="POST">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <div class="form-group">
                                         <label class="form-label">Note</label>
@@ -233,6 +235,7 @@ ob_start();
             </div>
 
             <form class="auth-form" action="assets/php/user/update-profil.php" method="POST">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label" for="profil-prenom">Prénom</label>
