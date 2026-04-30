@@ -10,6 +10,13 @@ if (!isConnected() || getUserRole() !== 'admin') {
 }
 
 $pdo      = getDB();
+// Vérification CSRF
+$csrfToken = $_POST['csrf_token'] ?? '';
+if (!validateCsrfToken($csrfToken)) {
+    header('Location: ' . BASE_URL . '/espace-admin.php?error=csrf_invalide#employes');
+    exit;
+}
+
 $email    = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
 $nom      = trim($_POST['nom'] ?? '');
