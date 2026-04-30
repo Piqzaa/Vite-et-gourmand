@@ -1,6 +1,8 @@
 <?php
 $title = 'Inscription';
 $description = 'Rejoignez Vite & Gourmand pour commander vos menus. Créez votre compte en quelques étapes simples et profitez de nos délicieux plats traiteur à Bordeaux.';
+require_once 'assets/php/includes/session.php';
+sessionStart();
 ob_start();
 ?>
       <section class="auth-page">
