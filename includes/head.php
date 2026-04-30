@@ -1,3 +1,11 @@
+<?php
+// Headers de sécurité HTTP
+header("X-Frame-Options: DENY");
+header("X-Content-Type-Options: nosniff");
+header("X-XSS-Protection: 1; mode=block");
+header("Referrer-Policy: strict-origin-when-cross-origin");
+header("Permissions-Policy: geolocation=(), microphone=(), camera=()");
+?>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -5,6 +13,7 @@
     name="description"
     content="<?= isset($description) ? htmlspecialchars($description) : "Découvrez tous les menus traiteur de Vite & Gourmand, votre solution de repas rapide et délicieux à Bordeaux. Commandez en ligne pour une livraison rapide ou un retrait en magasin." ?>"
   />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:;">
   <title><?= isset($title) ? htmlspecialchars($title) . ' — Vite & Gourmand' : 'Vite & Gourmand' ?></title>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
