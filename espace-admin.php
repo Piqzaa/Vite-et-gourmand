@@ -287,6 +287,7 @@ ob_start();
                       <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
                       <div class="commande-card__employe-actions">
                           <form action="assets/php/commande/update-statut.php" method="POST">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Changer le statut</label>
@@ -305,9 +306,10 @@ ob_start();
                               <button type="submit" class="btn btn--primary btn--sm">Mettre à jour</button>
                           </form>
 
-                          <form action="assets/php/commande/annuler-employe.php" method="POST" 
+                          <form action="assets/php/commande/annuler-employe.php" method="POST"
                                 style="margin-top: 0.5rem"
                                 onsubmit="return confirm('Annuler cette commande ?')">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Mode de contact client</label>
@@ -347,6 +349,7 @@ ob_start();
                 action="assets/php/admin/create-employe.php"
                 method="POST"
               >
+                <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                 <div class="form-row">
                   <div class="form-group">
                       <label class="form-label" for="employe-nom">Nom</label>
@@ -400,6 +403,7 @@ ob_start();
                     </td>
                     <td>
                         <form action="assets/php/admin/toggle-employe.php" method="POST" style="display:inline">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                             <input type="hidden" name="employe_id" value="<?= $emp['utilisateur_id'] ?>">
                             <input type="hidden" name="actif" value="<?= $emp['actif'] ? 0 : 1 ?>">
                             <button type="submit" class="btn btn--secondary btn--sm">
@@ -444,6 +448,7 @@ ob_start();
                         <a href="menu-edit.php?id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                         <form action="assets/php/menu/delete.php" method="POST" style="display:inline"
                               onsubmit="return confirm('Supprimer ce menu ?')">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                             <input type="hidden" name="menu_id" value="<?= $menu['menu_id'] ?>">
                             <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                         </form>
@@ -481,9 +486,10 @@ ob_start();
                             <?php endif; ?>
                         </td>
                         <td>
-                            <form action="assets/php/plat/delete.php" method="POST" 
+                            <form action="assets/php/plat/delete.php" method="POST"
                                   style="display:inline"
                                   onsubmit="return confirm('Supprimer ce plat ? Il sera retiré de tous les menus associés.')">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                                 <input type="hidden" name="plat_id" value="<?= $plat['plat_id'] ?>">
                                 <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                             </form>
@@ -505,6 +511,7 @@ ob_start();
               action="assets/php/horaires/update.php"
               method="POST"
             >
+              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
               <table class="employe-table">
                 <thead>
                   <tr>
@@ -566,13 +573,15 @@ ob_start();
                       </blockquote>
                       <div class="avis-moderation__actions">
                           <form action="assets/php/avis/moderer.php" method="POST" style="display:inline">
-                              <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
-                              <input type="hidden" name="action" value="valider">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+    <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
+    <input type="hidden" name="action" value="valider">
                               <button type="submit" class="btn btn--primary btn--sm">Valider</button>
                           </form>
                           <form action="assets/php/avis/moderer.php" method="POST" style="display:inline">
-                              <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
-                              <input type="hidden" name="action" value="refuser">
+    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+    <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
+    <input type="hidden" name="action" value="refuser">
                               <button type="submit" class="btn btn--secondary btn--sm">Refuser</button>
                           </form>
                       </div>

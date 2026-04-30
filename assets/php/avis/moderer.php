@@ -14,6 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+// Vérification CSRF
+$csrfToken = $_POST['csrf_token'] ?? '';
+if (!validateCsrfToken($csrfToken)) {
+    header('Location: ' . BASE_URL . '/espace-employe.php?error=csrf_invalide');
+    exit;
+}
+
 $pdo    = getDB();
 $avisId = (int)($_POST['avis_id'] ?? 0);
 $action = trim($_POST['action'] ?? '');

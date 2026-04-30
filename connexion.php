@@ -1,6 +1,8 @@
 <?php
 $title = 'Connexion';
 $description = 'Accédez à votre espace personnel sur Vite & Gourmand. Connectez-vous pour gérer vos commandes, consulter votre historique d\'achats et profiter de nos délicieux menus traiteur à Bordeaux.';
+require_once 'assets/php/includes/session.php';
+sessionStart();
 ob_start();
 ?>
   <!-- AUTH PAGE -->
@@ -14,6 +16,7 @@ ob_start();
             </div>
 
             <form class="auth-form" action="assets/php/auth/login.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                 <?php if (isset($_GET['error'])): ?>
                     <p class="form__error">
                         <?php

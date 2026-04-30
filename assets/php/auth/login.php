@@ -7,8 +7,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+require_once __DIR__ . '/../includes/session.php';
+
 $email = trim($_POST['email'] ?? '');
 $password = $_POST['password'] ?? '';
+$csrfToken = $_POST['csrf_token'] ?? '';
+
+// Vérifie le token CSRF
+if (!validateCsrfToken($csrfToken)) {
+    header('Location: ' . BASE_URL . '/connexion.php?error=csrf_invalide');
+    exit;
+}
 
 if (empty($email) || empty($password)) {
     header('Location: ' . BASE_URL . '/connexion.php?error=champs_vides');
@@ -41,6 +50,8 @@ $_SESSION['user_gsm']     = $user['gsm'];
 $_SESSION['user_adresse'] = $user['adresse_postale'];
 $_SESSION['user_ville']   = $user['ville'];
 
+// Régénère le token CSRF après connexion (sécurité)
+$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
 // Redirection selon le rôle
 if ($user['role'] === 'admin') {
