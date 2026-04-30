@@ -16,8 +16,8 @@ ob_start();
             class="auth-form"
             action="assets/php/auth/register.php"
             method="POST"
-            
           >
+            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
           <?php if (!empty($_SESSION['register_errors'])): ?>
             <div class="form-errors">
               <ul>

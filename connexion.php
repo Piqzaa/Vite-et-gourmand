@@ -14,6 +14,7 @@ ob_start();
             </div>
 
             <form class="auth-form" action="assets/php/auth/login.php" method="POST">
+                <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                 <?php if (isset($_GET['error'])): ?>
                     <p class="form__error">
                         <?php

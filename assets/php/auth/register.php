@@ -6,12 +6,21 @@ declare(strict_types=1);
 session_start();
 
 require __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../includes/session.php';
+
 $pdo = getDB();
 
 
 // ── 1. Méthode ───────────────────────────────────────────────────────────────
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: ' . BASE_URL . '/inscription.php');
+    exit;
+}
+
+// ── 1bis. Vérification CSRF ──────────────────────────────────────────────────
+$csrfToken = $_POST['csrf_token'] ?? '';
+if (!validateCsrfToken($csrfToken)) {
+    header('Location: ' . BASE_URL . '/inscription.php?error=csrf_invalide');
     exit;
 }
 
