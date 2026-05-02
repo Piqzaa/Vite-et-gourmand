@@ -82,13 +82,19 @@ Si tu veux modifier le SCSS, utilise l'extension **Live Sass Compiler** dans VS 
 
 ---
 
-## Comptes de test
+## 📦 Installation de la base de données
 
-| Rôle           | Email                     | Mot de passe |
-| -------------- | ------------------------- | ------------ |
-| Administrateur | jose@viteetgourmand.fr    | Admin1234!   |
-| Employé        | employe@viteetgourmand.fr | Employe1234! |
-| Utilisateur    | client@mail.com           | Client1234!  |
+1. Créer une base de données vide `vite_gourmand` dans phpMyAdmin
+2. Importer `database/schema.sql` (structure des tables)
+3. Importer `database/seed.sql` (données de test)
+
+### Comptes de test disponibles
+
+| Rôle    | Email                    | Mot de passe |
+| ------- | ------------------------ | ------------ |
+| Client  | client@mail.com          | Test1234!    |
+| Employé | employe@vite-gourmand.fr | Staff1234!   |
+| Admin   | jose@vite-gourmand.fr    | Admin1234!   |
 
 ---
 
