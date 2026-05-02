@@ -1928,15 +1928,31 @@
   }
   .commande-page__container {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
   .commande-aside {
-    display: none;
+    position: static;
   }
   .commande-form-wrapper {
     padding: 24px 20px;
   }
   .stepper__label {
     display: none;
+  }
+}
+@media (max-width: 480px) {
+  .commande-page {
+    padding: 24px 8px;
+  }
+  .commande-form-wrapper {
+    padding: 20px 16px;
+  }
+  .commande-nav {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .commande-nav button {
+    width: 100%;
   }
 }
 .contact-page {
