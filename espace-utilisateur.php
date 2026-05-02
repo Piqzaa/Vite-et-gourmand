@@ -131,7 +131,7 @@ ob_start();
             <?php if (empty($commandes)): ?>
                 <div class="empty-state">
                     <p>Vous n'avez pas encore passé de commande.</p>
-                    <a href="carte.php" class="btn btn--primary">Découvrir la carte</a>
+                    <a href="menu.php" class="btn btn--primary">Découvrir la carte</a>
                 </div>
             <?php else: ?>
                 <?php foreach ($commandes as $cmd): ?>

@@ -143,13 +143,11 @@ export function initStepper() {
     btnNext.style.display = index === steps.length - 1 ? "none" : "inline-flex";
     btnSubmit.style.display =
       index === steps.length - 1 ? "inline-flex" : "none";
-
-    aside.style.display = index === steps.length - 1 ? "none" : "block";
-    formContainer.style.gridTemplateColumns =
-      index === steps.length - 1 ? "1fr" : "1fr 320px";
+    const isRecapStep = index === steps.length - 1;
+    aside.style.display = isRecapStep ? "none" : "block";
 
     // Quand on arrive à l'étape 3, on remplit le récap
-    if (index === steps.length - 1) {
+    if (isRecapStep) {
       updateRecap();
     }
   }

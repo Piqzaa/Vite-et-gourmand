@@ -202,11 +202,13 @@
   }
 
   .commande-page__container {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; // Une seule colonne
+    gap: 24px;
   }
 
   .commande-aside {
-    display: none;
+    position: static; // Plus de sticky
+    // ✅ On ne cache plus l'aside ici, juste il passe en dessous
   }
 
   .commande-form-wrapper {
@@ -215,5 +217,24 @@
 
   .stepper__label {
     display: none;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .commande-page {
+    padding: 24px $space-sm;
+  }
+
+  .commande-form-wrapper {
+    padding: 20px 16px;
+  }
+
+  .commande-nav {
+    flex-direction: column;
+    gap: 12px;
+
+    button {
+      width: 100%;
+    }
   }
 }

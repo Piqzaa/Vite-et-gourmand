@@ -185,7 +185,7 @@ ob_start();
                       </div>
 
                       <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
-                      <div class="commande-card__employe-actions">
+                      <div>
                           <form action="assets/php/commande/update-statut.php" method="POST">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
@@ -221,6 +221,7 @@ ob_start();
                                   <textarea name="motif" class="form-input" rows="2" 
                                             placeholder="Expliquez le motif..." required></textarea>
                               </div>
+                              <div class="space-sm"></div>
                               <button type="submit" class="btn btn--secondary btn--sm">Annuler la commande</button>
                           </form>
                       </div>

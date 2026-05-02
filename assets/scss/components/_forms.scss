@@ -30,8 +30,9 @@
   color: $brown-light;
 }
 
-.form-textarea {
-  resize: vertical;
+.form-textarea,
+textarea.form-input {
+  resize: none;
   min-height: 120px;
 }
 
@@ -188,5 +189,20 @@
 
   .form-row {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .auth-page {
+    padding: 20px $space-sm;
+  }
+
+  .auth-card {
+    padding: 24px 16px;
+  }
+
+  .form-input,
+  .filters__select {
+    font-size: 16px;
   }
 }

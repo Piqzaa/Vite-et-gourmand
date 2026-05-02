@@ -209,6 +209,19 @@ ob_start();
             </canvas>
             </div>
 
+              <div class="admin-chart__fallback">
+                <table class="admin-chart__fallback-table">
+                  <tbody>
+                    <?php foreach ($statsParMenu as $stat): ?>
+                    <tr>
+                      <td><?= htmlspecialchars($stat['titre']) ?></td>
+                      <td><?= $stat['nb_commandes'] ?> cmd. — <?= number_format($stat['ca'], 2) ?>€</td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+
           </section>
 
           <!-- COMMANDES -->
@@ -285,9 +298,10 @@ ob_start();
                       </div>
 
                       <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
-                      <div class="commande-card__employe-actions">
+
+                      <div>
                           <form action="assets/php/commande/update-statut.php" method="POST">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Changer le statut</label>
@@ -309,7 +323,7 @@ ob_start();
                           <form action="assets/php/commande/annuler-employe.php" method="POST"
                                 style="margin-top: 0.5rem"
                                 onsubmit="return confirm('Annuler cette commande ?')">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Mode de contact client</label>
@@ -323,6 +337,7 @@ ob_start();
                                   <textarea name="motif" class="form-input" rows="2" 
                                             placeholder="Expliquez le motif..." required></textarea>
                               </div>
+                              <div class="space-sm"></div>
                               <button type="submit" class="btn btn--secondary btn--sm">Annuler la commande</button>
                           </form>
                       </div>

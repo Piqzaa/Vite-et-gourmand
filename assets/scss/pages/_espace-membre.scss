@@ -16,6 +16,8 @@
   border-radius: $radius-md;
   overflow: hidden;
   font-size: 0.9rem;
+  max-width: 100%;
+  table-layout: fixed;
 }
 
 .employe-table thead {
@@ -158,6 +160,10 @@
   padding: 24px;
 }
 
+.admin-chart__fallback {
+  display: none;
+}
+
 .admin-chart__title {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1rem;
@@ -184,7 +190,20 @@
   color: $charcoal;
 }
 
+// ... ton code existant jusqu'aux media queries ...
+
 @media (max-width: $bp-tablet) {
+  .employe-filters,
+  .admin-stats-filters,
+  .admin-ca,
+  .admin-chart,
+  .admin-create-employe,
+  .employe-table,
+  .avis-moderation {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   .employe-filters {
     grid-template-columns: 1fr;
   }
@@ -192,24 +211,109 @@
   .employe-table {
     display: block;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch; // Smooth scroll sur iOS
+    width: 100%;
+  }
+
+  .employe-table thead {
+    display: none;
+  }
+
+  .employe-table tbody {
+    display: block;
+    width: 100%;
+  }
+
+  .employe-table tr {
+    display: block;
+    margin-bottom: 16px;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
+    padding: 12px;
+    background: $white;
+    width: 100%;
+  }
+
+  .employe-table td {
+    display: block;
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: none;
+    width: 100%;
+    word-wrap: break-word;
+  }
+
+  .employe-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: $brown-light;
+    margin-bottom: 4px;
+  }
+
+  .employe-table__actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .employe-table__actions .btn {
+    width: 100%;
   }
 
   .commande-card__employe-actions {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .commande-card__employe-actions form {
+    width: 100%;
+  }
+
+  .commande-card__employe-actions .btn {
+    width: 100%;
+  }
+
+  .admin-chart {
+    display: none;
+  }
+
+  .admin-chart__fallback {
+    display: flex;
+    flex-direction: column;
+    background: $white;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    padding: $space-md;
+  }
+
+  .admin-chart__fallback-table {
+    border-collapse: separate;
+    border-spacing: $space-sm;
   }
 
   .admin-stats-filters {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .admin-ca {
     grid-template-columns: 1fr;
   }
-}
 
-@media (max-width: $bp-mobile) {
-  .admin-stats-filters {
+  .admin-create-employe .form-row {
     grid-template-columns: 1fr;
+  }
+
+  .avis-moderation__actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .avis-moderation__actions .btn {
+    width: 100%;
   }
 }

@@ -479,8 +479,9 @@
   color: #9a8878;
 }
 
-.form-textarea {
-  resize: vertical;
+.form-textarea,
+textarea.form-input {
+  resize: none;
   min-height: 120px;
 }
 
@@ -629,6 +630,18 @@
   }
   .form-row {
     grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 20px 8px;
+  }
+  .auth-card {
+    padding: 24px 16px;
+  }
+  .form-input,
+  .filters__select {
+    font-size: 16px;
   }
 }
 .section-head {
@@ -805,6 +818,7 @@
   grid-template-columns: 260px 1fr;
   min-height: calc(100vh - 64px);
   background: #faf6f1;
+  overflow-x: hidden;
 }
 
 .dashboard__sidebar {
@@ -884,6 +898,8 @@
   display: flex;
   flex-direction: column;
   gap: 40px;
+  overflow-y: hidden;
+  max-width: 100%;
 }
 
 .dashboard__section {
@@ -920,6 +936,8 @@
 @media (max-width: 840px) {
   .dashboard {
     grid-template-columns: 1fr;
+    position: relative;
+    overflow-x: hidden;
   }
   .dashboard__sidebar {
     position: static;
@@ -937,6 +955,8 @@
   }
   .dashboard__content {
     padding: 24px 16px;
+    padding-top: 80px;
+    width: 100%;
   }
 }
 .commande-suivi {
@@ -1928,15 +1948,31 @@
   }
   .commande-page__container {
     grid-template-columns: 1fr;
+    gap: 24px;
   }
   .commande-aside {
-    display: none;
+    position: static;
   }
   .commande-form-wrapper {
     padding: 24px 20px;
   }
   .stepper__label {
     display: none;
+  }
+}
+@media (max-width: 480px) {
+  .commande-page {
+    padding: 24px 8px;
+  }
+  .commande-form-wrapper {
+    padding: 20px 16px;
+  }
+  .commande-nav {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .commande-nav button {
+    width: 100%;
   }
 }
 .contact-page {
@@ -2035,6 +2071,8 @@
   border-radius: 8px;
   overflow: hidden;
   font-size: 0.9rem;
+  max-width: 100%;
+  table-layout: fixed;
 }
 
 .employe-table thead {
@@ -2175,6 +2213,10 @@
   padding: 24px;
 }
 
+.admin-chart__fallback {
+  display: none;
+}
+
 .admin-chart__title {
   font-family: "Playfair Display", Georgia, serif;
   font-size: 1rem;
@@ -2200,27 +2242,108 @@
 }
 
 @media (max-width: 840px) {
+  .employe-filters,
+  .admin-stats-filters,
+  .admin-ca,
+  .admin-chart,
+  .admin-create-employe,
+  .employe-table,
+  .avis-moderation {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
   .employe-filters {
     grid-template-columns: 1fr;
   }
   .employe-table {
     display: block;
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .employe-table thead {
+    display: none;
+  }
+  .employe-table tbody {
+    display: block;
+    width: 100%;
+  }
+  .employe-table tr {
+    display: block;
+    margin-bottom: 16px;
+    border: 1px solid #e8e0d5;
+    border-radius: 4px;
+    padding: 12px;
+    background: #ffffff;
+    width: 100%;
+  }
+  .employe-table td {
+    display: block;
+    text-align: left;
+    padding: 8px 0;
+    border-bottom: none;
+    width: 100%;
+    word-wrap: break-word;
+  }
+  .employe-table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #9a8878;
+    margin-bottom: 4px;
+  }
+  .employe-table__actions {
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .employe-table__actions .btn {
+    width: 100%;
   }
   .commande-card__employe-actions {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 16px;
+  }
+  .commande-card__employe-actions form {
+    width: 100%;
+  }
+  .commande-card__employe-actions .btn {
+    width: 100%;
+  }
+  .admin-chart {
+    display: none;
+  }
+  .admin-chart__fallback {
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    border: 1px solid #e8e0d5;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .admin-chart__fallback-table {
+    border-collapse: separate;
+    border-spacing: 8px;
   }
   .admin-stats-filters {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
+    gap: 12px;
   }
   .admin-ca {
     grid-template-columns: 1fr;
   }
-}
-@media (max-width: 480px) {
-  .admin-stats-filters {
+  .admin-create-employe .form-row {
     grid-template-columns: 1fr;
+  }
+  .avis-moderation__actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .avis-moderation__actions .btn {
+    width: 100%;
   }
 }
 .legal-page {
