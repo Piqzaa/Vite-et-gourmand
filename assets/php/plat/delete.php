@@ -31,12 +31,23 @@ if (!$platId) {
 
 try {
     $pdo->beginTransaction();
+    $stmt = $pdo->prepare('SELECT image_path FROM plat WHERE plat_id = ?');
+    $stmt->execute([$platId]);
+    $imagePath = $stmt->fetchColumn();
 
     $pdo->prepare('DELETE FROM plat_allergene WHERE plat_id = ?')->execute([$platId]);
     $pdo->prepare('DELETE FROM compose_menu WHERE plat_id = ?')->execute([$platId]);
     $pdo->prepare('DELETE FROM plat WHERE plat_id = ?')->execute([$platId]);
 
     $pdo->commit();
+
+    if ($imagePath) {
+        $imageFile = __DIR__ . '/../../../assets/img/plats/' . $imagePath;
+        if (file_exists($imageFile)) {
+            unlink($imageFile);
+        }
+    }
+
 
 } catch (Exception $e) {
     $pdo->rollBack();
