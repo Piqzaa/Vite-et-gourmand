@@ -302,6 +302,7 @@ ob_start();
                             <form action="assets/php/plat/delete.php" method="POST" 
                                   style="display:inline"
                                   onsubmit="return confirm('Supprimer ce plat ? Il sera retiré de tous les menus associés.')">
+                                <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                                 <input type="hidden" name="plat_id" value="<?= $plat['plat_id'] ?>">
                                 <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                             </form>
