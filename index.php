@@ -149,7 +149,7 @@ ob_start();
             <h2 class="section-title" id="menus-home-title">
               Nos menus du moment
             </h2>
-            <a href="menus.html" class="menus-home__link"
+            <a href="menus.php" class="menus-home__link"
               >Voir tous les menus →</a
             >
           </div>
