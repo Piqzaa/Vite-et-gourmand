@@ -66,13 +66,14 @@ ob_start();
         // Première image disponible comme image principale
         $firstImg = !empty($plats) && $plats[0]['image_path'] 
             ? 'assets/img/plats/' . htmlspecialchars($plats[0]['image_path'])
-            : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800';
+            : 'assets/img/menu-placeholder.jpg';
         ?>
         <img
             src="<?= $firstImg ?>"
             alt="<?= htmlspecialchars($menu['titre']) ?>"
             class="menu-gallery__img"
             id="gallery-main-img"
+            onerror="this.onerror=null; this.src='assets/img/menu-placeholder.jpg';"
         />
     </div>
     <div class="menu-gallery__thumbs">
@@ -84,6 +85,7 @@ ob_start();
             src="<?= $imgPath ?>"
             alt="<?= htmlspecialchars($plat['plat_titre']) ?>"
             class="menu-gallery__thumb <?= $i === 0 ? 'menu-gallery__thumb--active' : '' ?>"
+            onerror="this.onerror=null; this.src='assets/img/menu-placeholder.jpg';"
         />
         <?php endforeach; ?>
     </div>
