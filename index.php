@@ -167,6 +167,7 @@ ob_start();
                                   : 'assets/img/menu-placeholder.jpg' ?>"
                               alt="<?= htmlspecialchars($menu['titre']) ?>"
                               class="menu-card__img"
+                              onerror="this.onerror=null; this.src='assets/img/menu-placeholder.jpg';"
                           />
                       </div>
                       <div class="menu-card__body">
