@@ -2,10 +2,16 @@
 require_once __DIR__ . '/assets/php/config/db.php';
 $pdo = getDB();
 
-// 3 menus aléatoires avec stock dispo
+// 3 menus aléatoires avec stock dispo + image du plat principal
 $menus = $pdo->query('
     SELECT m.menu_id, m.titre, m.prix_base, m.nombre_personne_min,
-           t.libelle AS theme
+           t.libelle AS theme,
+           (SELECT p.image_path 
+            FROM compose_menu cm 
+            JOIN plat p ON cm.plat_id = p.plat_id 
+            WHERE cm.menu_id = m.menu_id 
+              AND p.type = \'plat\' 
+            LIMIT 1) AS image_path
     FROM menu m
     LEFT JOIN theme t ON m.theme_id = t.theme_id
     WHERE m.stock_disponible > 0
@@ -156,7 +162,9 @@ ob_start();
                   <article class="menu-card">
                       <div class="menu-card__img-wrapper">
                           <img
-                              src="assets/img/menu-placeholder.jpg"
+                              src="<?= !empty($menu['image_path']) 
+                                  ? 'assets/img/plats/' . htmlspecialchars($menu['image_path']) 
+                                  : 'assets/img/menu-placeholder.jpg' ?>"
                               alt="<?= htmlspecialchars($menu['titre']) ?>"
                               class="menu-card__img"
                           />

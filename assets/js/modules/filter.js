@@ -71,11 +71,15 @@ export function initMenuFilters() {
     return params;
   }
   function renderCard(menu) {
+    const imageSrc = menu.image_path
+      ? `assets/img/plats/${escHtml(menu.image_path)}`
+      : "assets/img/menu-placeholder.jpg";
+
     return `
         <article class="menu-card">
             <div class="menu-card__img-wrapper">
                 <img
-                    src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600"
+                    src="${imageSrc}"
                     alt="${escHtml(menu.titre)}"
                     class="menu-card__img"
                 />

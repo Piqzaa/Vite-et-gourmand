@@ -65,7 +65,7 @@ ob_start();
         <?php 
         // Première image disponible comme image principale
         $firstImg = !empty($plats) && $plats[0]['image_path'] 
-            ? 'assets/img/' . htmlspecialchars($plats[0]['image_path'])
+            ? 'assets/img/plats/' . htmlspecialchars($plats[0]['image_path'])
             : 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800';
         ?>
         <img
@@ -78,7 +78,7 @@ ob_start();
     <div class="menu-gallery__thumbs">
         <?php foreach ($plats as $i => $plat): 
             if (!$plat['image_path']) continue;
-            $imgPath = 'assets/img/' . htmlspecialchars($plat['image_path']);
+            $imgPath = 'assets/img/plats/' . htmlspecialchars($plat['image_path']);
         ?>
         <img
             src="<?= $imgPath ?>"
