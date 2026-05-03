@@ -116,7 +116,7 @@ ob_start();
               id="filters-reset"
               type="button"
             >
-              Réinitialiser les filtres
+              Réinitialiser filtres
             </button>
           </aside>
 
