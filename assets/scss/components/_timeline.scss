@@ -1,0 +1,73 @@
+.commande-suivi {
+  border-top: 1px solid $border;
+  padding-top: 20px;
+}
+
+.commande-suivi__title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: $brown-mid;
+  margin-bottom: 16px;
+}
+
+.commande-suivi__timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+}
+
+.commande-suivi__step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+.commande-suivi__step::before {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 20px;
+  bottom: 0;
+  width: 2px;
+  background: $border;
+}
+
+.commande-suivi__step:last-child::before {
+  display: none;
+}
+
+.commande-suivi__dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: $cream-dark;
+  border: 2px solid $border;
+  flex-shrink: 0;
+  margin-top: 2px;
+  position: relative;
+  z-index: 1;
+}
+
+.commande-suivi__step--done .commande-suivi__dot {
+  background: $terracotta;
+  border-color: $terracotta;
+}
+
+.commande-suivi__step--active .commande-suivi__dot {
+  background: $white;
+  border-color: $terracotta;
+  box-shadow: 0 0 0 3px $terra-light;
+}
+
+.commande-suivi__label {
+  font-size: 0.9rem;
+  color: $charcoal;
+}
+
+.commande-suivi__date {
+  font-size: 0.75rem;
+  color: $brown-light;
+}

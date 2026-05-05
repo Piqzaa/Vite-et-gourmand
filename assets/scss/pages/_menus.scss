@@ -1,0 +1,187 @@
+// LAYOUT MENUS + FILTRES
+
+.menus-page {
+  background: $cream;
+  padding: 48px $space-xl;
+}
+
+.menus-page__container {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+// FILTRES
+
+.filters {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 28px;
+  height: fit-content;
+  position: sticky;
+  top: 80px;
+}
+
+.filters__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: $charcoal;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid $border;
+}
+
+.filters__group {
+  margin-bottom: 24px;
+}
+
+.filters__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  color: $brown-mid;
+  margin-bottom: 8px;
+}
+
+.filters__sublabel {
+  display: block;
+  font-size: 0.7rem;
+  color: $brown-light;
+  margin-bottom: 4px;
+}
+
+.filters__range {
+  width: 100%;
+  accent-color: $terracotta;
+  cursor: pointer;
+}
+
+.filters__range-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filters__range-value {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+  color: $brown-light;
+}
+
+.filters__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.filters__input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  font-size: 0.8125rem;
+  color: $charcoal;
+  background: $cream;
+  transition: border-color 0.25s ease;
+}
+
+.filters__input:focus {
+  border-color: $terracotta;
+  outline: none;
+}
+
+.filters__select {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid $border;
+  border-radius: $radius-sm;
+  font-size: 0.8125rem;
+  color: $charcoal;
+  background: $cream;
+  cursor: pointer;
+  transition: border-color 0.25s ease;
+}
+
+.filters__select:focus {
+  border-color: $terracotta;
+  outline: none;
+}
+
+.filters__reset {
+  margin-top: 8px;
+}
+
+// LISTE DES MENUS
+
+.menus-list__header {
+  margin-bottom: 20px;
+}
+
+.menus-list__count {
+  font-size: 0.9rem;
+  color: $brown-light;
+}
+
+.menus-list__count span {
+  font-weight: 500;
+  color: $charcoal;
+}
+
+.menus-list__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.menus-list__empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px;
+  color: $brown-light;
+}
+
+.menus-list__empty p {
+  margin-bottom: 16px;
+}
+
+// MEDIA QUERIES
+
+@media (max-width: $bp-desktop) {
+  .menus-list__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: $bp-tablet) {
+  .menus-page {
+    padding: 32px $space-md;
+  }
+
+  .menus-page__container {
+    grid-template-columns: 1fr;
+  }
+
+  .filters {
+    position: static;
+  }
+
+  .page-header {
+    padding: 32px $space-md;
+  }
+
+  .page-header__title {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .menus-list__grid {
+    grid-template-columns: 1fr;
+  }
+}

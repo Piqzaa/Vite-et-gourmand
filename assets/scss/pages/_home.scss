@@ -1,0 +1,296 @@
+// ===========================
+// HERO
+// ===========================
+
+.hero {
+  background: $cream;
+  padding: 80px $space-xl;
+}
+
+.hero__container {
+  display: flex;
+  align-items: center;
+  gap: 64px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero__content {
+  flex: 1.2;
+}
+
+.hero__visual {
+  flex: 0.8;
+}
+
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: $terra-light;
+  color: $terracotta;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: $radius-full;
+  margin-bottom: 28px;
+}
+
+.hero__badge-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: $terracotta;
+  flex-shrink: 0;
+}
+
+.hero__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1.15;
+  color: $charcoal;
+  margin-bottom: 20px;
+}
+
+.hero__title em {
+  color: $terracotta;
+  font-style: italic;
+}
+
+.hero__sub {
+  font-size: 1rem;
+  color: $brown-light;
+  line-height: 1.75;
+  max-width: 440px;
+  margin-bottom: 36px;
+}
+
+.hero__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero__img {
+  width: 100%;
+  border-radius: $radius-lg;
+  background: $cream-dark;
+  object-fit: cover;
+  object-position: center 80%;
+  aspect-ratio: 4/3;
+}
+
+// ===========================
+// STATS
+// ===========================
+
+.stats {
+  background: $white;
+  border-top: 1px solid $border;
+  border-bottom: 1px solid $border;
+}
+
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.stats__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 32px $space-md;
+  border-right: 1px solid $border;
+}
+
+.stats__item:last-child {
+  border-right: none;
+}
+
+.stats__number {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2rem;
+  color: $terracotta;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.stats__label {
+  font-size: 0.7rem;
+  color: $brown-light;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+// ===========================
+// SAVOIR-FAIRE
+// ===========================
+
+.savoir-faire {
+  background: $cream;
+  padding: 80px $space-xl;
+}
+
+.savoir-faire__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.savoir-faire__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: $border;
+}
+
+.pillar {
+  background: $cream;
+  padding: 40px 32px;
+}
+
+.pillar__icon {
+  font-size: 1.2rem;
+  margin-bottom: $space-md;
+}
+
+.pillar__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  color: $charcoal;
+  margin-bottom: $space-sm;
+}
+
+.pillar__text {
+  font-size: 1rem;
+  color: $brown-light;
+  line-height: 1.7;
+}
+
+// ===========================
+// MENUS DU MOMENT
+// ===========================
+
+.menus-home {
+  background: $cream-dark;
+  padding: 80px $space-xl;
+}
+
+.menus-home__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.menus-home__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.menus-home__link {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: $terracotta;
+  transition: color 0.25s ease;
+}
+
+.menus-home__link:hover {
+  color: $terra-dark;
+}
+
+.menus-home__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+// ===========================
+// AVIS CLIENTS
+// ===========================
+
+.avis {
+  background: $cream;
+  padding: 80px $space-xl;
+}
+
+.avis__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.avis__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+// ===========================
+// RESPONSIVE
+// ===========================
+
+@media (max-width: $bp-tablet) {
+  .hero {
+    padding: 48px $space-md;
+  }
+
+  .hero__container {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .hero__visual {
+    width: 100%;
+  }
+
+  .stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats__item:nth-child(2) {
+    border-right: none;
+  }
+
+  .savoir-faire {
+    padding: 48px $space-md;
+  }
+
+  .savoir-faire__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .menus-home {
+    padding: 48px $space-md;
+  }
+
+  .menus-home__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .avis {
+    padding: 48px $space-md;
+  }
+
+  .avis__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .hero__actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

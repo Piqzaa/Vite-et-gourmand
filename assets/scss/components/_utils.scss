@@ -1,0 +1,67 @@
+.section-head {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-eyebrow {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: $terracotta;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.3rem;
+  font-weight: 400;
+  color: $charcoal;
+}
+
+.section-line {
+  width: 36px;
+  height: 2px;
+  background: $terracotta;
+  margin: 12px auto 0;
+}
+
+// PAGE HEADER
+
+.page-header {
+  background: $cream-dark;
+  padding: 48px $space-xl;
+  border-bottom: 1px solid $border;
+}
+
+.page-header__container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 2.5rem;
+  font-weight: 400;
+  color: $charcoal;
+  margin: 8px 0 12px;
+}
+
+.page-header__sub {
+  font-size: 1rem;
+  color: $brown-light;
+  max-width: 500px;
+}
+
+//espace
+
+.space-sm {
+  padding: $space-sm 0;
+}
+.space-md {
+  padding: $space-md 0;
+}
+.space-lg {
+  padding: $space-lg 0;
+}

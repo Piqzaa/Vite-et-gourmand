@@ -1,0 +1,59 @@
+@import "abstracts/variables";
+@import "layout/navbar";
+@import "components/buttons";
+@import "components/cards";
+@import "components/forms";
+@import "components/utils";
+@import "layout/footer";
+@import "components/dashboard";
+@import "components/timeline";
+@import "pages/home";
+@import "pages/menus";
+@import "pages/menu-detail";
+@import "pages/commande";
+@import "pages/contact";
+@import "pages/espace-membre";
+@import "pages/legal-page";
+
+// RESET GLOBAL
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background-color: #faf6f1;
+  color: #1a1a1a;
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}

@@ -1,0 +1,43 @@
+.legal-page {
+  background: $cream;
+  padding: 48px $space-xl;
+}
+
+.legal-page__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $space-lg;
+  padding: 48px;
+}
+
+.legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: $space-xl;
+}
+
+.legal-content__title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: $charcoal;
+}
+
+@media (max-width: $bp-tablet) {
+  .legal-page {
+    padding: 32px $space-md;
+  }
+
+  .legal-page__container {
+    padding: $space-md;
+  }
+
+  .legal-content {
+    gap: $space-md;
+  }
+
+  .legal-content__title {
+    font-size: 1.5rem;
+  }
+}

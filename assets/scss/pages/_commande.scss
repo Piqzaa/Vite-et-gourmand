@@ -1,0 +1,240 @@
+.commande-page {
+  background: $cream;
+  padding: 48px $space-xl;
+}
+
+.commande-page__container {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.commande-form-wrapper {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+}
+
+.stepper__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.stepper__number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: $cream-dark;
+  border: 1px solid $border;
+  color: $brown-light;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.stepper__label {
+  font-size: 0.8rem;
+  color: $brown-light;
+  font-weight: 500;
+  transition: color 0.25s ease;
+}
+
+.stepper__divider {
+  flex: 1;
+  height: 1px;
+  background: $border;
+  margin: 0 12px;
+}
+
+.stepper__item--active .stepper__number {
+  background: $terracotta;
+  border-color: $terracotta;
+  color: $white;
+}
+
+.stepper__item--active .stepper__label {
+  color: $charcoal;
+}
+
+.stepper__item--done .stepper__number {
+  background: $cream-dark;
+  border-color: $terracotta;
+  color: $terracotta;
+}
+
+.commande-step {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.commande-step.is-hidden {
+  display: none;
+}
+
+.commande-step__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: $charcoal;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $border;
+}
+
+.commande-recap {
+  background: $cream;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.commande-recap__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  color: $charcoal;
+}
+
+.commande-recap__row--total {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+#recap-total {
+  color: $terracotta;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.commande-recap__divider {
+  height: 1px;
+  background: $border;
+}
+
+.commande-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid $border;
+}
+
+.commande-aside {
+  position: sticky;
+  top: 80px;
+}
+
+.commande-aside__card {
+  background: $white;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.commande-aside__title {
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: $charcoal;
+  padding-bottom: 12px;
+  border-bottom: 1px solid $border;
+}
+
+.commande-aside__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: $brown-light;
+}
+
+.commande-aside__divider {
+  height: 1px;
+  background: $border;
+}
+
+.commande-aside__total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  font-weight: 500;
+  color: $charcoal;
+}
+
+#aside-total {
+  color: $terracotta;
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.commande-aside__note {
+  font-size: 0.75rem;
+  color: $brown-light;
+  text-align: center;
+}
+
+@media (max-width: $bp-tablet) {
+  .commande-page {
+    padding: 32px $space-md;
+  }
+
+  .commande-page__container {
+    grid-template-columns: 1fr; // Une seule colonne
+    gap: 24px;
+  }
+
+  .commande-aside {
+    position: static; // Plus de sticky
+    // ✅ On ne cache plus l'aside ici, juste il passe en dessous
+  }
+
+  .commande-form-wrapper {
+    padding: 24px 20px;
+  }
+
+  .stepper__label {
+    display: none;
+  }
+}
+
+@media (max-width: $bp-mobile) {
+  .commande-page {
+    padding: 24px $space-sm;
+  }
+
+  .commande-form-wrapper {
+    padding: 20px 16px;
+  }
+
+  .commande-nav {
+    flex-direction: column;
+    gap: 12px;
+
+    button {
+      width: 100%;
+    }
+  }
+}
