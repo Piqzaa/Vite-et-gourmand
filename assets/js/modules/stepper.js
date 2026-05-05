@@ -4,6 +4,7 @@ export function initStepper() {
   const aside = document.querySelector(".commande-aside");
   const formContainer = document.querySelector(".commande-page__container");
 
+  const form = document.getElementById("commande-form");
   const btnNext = document.getElementById("btn-next");
   const btnPrev = document.getElementById("btn-prev");
   const btnSubmit = document.getElementById("btn-submit");
@@ -17,6 +18,25 @@ export function initStepper() {
   const villeInput = document.getElementById("ville-livraison");
 
   let currentStep = 0;
+
+  // ─── Sécurité Touche Entrée ─────────────────────────────────
+
+  form.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (currentStep < steps.length - 1) {
+        btnNext.click();
+      } else {
+        btnSubmit.click();
+      }
+    }
+  });
+
+  // 2. On empêche le "spam" au moment de l'envoi final
+  form.addEventListener("submit", () => {
+    btnSubmit.disabled = true;
+    btnSubmit.textContent = "Chargement...";
+  });
 
   // ─── Calcul prix ────────────────────────────────────────────
   function calculPrix() {
