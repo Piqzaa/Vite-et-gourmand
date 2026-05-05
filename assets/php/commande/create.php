@@ -141,7 +141,15 @@ try {
     exit;
 }
 
-// TODO : PHPMailer — mail de confirmation
+// Détermination de la page de redirection selon le rôle
+$role = getUserRole();
+$redirectPage = '/espace-utilisateur.php';
 
-header('Location: ' . BASE_URL . '/espace-utilisateur.php?commande=' . $commandeId . '&success=1');
+if ($role === 'admin') {
+    $redirectPage = '/espace-admin.php';
+} elseif ($role === 'employe') {
+    $redirectPage = '/espace-employe.php';
+}
+
+header('Location: ' . BASE_URL . $redirectPage . '?commande=' . $commandeId . '&success=1');
 exit;
