@@ -51,15 +51,17 @@ http://localhost/Vite-et-gourmand
 
 ### 3. Créer la base de données
 
-Ouvre phpMyAdmin (`http://localhost/phpmyadmin`) et crée une base nommée `vite_et_gourmand`.
+1. Ouvrir phpMyAdmin (`http://localhost/phpmyadmin`) ou utiliser le client MySQL de votre choix.
 
-Ensuite importe le fichier SQL :
+2. Créer la base nommée :
+   vite_et_gourmand
 
-```
-Database/vite_et_gourmand.sql
-```
+3. Importer d’abord la **structure** (schéma) puis les **données de seed** :
 
-Ce fichier contient la structure complète des tables et les données de seed (menus, plats, horaires, utilisateurs de test).
+- Fichier schéma (structure des tables) :
+  Database/schema.sql
+- Fichier de seed (données initiales : menus, plats, horaires, utilisateurs de test) :
+  Database/seed.sql
 
 ### 4. Configurer la connexion BDD
 
