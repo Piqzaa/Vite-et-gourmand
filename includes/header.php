@@ -1,7 +1,5 @@
 <?php 
 require_once __DIR__ . '/../assets/php/includes/functions.php';
-require_once __DIR__ . '/../assets/php/includes/session.php';
-sessionStart();
 ?>
 
 

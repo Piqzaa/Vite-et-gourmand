@@ -3,11 +3,12 @@
 function sessionStart() {
     if (session_status() === PHP_SESSION_NONE) {
         // Configuration sécurisée des cookies de session
-        ini_set('session.cookie_httponly', '1');      // inaccessible via JavaScript
-        ini_set('session.cookie_secure', '0');        // HTTPS uniquement (désactiver en local sans HTTPS)
-        ini_set('session.use_strict_mode', '1');      // rejette les IDs de session inconnus
-        ini_set('session.cookie_samesite', 'Strict'); // empêche l'envoi cross-site
-
+        if (!headers_sent()) {
+            ini_set('session.cookie_httponly', '1');      // inaccessible via JavaScript
+            ini_set('session.cookie_secure', '0');        // HTTPS uniquement (désactiver en local sans HTTPS)
+            ini_set('session.use_strict_mode', '1');      // rejette les IDs de session inconnus
+            ini_set('session.cookie_samesite', 'Strict'); // empêche l'envoi cross-site
+        }
         session_start();
     }
 }
