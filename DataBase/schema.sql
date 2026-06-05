@@ -2,6 +2,8 @@
 -- VITE & GOURMAND - Schéma de base de données
 -- ==============================================
 
+SET NAMES 'utf8mb4';
+
 -- Table utilisateur
 CREATE TABLE utilisateur (
     utilisateur_id INT AUTO_INCREMENT PRIMARY KEY,
