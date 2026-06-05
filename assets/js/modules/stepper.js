@@ -131,7 +131,9 @@ export function initStepper() {
       const condBlock = document.getElementById("commande-conditions");
       const condList = condBlock.querySelector(".menu-conditions__list");
       if (conditions) {
-        condList.innerHTML = `<li>${conditions}</li>`;
+        const li = document.createElement("li");
+        li.textContent = conditions;
+        condList.replaceChildren(li);
         condBlock.hidden = false;
       } else {
         condBlock.hidden = true;
@@ -201,11 +203,13 @@ export function initStepper() {
 
       if (heures < 72) {
         dateInput.classList.add("form-input--error");
-        dateInput.closest(".form-group").querySelector(".form-hint") ||
-          dateInput.insertAdjacentHTML(
-            "afterend",
-            '<p class="form-hint form-hint--error">⚠️ La prestation doit être commandée au minimum 72h à l\'avance.</p>',
-          );
+        const existingHint = dateInput.closest(".form-group").querySelector(".form-hint--error");
+        if (!existingHint) {
+          const hint = document.createElement("p");
+          hint.className = "form-hint form-hint--error";
+          hint.textContent = "⚠️ La prestation doit être commandée au minimum 72h à l'avance.";
+          dateInput.after(hint);
+        }
         dateInput.focus();
         return;
       }

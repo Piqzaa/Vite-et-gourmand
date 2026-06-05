@@ -71,39 +71,63 @@ export function initMenuFilters() {
     return params;
   }
   function renderCard(menu) {
+    const article = document.createElement("article");
+    article.className = "menu-card";
+
     const imageSrc = menu.image_path
-      ? `assets/img/plats/${escHtml(menu.image_path)}`
+      ? `assets/img/plats/${menu.image_path}`
       : "assets/img/menu-placeholder.jpg";
 
-    return `
-        <article class="menu-card">
-            <div class="menu-card__img-wrapper">
-                <img
-                    src="${imageSrc}"
-                    alt="${escHtml(menu.titre)}"
-                    class="menu-card__img"
-                    onerror="this.onerror=null; this.src='assets/img/menu-placeholder.jpg';"
-                />
-            </div>
-            <div class="menu-card__body">
-                <span class="menu-card__tag">${escHtml(menu.theme ?? "—")}</span>
-                <h3 class="menu-card__title">${escHtml(menu.titre)}</h3>
-                <p class="menu-card__desc">${escHtml(menu.description)}</p>
-                <div class="menu-card__meta">
-                    <span class="menu-card__price">À partir de ${menu.prix_base}€</span>
-                    <span class="menu-card__persons">${menu.nombre_personne_min} pers. min.</span>
-                </div>
-                <a href="menu-detail.php?id=${menu.menu_id}" class="btn btn--outline btn--full">
-                    Voir le détail
-                </a>
-            </div>
-        </article>`;
-  }
+    const imgWrapper = document.createElement("div");
+    imgWrapper.className = "menu-card__img-wrapper";
 
-  function escHtml(str) {
-    const d = document.createElement("div");
-    d.textContent = str ?? "";
-    return d.innerHTML;
+    const img = document.createElement("img");
+    img.src = imageSrc;
+    img.alt = menu.titre;
+    img.className = "menu-card__img";
+    img.onerror = function () {
+      this.onerror = null;
+      this.src = "assets/img/menu-placeholder.jpg";
+    };
+    imgWrapper.appendChild(img);
+
+    const body = document.createElement("div");
+    body.className = "menu-card__body";
+
+    const tag = document.createElement("span");
+    tag.className = "menu-card__tag";
+    tag.textContent = menu.theme ?? "—";
+
+    const title = document.createElement("h3");
+    title.className = "menu-card__title";
+    title.textContent = menu.titre;
+
+    const desc = document.createElement("p");
+    desc.className = "menu-card__desc";
+    desc.textContent = menu.description;
+
+    const meta = document.createElement("div");
+    meta.className = "menu-card__meta";
+
+    const price = document.createElement("span");
+    price.className = "menu-card__price";
+    price.textContent = `À partir de ${menu.prix_base}€`;
+
+    const persons = document.createElement("span");
+    persons.className = "menu-card__persons";
+    persons.textContent = `${menu.nombre_personne_min} pers. min.`;
+
+    meta.append(price, persons);
+
+    const link = document.createElement("a");
+    link.href = `menu-detail.php?id=${menu.menu_id}`;
+    link.className = "btn btn--outline btn--full";
+    link.textContent = "Voir le détail";
+
+    body.append(tag, title, desc, meta, link);
+    article.append(imgWrapper, body);
+
+    return article;
   }
 
   async function fetchMenus() {
@@ -113,7 +137,7 @@ export function initMenuFilters() {
       const data = await res.json();
 
       // On vide TOUTE la grille avant de ré-afficher
-      grid.innerHTML = "";
+      grid.replaceChildren();
 
       if (data.length === 0) {
         grid.appendChild(emptyMsg); // On remet le message d'erreur dans la grille si besoin
@@ -123,7 +147,7 @@ export function initMenuFilters() {
         emptyMsg.hidden = true;
         countEl.textContent = data.length;
         data.forEach((menu) => {
-          grid.insertAdjacentHTML("beforeend", renderCard(menu));
+          grid.appendChild(renderCard(menu));
         });
       }
     } catch (err) {
