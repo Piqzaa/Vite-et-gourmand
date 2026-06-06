@@ -3,7 +3,14 @@
 function nav_item(string $lien, string $titre): string
 {
     $classe = 'navbar__link';
-    if ((basename($_SERVER['SCRIPT_NAME']) === $lien)) {
+    $currentPage = $_GET['page'] ?? 'home';
+    
+    // Si le lien est index.php, c'est la home
+    if ($lien === 'index.php' && $currentPage === 'home') {
+        $classe .= ' navbar__link--active';
+    } 
+    // Sinon on compare avec le nom du fichier
+    elseif (basename($_SERVER['SCRIPT_NAME']) === $lien && !isset($_GET['page'])) {
         $classe .= ' navbar__link--active';
     }
 
@@ -26,7 +33,7 @@ function nav_itemMobil(string $lien, string $titre): string
 function getRoleMenuLinks(): array {
     if (!isset($_SESSION['user_id'])) {
         return [
-            ['connexion.php', 'Connexion 🔐', 'navbar__cta'],
+            ['index.php?page=login', 'Connexion 🔐', 'navbar__cta'],
             ['inscription.php', 'Inscription 📝', 'navbar__cta--secondary']
         ];
     }
@@ -35,19 +42,19 @@ function getRoleMenuLinks(): array {
         case 'admin':
             return [
                 ['espace-admin.php', 'Administration 🛠️', 'navbar__cta--secondary'],
-                ['assets/php/auth/logout.php', 'Déconnexion ➜]', 'navbar__cta']
+                ['index.php?page=logout', 'Déconnexion ➜]', 'navbar__cta']
             ];
 
         case 'employe':
             return [
                 ['espace-employe.php', 'Espace employé 🧑‍🍳', 'navbar__cta--secondary'],
-                ['assets/php/auth/logout.php', 'Déconnexion ➜]', 'navbar__cta']
+                ['index.php?page=logout', 'Déconnexion ➜]', 'navbar__cta']
             ];
 
         default: // user
             return [
                 ['espace-utilisateur.php', 'Mon compte 👤', 'navbar__cta--secondary'],
-                ['assets/php/auth/logout.php', 'Déconnexion ➜]', 'navbar__cta']
+                ['index.php?page=logout', 'Déconnexion ➜]', 'navbar__cta']
             ];
     }
 }
