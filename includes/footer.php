@@ -33,8 +33,8 @@ $horaires = $pdo->query('SELECT * FROM horaire ORDER BY horaire_id ASC')->fetchA
             <h4 class="footer__heading">Navigation</h4>
             <ul class="footer__nav">
                 <li><a href="index.php">Accueil</a></li>
-                <li><a href="menus.php">Nos menus</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="index.php?page=menus">Nos menus</a></li>
+                <li><a href="index.php?page=contact">Contact</a></li>
             </ul>
         </div>
         <div class="footer__col">

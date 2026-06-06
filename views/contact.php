@@ -1,7 +1,4 @@
 <?php
-session_start();
-$title = 'Contact';
-$description = 'Contactez Vite & Gourmand pour toute question ou demande particulière concernant nos menus traiteur à Bordeaux.';
 ob_start();
 ?>
       <section class="page-header">
@@ -24,7 +21,7 @@ ob_start();
               <div class="alert alert--error" role="alert"><?= $_SESSION['contact_error']; unset($_SESSION['contact_error']); ?></div>
             <?php endif; ?>
 
-            <form class="auth-form" action="assets/php/contact/send.php" method="POST" novalidate>
+            <form class="auth-form" action="index.php?page=contact&action=submit" method="POST" novalidate>
               <div class="form-group">
                 <label class="form-label" for="contact-email">Votre adresse email (requis)</label>
                 <input
@@ -79,5 +76,5 @@ ob_start();
       </section>
 <?php
 $content = ob_get_clean();
-require_once 'includes/layout.php';
+require_once __DIR__ . '/../includes/layout.php';
 ?>

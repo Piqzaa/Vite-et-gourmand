@@ -13,6 +13,7 @@ use App\Controller\HomeController;
 use App\Controller\CommandeController;
 use App\Controller\AuthController;
 use App\Controller\MenuController;
+use App\Controller\ContactController;
 use App\Repository\MenuRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
@@ -104,6 +105,15 @@ try {
             $authService = new AuthService($userRepo);
             $controller = new AuthController($authService, $logger);
             $controller->logout();
+            break;
+
+        case 'contact':
+            $controller = new ContactController();
+            if ($action === 'submit') {
+                $controller->submit();
+            } else {
+                $controller->index();
+            }
             break;
 
         default:
