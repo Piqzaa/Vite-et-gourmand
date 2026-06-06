@@ -105,4 +105,19 @@ class MenuRepository {
         $stmt = $this->pdo->prepare('UPDATE menu SET stock_disponible = stock_disponible - 1 WHERE menu_id = ?');
         return $stmt->execute([$menuId]);
     }
+
+    public function findPlatsByMenuId(int $menuId): array {
+        $stmt = $this->pdo->prepare('
+            SELECT p.plat_id, p.libelle AS plat_titre, p.type, p.image_path,
+                  GROUP_CONCAT(a.libelle SEPARATOR ", ") AS allergenes
+            FROM compose_menu cm
+            JOIN plat p ON cm.plat_id = p.plat_id
+            LEFT JOIN plat_allergene pa ON p.plat_id = pa.plat_id
+            LEFT JOIN allergene a ON pa.allergene_id = a.allergene_id
+            WHERE cm.menu_id = :id
+            GROUP BY p.plat_id, p.libelle, p.type, p.image_path
+        ');
+        $stmt->execute([':id' => $menuId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -120,7 +120,7 @@ export function initMenuFilters() {
     meta.append(price, persons);
 
     const link = document.createElement("a");
-    link.href = `menu-detail.php?id=${menu.menu_id}`;
+    link.href = `index.php?page=menu-detail&id=${menu.menu_id}`;
     link.className = "btn btn--outline btn--full";
     link.textContent = "Voir le détail";
 

@@ -144,7 +144,7 @@ ob_start();
                           <p class="menu-card__info">
                               À partir de <?= $menu['prix_base'] ?>€ · <?= $menu['nombre_personne_min'] ?> personnes min.
                           </p>
-                          <a href="menu-detail.php?id=<?= $menu['menu_id'] ?>" class="btn btn--outline">
+                          <a href="index.php?page=menu-detail&id=<?= $menu['menu_id'] ?>" class="btn btn--outline">
                               Voir le détail
                           </a>
                       </div>

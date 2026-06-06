@@ -69,6 +69,12 @@ try {
             }
             break;
 
+        case 'menu-detail':
+            $menuRepo = new MenuRepository($pdo);
+            $controller = new MenuController($menuRepo);
+            $controller->detail();
+            break;
+
         case 'login':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);

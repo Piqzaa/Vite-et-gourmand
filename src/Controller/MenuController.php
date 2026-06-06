@@ -21,6 +21,40 @@ class MenuController {
     }
 
     /**
+     * Affiche les détails d'un menu spécifique
+     */
+    public function detail(): void {
+        $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        
+        if ($id === 0) {
+            header('Location: index.php?page=menus');
+            exit;
+        }
+
+        $menu = $this->menuRepository->findById($id);
+
+        if (!$menu) {
+            header('Location: index.php?page=menus');
+            exit;
+        }
+
+        $plats = $this->menuRepository->findPlatsByMenuId($id);
+
+        $platsByType = ['entrée' => [], 'plat' => [], 'dessert' => []];
+        foreach ($plats as $plat) {
+            $type = $plat['type'];
+            if (isset($platsByType[$type])) {
+                $platsByType[$type][] = $plat;
+            }
+        }
+
+        $title = 'Détails du menu ' . $menu['titre'];
+        $description = 'Découvrez la composition détaillée du menu ' . $menu['titre'];
+
+        require __DIR__ . '/../../views/menu-detail.php';
+    }
+
+    /**
      * Action API pour retourner la liste des menus filtrée (JSON)
      */
     public function apiList(): void {
