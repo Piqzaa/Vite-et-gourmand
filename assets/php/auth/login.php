@@ -6,7 +6,7 @@ require_once __DIR__ . '/../includes/MongoLogger.php';
 $logger = new MongoLogger('login_logs');
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ' . BASE_URL . '/connexion.php');
+    header('Location: ' . BASE_URL . '/index.php?page=login');
     exit;
 }
 
@@ -19,13 +19,13 @@ $csrfToken = $_POST['csrf_token'] ?? '';
 // Vérifie le token CSRF
 if (!validateCsrfToken($csrfToken)) {
     $logger->log('echec_connexion', ['email' => $email, 'raison' => 'csrf_invalide']);
-    header('Location: ' . BASE_URL . '/connexion.php?error=csrf_invalide');
+    header('Location: ' . BASE_URL . '/index.php?page=login&error=csrf_invalide');
     exit;
 }
 
 if (empty($email) || empty($password)) {
     $logger->log('echec_connexion', ['email' => $email, 'raison' => 'champs_vides']);
-    header('Location: ' . BASE_URL . '/connexion.php?error=champs_vides');
+    header('Location: ' . BASE_URL . '/index.php?page=login&error=champs_vides');
     exit;
 }
 
@@ -37,13 +37,13 @@ $user = $stmt->fetch();
 // password_verify compare le mdp saisi avec le hash en BDD
 if (!$user || !password_verify($password, $user['password'])) {
     $logger->log('echec_connexion', ['email' => $email, 'raison' => 'identifiants_invalides']);
-    header('Location: ' . BASE_URL . '/connexion.php?error=identifiants_invalides');
+    header('Location: ' . BASE_URL . '/index.php?page=login&error=identifiants_invalides');
     exit;
 }
 
 if (isset($user['actif']) && !$user['actif']) {
     $logger->log('echec_connexion', ['email' => $email, 'raison' => 'compte_desactive']);
-    header('Location: ' . BASE_URL . '/connexion.php?error=compte_desactive');
+    header('Location: ' . BASE_URL . '/index.php?page=login&error=compte_desactive');
     exit;
 }
 
