@@ -1,106 +1,4 @@
 <?php
-require_once __DIR__ . '/assets/php/includes/functions.php';
-require_once __DIR__ . '/assets/php/config/db.php';
-require_once __DIR__ . '/assets/php/includes/session.php';
-
-sessionStart();
-$pdo = getDB();
-
-if (!isConnected() || getUserRole() !== 'utilisateur') {
-    header('Location: connexion.php');
-    exit();
-}
-
-$userId = getUserId();
-
-// 1. Récupération utilisateur
-$queryUser = "SELECT nom, prenom, email, gsm, adresse_postale, ville FROM utilisateur WHERE utilisateur_id = :id";
-$stmtUser = $pdo->prepare($queryUser);
-$stmtUser->execute(['id' => $userId]);
-$user = $stmtUser->fetch(PDO::FETCH_ASSOC);
-
-// 2. Définition du workflow de suivi (ordre des statuts)
-// Attention : "annulée" n'est pas dedans car c'est un statut "hors circuit" classique, on le gère à part.
-$workflow = ['en attente', 'accepté', 'en préparation', 'en cours de livraison', 'en attente du retour de matériel', 'livré', 'terminée'];
-
-// 3. Récupération des commandes avec leur suivi
-$queryCommandes = "
-    SELECT c.*, m.titre AS menu_nom 
-    FROM commande c 
-    JOIN menu m ON c.menu_id = m.menu_id 
-    WHERE c.utilisateur_id = :id 
-    ORDER BY c.date_commande DESC";
-
-$stmtCommandes = $pdo->prepare($queryCommandes);
-$stmtCommandes->execute(['id' => $userId]);
-$commandesRaw = $stmtCommandes->fetchAll(PDO::FETCH_ASSOC);
-
-$commandes = [];
-foreach ($commandesRaw as $cmd) {
-    $querySuivi = "SELECT * FROM suivi_commande WHERE commande_id = :cid ORDER BY date_modif ASC";
-    $stmtSuivi = $pdo->prepare($querySuivi);
-    $stmtSuivi->execute(['cid' => $cmd['commande_id']]);
-    $historiqueDB = $stmtSuivi->fetchAll(PDO::FETCH_ASSOC);
-
-    $suiviIndexed = [];
-    foreach ($historiqueDB as $h) {
-        $suiviIndexed[$h['statut']] = $h;
-    }
-
-    $etapesVue = [];
-    $foundActive = false;
-    $nextDisplayed = false;
-    
-    // On vérifie si la commande a atteint un statut final
-    $isFinalStatus = ($cmd['statut'] === 'terminée' || $cmd['statut'] === 'annulée');
-
-    foreach ($workflow as $index => $statusName) {
-        $isDone = isset($suiviIndexed[$statusName]);
-        $isActive = ($cmd['statut'] === $statusName);
-        
-        $classe = "";
-        
-        if ($isActive) {
-            // Si c'est l'étape actuelle ET que la commande est terminée, elle passe en --done. Sinon --active.
-            $classe = $isFinalStatus ? "commande-suivi__step--done" : "commande-suivi__step--active";
-            $foundActive = true;
-        } elseif ($isDone && !$foundActive) { 
-            // C'est une étape passée (déjà dans l'historique ET on n'a pas encore atteint l'active)
-            $classe = "commande-suivi__step--done";
-        } elseif ($foundActive && !$nextDisplayed && !$isFinalStatus) {
-            // On affiche l'étape suivante avec une classe vide (point gris) uniquement si la commande n'est pas finalisée
-            $classe = ""; 
-            $nextDisplayed = true;
-        } else {
-            // Les étapes trop lointaines ne sont pas affichées
-            continue; 
-        }
-
-        $etapesVue[] = [
-            'nom' => $statusName,
-            'classe' => $classe,
-            'date' => $isDone ? $suiviIndexed[$statusName]['date_modif'] : null,
-            'commentaire' => $isDone ? $suiviIndexed[$statusName]['commentaire'] : null
-        ];
-    }
-
-    // Gestion spécifique du cas "annulée" car il n'est pas dans le tableau $workflow
-    if ($cmd['statut'] === 'annulée') {
-        $etapesVue[] = [
-            'nom' => 'annulée',
-            'classe' => 'commande-suivi__step--done', // Point plein car c'est un statut final
-            'date' => isset($suiviIndexed['annulée']) ? $suiviIndexed['annulée']['date_modif'] : null,
-            'commentaire' => isset($suiviIndexed['annulée']) ? $suiviIndexed['annulée']['commentaire'] : null
-        ];
-    }
-
-    $cmd['suivi_affichage'] = $etapesVue;
-    $commandes[] = $cmd;
-}
-
-$title = 'Espace Utilisateur';
-$description = 'Gérez vos commandes, modifiez votre profil et laissez votre avis sur Vite & Gourmand.';
-
 ob_start();
 ?>
       <div class="dashboard">
@@ -196,9 +94,8 @@ ob_start();
 
                         <?php if ($cmd['statut'] === 'terminée'): ?>
                             <?php 
-                                $checkAvis = $pdo->prepare("SELECT avis_id FROM avis WHERE commande_id = ?");
-                                $checkAvis->execute([$cmd['commande_id']]);
-                                if (!$checkAvis->fetch()): 
+
+                                if (!$cmd['has_avis']): 
                             ?>
                             <div class="avis-form">
                                 <h3 class="avis-form__title">Votre avis nous intéresse</h3>

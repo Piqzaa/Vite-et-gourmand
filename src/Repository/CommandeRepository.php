@@ -22,7 +22,7 @@ class CommandeRepository {
 
     public function findByUserId(int $userId): array {
         $stmt = $this->pdo->prepare('
-            SELECT c.*, m.titre as menu_titre
+            SELECT c.*, m.titre as menu_nom
             FROM commande c
             JOIN menu m ON c.menu_id = m.menu_id
             WHERE c.utilisateur_id = ?
@@ -32,7 +32,24 @@ class CommandeRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function save(array $data): int {
+    public function getSuiviByCommandeId(int $commandeId): array {
+        $stmt = $this->pdo->prepare('
+            SELECT * FROM suivi_commande 
+            WHERE commande_id = ? 
+            ORDER BY date_modif ASC
+        ');
+        $stmt->execute([$commandeId]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function hasAvis(int $commandeId): bool
+        {
+            $stmt = $this->pdo->prepare("SELECT avis_id FROM avis WHERE commande_id = ?");
+            $stmt->execute([$commandeId]);
+            return (bool) $stmt->fetch();
+        }
+    
+        public function save(array $data): int {
         $stmt = $this->pdo->prepare('
             INSERT INTO commande 
                 (date_commande, date_prestation, heure_prestation, adresse_livraison,
