@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/assets/php/includes/session.php';
+sessionStart();
 
 /**
  * FRONT CONTROLLER - Vite & Gourmand
@@ -7,13 +9,15 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/assets/php/config/db.php';
-require_once __DIR__ . '/assets/php/includes/session.php';
+require_once __DIR__ . '/assets/php/includes/functions.php';
+require_once __DIR__ . '/assets/php/config/db.php';
 
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
 use App\Controller\AuthController;
 use App\Controller\MenuController;
 use App\Controller\ContactController;
+use App\Controller\UserController;
 use App\Repository\MenuRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
@@ -24,7 +28,6 @@ use App\Service\MailService;
 use App\Service\LoggerService;
 
 // 1. Initialisation
-sessionStart();
 $pdo = getDB();
 $page = $_GET['page'] ?? 'home';
 $action = $_GET['action'] ?? 'index';
@@ -114,6 +117,14 @@ try {
             } else {
                 $controller->index();
             }
+            break;
+
+        case 'espace-utilisateur':
+            $userRepo = new UserRepository($pdo);
+            $commandeRepo = new CommandeRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new UserController($userRepo, $commandeRepo, $authService, $logger);
+            $controller->index();
             break;
 
         default:

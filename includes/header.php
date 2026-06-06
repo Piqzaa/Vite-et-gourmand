@@ -1,8 +1,3 @@
-<?php 
-require_once __DIR__ . '/../assets/php/includes/functions.php';
-?>
-
-
   <header class="navbar">
       <div class="navbar__container">
         <a
