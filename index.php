@@ -69,6 +69,18 @@ try {
             }
             break;
 
+        case 'register':
+            $userRepo = new UserRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AuthController($authService, $logger);
+            
+            if ($action === 'process') {
+                $controller->register();
+            } else {
+                $controller->registerPage();
+            }
+            break;
+
         case 'logout':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
