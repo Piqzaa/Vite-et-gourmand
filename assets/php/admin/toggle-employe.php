@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/session.php';
 sessionStart();
 
 if (!isConnected() || getUserRole() !== 'admin') {
-    header('Location: ' . BASE_URL . '/connexion.php');
+    header('Location: ' . BASE_URL . '/index.php?page=login');
     exit;
 }
 
