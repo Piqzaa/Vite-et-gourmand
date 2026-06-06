@@ -41,10 +41,10 @@ services:
       DB_CHARSET: ${DB_CHARSET:-utf8mb4}
       MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017}
       BASE_URL: ${BASE_URL:-""}
-      SMTP_HOST: ${SMTP_HOST:-smtp-relay.brevo.com}
-      SMTP_PORT: ${SMTP_PORT:-587}
-      SMTP_USER: ${SMTP_USER:-""}
-      SMTP_PASS: ${SMTP_PASS:-""}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
       SMTP_FROM: ${SMTP_FROM:-noreply@viteetgourmand.fr}
       SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Vite & Gourmand}
     depends_on:
@@ -61,6 +61,14 @@ services:
       PMA_HOST: db
     depends_on:
       - db
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: vg_mailpit
+    restart: always
+    ports:
+      - "1025:1025" # Port SMTP
+      - "8025:8025" # Interface Web
 
 volumes:
   vg_db_data:

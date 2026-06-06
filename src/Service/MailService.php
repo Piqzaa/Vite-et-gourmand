@@ -11,13 +11,18 @@ class MailService {
         try {
             // Configuration Serveur
             $mail->isSMTP();
-            $mail->Host       = getenv('SMTP_HOST') ?: 'smtp-relay.brevo.com';
-            $mail->SMTPAuth   = true;
-            $mail->Username   = getenv('SMTP_USER');
-            $mail->Password   = getenv('SMTP_PASS');
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = (int)(getenv('SMTP_PORT') ?: 587);
-            $mail->CharSet    = 'UTF-8';
+            $mail->Host = getenv('SMTP_HOST') ?: 'mailpit';
+            $mail->Port = (int)(getenv('SMTP_PORT') ?: 1025);
+            $mail->CharSet = 'UTF-8';
+            $smtpUser = getenv('SMTP_USER');
+            if (!empty($smtpUser)) {
+                $mail->SMTPAuth   = true;
+                $mail->Username   = $smtpUser;
+                $mail->Password   = getenv('SMTP_PASS');
+                $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            } else {
+                $mail->SMTPAuth = false;
+            }
 
             // Destinataires
             $mail->setFrom(
@@ -30,7 +35,6 @@ class MailService {
             $mail->isHTML(true);
             $mail->Subject = $subject;
             $mail->Body    = $htmlBody;
-
             $mail->send();
             return true;
         } catch (Exception $e) {
