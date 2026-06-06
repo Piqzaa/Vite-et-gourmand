@@ -33,7 +33,7 @@ ob_start();
 
             <form
               class="auth-form"
-              action="commande.php?action=create"
+              action="index.php?page=commande&action=create"
               method="POST"
               novalidate
               id="commande-form"

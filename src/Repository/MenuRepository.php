@@ -80,6 +80,27 @@ class MenuRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function findRandomAvailable(int $limit = 3): array {
+        $stmt = $this->pdo->prepare('
+            SELECT m.menu_id, m.titre, m.prix_base, m.nombre_personne_min,
+                   t.libelle AS theme,
+                   (SELECT p.image_path 
+                    FROM compose_menu cm 
+                    JOIN plat p ON cm.plat_id = p.plat_id 
+                    WHERE cm.menu_id = m.menu_id 
+                      AND p.type = \'plat\' 
+                    LIMIT 1) AS image_path
+            FROM menu m
+            LEFT JOIN theme t ON m.theme_id = t.theme_id
+            WHERE m.stock_disponible > 0
+            ORDER BY RAND()
+            LIMIT :limit
+        ');
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function decrementStock(int $menuId): bool {
         $stmt = $this->pdo->prepare('UPDATE menu SET stock_disponible = stock_disponible - 1 WHERE menu_id = ?');
         return $stmt->execute([$menuId]);
