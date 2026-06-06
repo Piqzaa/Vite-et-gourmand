@@ -108,7 +108,7 @@ try {
             break;
 
         case 'contact':
-            $controller = new ContactController();
+            $controller = new ContactController($mailService, $logger);
             if ($action === 'submit') {
                 $controller->submit();
             } else {
