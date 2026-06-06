@@ -9,7 +9,10 @@ function nav_item(string $lien, string $titre): string
     if ($lien === 'index.php' && $currentPage === 'home') {
         $classe .= ' navbar__link--active';
     } 
-    // Sinon on compare avec le nom du fichier
+    // Lien Nos menus
+    elseif ($lien === 'menus.php' && $currentPage === 'menus') {
+        $classe .= ' navbar__link--active';
+    }
     elseif (basename($_SERVER['SCRIPT_NAME']) === $lien && !isset($_GET['page'])) {
         $classe .= ' navbar__link--active';
     }

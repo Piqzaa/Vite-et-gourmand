@@ -23,7 +23,7 @@ ob_start();
             </p>
 
             <div class="hero__actions">
-              <a href="menus.php" class="btn btn--primary">Voir nos menus</a>
+              <a href="index.php?page=menus" class="btn btn--primary">Voir nos menus</a>
               <a href="contact.php" class="btn btn--secondary"
                 >Nous contacter</a
               >
@@ -117,7 +117,7 @@ ob_start();
             <h2 class="section-title" id="menus-home-title">
               Nos menus du moment
             </h2>
-            <a href="menus.php" class="menus-home__link"
+            <a href="index.php?page=menus" class="menus-home__link"
               >Voir tous les menus →</a
             >
           </div>

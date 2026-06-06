@@ -12,6 +12,7 @@ require_once __DIR__ . '/assets/php/includes/session.php';
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
 use App\Controller\AuthController;
+use App\Controller\MenuController;
 use App\Repository\MenuRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
@@ -52,6 +53,17 @@ try {
             
             if ($action === 'create') {
                 $controller->create();
+            } else {
+                $controller->index();
+            }
+            break;
+
+        case 'menus':
+            $menuRepo = new MenuRepository($pdo);
+            $controller = new MenuController($menuRepo);
+            
+            if ($action === 'api') {
+                $controller->apiList();
             } else {
                 $controller->index();
             }

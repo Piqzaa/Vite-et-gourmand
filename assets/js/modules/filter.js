@@ -133,7 +133,7 @@ export function initMenuFilters() {
   async function fetchMenus() {
     const params = buildParams();
     try {
-      const res = await fetch(`assets/php/api/menus.php?${params}`);
+      const res = await fetch(`index.php?page=menus&action=api&${params}`);
       const data = await res.json();
 
       // On vide TOUTE la grille avant de ré-afficher
