@@ -126,4 +126,61 @@ class MenuRepository {
         $stmt->execute([':id' => $menuId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function save(array $data): int {
+        $stmt = $this->pdo->prepare('
+            INSERT INTO menu (titre, description, prix_base, nombre_personne_min, 
+                             stock_disponible, theme_id, regime_id, conditions_particulieres)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ');
+        $stmt->execute([
+            $data['titre'], $data['description'], $data['prix_base'], 
+            $data['nombre_personne_min'], $data['stock_disponible'], 
+            $data['theme_id'], $data['regime_id'], $data['conditions_particulieres']
+        ]);
+        return (int)$this->pdo->lastInsertId();
+    }
+
+    public function update(int $id, array $data): bool {
+        $stmt = $this->pdo->prepare('
+            UPDATE menu SET 
+                titre = ?, description = ?, prix_base = ?, 
+                nombre_personne_min = ?, stock_disponible = ?, 
+                theme_id = ?, regime_id = ?, conditions_particulieres = ?
+            WHERE menu_id = ?
+        ');
+        return $stmt->execute([
+            $data['titre'], $data['description'], $data['prix_base'], 
+            $data['nombre_personne_min'], $data['stock_disponible'], 
+            $data['theme_id'], $data['regime_id'], $data['conditions_particulieres'],
+            $id
+        ]);
+    }
+
+    public function linkPlats(int $menuId, array $platIds): void {
+        $stmt = $this->pdo->prepare('INSERT INTO compose_menu (menu_id, plat_id) VALUES (?, ?)');
+        foreach ($platIds as $platId) {
+            $stmt->execute([$menuId, (int)$platId]);
+        }
+    }
+
+    public function unlinkPlats(int $menuId): void {
+        $stmt = $this->pdo->prepare('DELETE FROM compose_menu WHERE menu_id = ?');
+        $stmt->execute([$menuId]);
+    }
+
+    public function delete(int $id): bool {
+        $stmt = $this->pdo->prepare('DELETE FROM menu WHERE menu_id = ?');
+        return $stmt->execute([$id]);
+    }
+
+    public function getPlatIds(int $menuId): array {
+        $stmt = $this->pdo->prepare('SELECT plat_id FROM compose_menu WHERE menu_id = ?');
+        $stmt->execute([$menuId]);
+        return array_column($stmt->fetchAll(PDO::FETCH_ASSOC), 'plat_id');
+    }
+
+    public function beginTransaction(): void { $this->pdo->beginTransaction(); }
+    public function commit(): void { $this->pdo->commit(); }
+    public function rollBack(): void { $this->pdo->rollBack(); }
 }

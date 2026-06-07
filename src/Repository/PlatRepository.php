@@ -41,11 +41,28 @@ class PlatRepository {
         
         return $plats;
     }
-    public function save(array $data): bool {
+    public function save(array $data): int {
         $stmt = $this->pdo->prepare('
             INSERT INTO plat (libelle, type, image_path)
             VALUES (?, ?, ?)
         ');
-        return $stmt->execute([$data['libelle'], $data['type'], $data['image_path'] ?? null]);
+        $stmt->execute([$data['libelle'], $data['type'], $data['image_path'] ?? null]);
+        return (int)$this->pdo->lastInsertId();
     }
+
+    public function linkAllergenes(int $platId, array $allergeneIds): void {
+        $stmt = $this->pdo->prepare('INSERT INTO plat_allergene (plat_id, allergene_id) VALUES (?, ?)');
+        foreach ($allergeneIds as $allergeneId) {
+            $stmt->execute([$platId, (int)$allergeneId]);
+        }
+    }
+
+    public function delete(int $id): bool {
+        $stmt = $this->pdo->prepare('DELETE FROM plat WHERE plat_id = ?');
+        return $stmt->execute([$id]);
+    }
+
+    public function beginTransaction(): void { $this->pdo->beginTransaction(); }
+    public function commit(): void { $this->pdo->commit(); }
+    public function rollBack(): void { $this->pdo->rollBack(); }
 }
