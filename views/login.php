@@ -13,6 +13,9 @@ ob_start();
 
             <form class="auth-form" action="index.php?page=login&action=process" method="POST">
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
+                <?php if (isset($redirect) && !empty($redirect)): ?>
+                    <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect) ?>">
+                <?php endif; ?>
                 <?php if (isset($_GET['error'])): ?>
                     <p class="form-error" style="color: var(--error-color, red); margin-bottom: 1rem;">
                         Identifiants incorrects ou compte inactif.
@@ -57,7 +60,7 @@ ob_start();
 
         <p class="auth-card__footer">
             Pas encore de compte ?
-            <a href="inscription.php" class="form-link">Créer un compte</a>
+            <a href="index.php?page=register" class="form-link">Créer un compte</a>
         </p>
     </div>
 </section>

@@ -4,11 +4,13 @@ namespace App\Controller;
 
 use App\Service\AuthService;
 use App\Service\LoggerService;
+use App\Repository\UserRepository;
 
 class AuthController {
     public function __construct(
         private AuthService $authService,
-        private LoggerService $logger
+        private LoggerService $logger,
+        private UserRepository $userRepository
     ) {}
 
     /**
@@ -20,6 +22,7 @@ class AuthController {
             exit;
         }
 
+        $redirect = $_GET['redirect'] ?? '';
         $title = 'Connexion';
         $description = 'Connectez-vous à votre espace client Vite & Gourmand.';
         
@@ -32,19 +35,30 @@ class AuthController {
     public function login(): void {
         $email = $_POST['email'] ?? '';
         $password = $_POST['password'] ?? '';
+        $redirectUrl = $_POST['redirect'] ?? '';
 
         if ($this->authService->login($email, $password)) {
             $this->logger->log('auth_success', ['email' => $email]);
             
-            // Redirection selon le rôle
+            // Si une URL de redirection est fournie, on l'utilise
+            if (!empty($redirectUrl)) {
+                header("Location: $redirectUrl");
+                exit;
+            }
+
+            // Sinon redirection par défaut selon le rôle
             $redirect = 'index.php?page=home';
-            if ($this->authService->isAdmin()) $redirect = 'espace-admin.php';
-            elseif ($this->authService->isEmploye()) $redirect = 'espace-employe.php';
+            if ($this->authService->isAdmin()) $redirect = 'index.php?page=espace-admin'; // À adapter selon les routes
+            elseif ($this->authService->isEmploye()) $redirect = 'index.php?page=espace-employe';
             
             header("Location: $redirect");
         } else {
             $this->logger->log('auth_failed', ['email' => $email]);
-            header('Location: index.php?page=login&error=1');
+            $url = 'index.php?page=login&error=1';
+            if (!empty($redirectUrl)) {
+                $url .= '&redirect=' . urlencode($redirectUrl);
+            }
+            header("Location: $url");
         }
         exit;
     }

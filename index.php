@@ -83,7 +83,7 @@ try {
         case 'login':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger);
+            $controller = new AuthController($authService, $logger, $userRepo);
             
             if ($action === 'process') {
                 $controller->login();
@@ -95,7 +95,7 @@ try {
         case 'register':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger);
+            $controller = new AuthController($authService, $logger, $userRepo);
             
             if ($action === 'process') {
                 $controller->register();
@@ -107,7 +107,7 @@ try {
         case 'logout':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger);
+            $controller = new AuthController($authService, $logger, $userRepo);
             $controller->logout();
             break;
 
