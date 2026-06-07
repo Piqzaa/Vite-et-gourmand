@@ -7,10 +7,16 @@ use PDO;
 class MenuRepository {
     public function __construct(private PDO $pdo) {}
 
+    public function findAll(): array {
+        $stmt = $this->pdo->query('
+            SELECT * FROM menu
+            ORDER BY titre
+        ');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     public function findAllAvailable(): array {
         $stmt = $this->pdo->query('
-            SELECT menu_id, titre, prix_base, nombre_personne_min, conditions_particulieres, stock_disponible
-            FROM menu
+            SELECT * FROM menu
             WHERE stock_disponible > 0
             ORDER BY titre
         ');

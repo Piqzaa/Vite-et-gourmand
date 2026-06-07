@@ -28,4 +28,10 @@ class UserRepository {
         ');
         return $stmt->execute($data);
     }
+
+    public function findByRole(string $role): array {
+        $stmt = $this->pdo->prepare('SELECT utilisateur_id, nom, prenom, email, actif FROM utilisateur WHERE role = ? ORDER BY nom');
+        $stmt->execute([$role]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

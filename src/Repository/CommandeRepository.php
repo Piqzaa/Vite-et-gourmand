@@ -91,6 +91,43 @@ class CommandeRepository {
         return $stmt->execute([$statut, $commandeId]);
     }
 
+    public function findAllWithDetails(): array {
+        $stmt = $this->pdo->prepare('
+            SELECT c.*, m.titre as menu_nom, 
+                   u.email as client_email, u.prenom as client_prenom, u.nom as client_nom, u.gsm as client_gsm
+            FROM commande c
+            JOIN menu m ON c.menu_id = m.menu_id
+            JOIN utilisateur u ON c.utilisateur_id = u.utilisateur_id
+            ORDER BY c.date_commande DESC
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getGlobalStats(): array {
+        $stmt = $this->pdo->query('
+            SELECT
+                COUNT(*) AS nb_commandes,
+                SUM(prix_total_ttc) AS total_ttc,
+                AVG(prix_total_ttc) AS panier_moyen
+            FROM commande
+            WHERE statut != "annulée"
+        ');
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
+    }
+
+    public function getStatsByMenu(): array {
+        $stmt = $this->pdo->query('
+            SELECT m.titre, COUNT(c.commande_id) AS nombre_commandes, SUM(c.prix_total_ttc) AS ca
+            FROM commande c
+            JOIN menu m ON c.menu_id = m.menu_id
+            WHERE c.statut != "annulée"
+            GROUP BY m.menu_id, m.titre
+            ORDER BY nombre_commandes DESC
+        ');
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function beginTransaction(): void { $this->pdo->beginTransaction(); }
     public function commit(): void { $this->pdo->commit(); }
     public function rollBack(): void { $this->pdo->rollBack(); }
