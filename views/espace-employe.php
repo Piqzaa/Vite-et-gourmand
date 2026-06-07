@@ -1,78 +1,4 @@
 <?php
-require_once __DIR__ . '/assets/php/config/db.php';
-require_once __DIR__ . '/assets/php/includes/session.php';
-
-sessionStart();
-
-if (!isConnected() || !in_array(getUserRole(), ['employe', 'admin'])) {
-    header('Location: ' . BASE_URL . '/connexion.php');
-    exit;
-}
-
-$pdo = getDB();
-
-// Commandes avec infos client et menu
-$commandes = $pdo->query('
-    SELECT c.*, 
-          m.titre AS menu_nom,
-          u.nom AS client_nom, 
-          u.prenom AS client_prenom,
-          u.email AS client_email,
-          u.gsm AS client_gsm
-    FROM commande c
-    JOIN menu m ON c.menu_id = m.menu_id
-    JOIN utilisateur u ON c.utilisateur_id = u.utilisateur_id
-    ORDER BY c.date_commande DESC
-')->fetchAll();
-
-// Menus
-$menus = $pdo->query('
-    SELECT m.menu_id, m.titre, m.prix_base, m.stock_disponible,
-          t.libelle AS theme
-    FROM menu m
-    LEFT JOIN theme t ON m.theme_id = t.theme_id
-    ORDER BY m.titre
-')->fetchAll();
-
-$plats = $pdo->query('
-    SELECT plat_id,
-    libelle, type FROM plat ORDER BY type, libelle
-    ')->fetchAll();
-
-// Allergènes par plat
-$platsAvecAllergenes = [];
-foreach ($plats as $plat) {
-    $stmt = $pdo->prepare('
-        SELECT a.libelle FROM allergene a
-        JOIN plat_allergene pa ON a.allergene_id = pa.allergene_id
-        WHERE pa.plat_id = ?
-    ');
-    $stmt->execute([$plat['plat_id']]);
-    $plat['allergenes'] = $stmt->fetchAll(PDO::FETCH_COLUMN);
-    $platsAvecAllergenes[] = $plat;
-}
-
-// Horaires
-$horaires = $pdo->query('
-    SELECT * FROM horaire ORDER BY horaire_id ASC
-')->fetchAll();
-
-// Avis en attente
-$avis = $pdo->query('
-    SELECT a.*, 
-          u.nom AS client_nom, 
-          u.prenom AS client_prenom,
-          m.titre AS menu_nom
-    FROM avis a
-    JOIN utilisateur u ON a.utilisateur_id = u.utilisateur_id
-    JOIN commande c ON a.commande_id = c.commande_id
-    JOIN menu m ON c.menu_id = m.menu_id
-    WHERE a.est_valide = 0
-    ORDER BY a.date_publication DESC
-')->fetchAll();
-
-$title = 'Espace employé';
-$description = 'Bienvenue dans votre espace employé sur Vite & Gourmand. Gérez les commandes, consultez les avis clients, et mettez à jour les horaires d\'ouverture pour offrir la meilleure expérience à nos clients à Bordeaux.';
 ob_start();
 ?>
       <div class="dashboard">
@@ -187,6 +113,7 @@ ob_start();
                       <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
                       <div>
                           <form action="assets/php/commande/update-statut.php" method="POST">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Changer le statut</label>
@@ -208,6 +135,7 @@ ob_start();
                           <form action="assets/php/commande/annuler-employe.php" method="POST" 
                                 style="margin-top: 0.5rem"
                                 onsubmit="return confirm('Annuler cette commande ?')">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Mode de contact client</label>
@@ -262,6 +190,7 @@ ob_start();
                         <a href="menu-edit.php?id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                         <form action="assets/php/menu/delete.php" method="POST" style="display:inline"
                               onsubmit="return confirm('Supprimer ce menu ?')">
+                            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                             <input type="hidden" name="menu_id" value="<?= $menu['menu_id'] ?>">
                             <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                         </form>
@@ -325,6 +254,7 @@ ob_start();
               action="assets/php/horaires/update.php"
               method="POST"
             >
+              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
               <table class="employe-table">
                 <thead>
                   <tr>
@@ -386,11 +316,13 @@ ob_start();
                       </blockquote>
                       <div class="avis-moderation__actions">
                           <form action="assets/php/avis/moderer.php" method="POST" style="display:inline">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
                               <input type="hidden" name="action" value="valider">
                               <button type="submit" class="btn btn--primary btn--sm">Valider</button>
                           </form>
                           <form action="assets/php/avis/moderer.php" method="POST" style="display:inline">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                               <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
                               <input type="hidden" name="action" value="refuser">
                               <button type="submit" class="btn btn--secondary btn--sm">Refuser</button>
@@ -405,5 +337,5 @@ ob_start();
       </div>
 <?php
 $content = ob_get_clean();
-require_once 'includes/layout.php';
+require_once __DIR__ . '/../includes/layout.php';
 ?>

@@ -21,9 +21,10 @@ use App\Controller\ContactController;
 use App\Controller\UserController;
 use App\Controller\LegalController;
 use App\Controller\AdminController;
-use App\Repository\PlatRepository;
-use App\Repository\HoraireRepository;
+use App\Controller\EmployeController;
 use App\Repository\MenuRepository;
+use App\Repository\HoraireRepository;
+use App\Repository\PlatRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\AvisRepository;
@@ -141,6 +142,18 @@ try {
             $horaireRepo = new HoraireRepository($pdo);
             $authService = new AuthService($userRepo);
             $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
+            $controller->index();
+            break;
+
+        case 'espace-employe':
+            $userRepo = new UserRepository($pdo);
+            $commandeRepo = new CommandeRepository($pdo);
+            $menuRepo = new MenuRepository($pdo);
+            $avisRepo = new AvisRepository($pdo);
+            $platRepo = new PlatRepository($pdo);
+            $horaireRepo = new HoraireRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new EmployeController($commandeRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
             $controller->index();
             break;
         
