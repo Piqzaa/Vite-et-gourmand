@@ -9,9 +9,9 @@
         </a>
         <nav class="navbar__nav" aria-label="Navigation principale">
           <ul class="navbar__links">
-            <?= nav_item('index.php', 'Accueil') ?>
-            <?= nav_item('menus.php', 'Nos menus') ?>
-            <?= nav_item('contact.php', 'Contact') ?>
+            <?= nav_item('index.php?page=home', 'Accueil') ?>
+            <?= nav_item('index.php?page=menus', 'Nos menus') ?>
+            <?= nav_item('index.php?page=contact', 'Contact') ?>
           </ul>
         </nav>
         <div class="navbar__spacer">
@@ -33,9 +33,9 @@
 
       <nav class="navbar__mobile" id="mobile-menu" aria-hidden="true">
         <ul class="navbar__mobile-links">
-          <?= nav_itemMobil('index.php', 'Accueil') ?>
-          <?= nav_itemMobil('menus.php', 'Nos menus') ?>
-          <?= nav_itemMobil('contact.php', 'Contact') ?>
+          <?= nav_itemMobil('index.php?page=home', 'Accueil') ?>
+          <?= nav_itemMobil('index.php?page=menus', 'Nos menus') ?>
+          <?= nav_itemMobil('index.php?page=contact', 'Contact') ?>
           <?php foreach (getRoleMenuLinks() as $link): ?>
             <?= nav_itemMobil($link[0], $link[1]) ?>
           <?php endforeach; ?>
