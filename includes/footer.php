@@ -40,8 +40,8 @@ $horaires = $pdo->query('SELECT * FROM horaire ORDER BY horaire_id ASC')->fetchA
         <div class="footer__col">
             <h4 class="footer__heading">Légal</h4>
             <ul class="footer__nav">
-                <li><a href="mentions-legales.php">Mentions légales</a></li>
-                <li><a href="cgv.php">Conditions générales de vente</a></li>
+                <li><a href="index.php?page=mentions">Mentions légales</a></li>
+                <li><a href="index.php?page=cgv">Conditions générales de vente</a></li>
             </ul>
         </div>
     </div>
