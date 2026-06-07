@@ -10,8 +10,6 @@ sessionStart();
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/assets/php/config/db.php';
 require_once __DIR__ . '/assets/php/includes/functions.php';
-require_once __DIR__ . '/assets/php/config/db.php';
-
 
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
@@ -23,8 +21,11 @@ use App\Controller\LegalController;
 use App\Controller\AdminController;
 use App\Controller\EmployeController;
 use App\Repository\MenuRepository;
-use App\Repository\HoraireRepository;
 use App\Repository\PlatRepository;
+use App\Repository\HoraireRepository;
+use App\Repository\AllergeneRepository;
+use App\Repository\ThemeRepository;
+use App\Repository\RegimeRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\AvisRepository;
@@ -88,7 +89,7 @@ try {
         case 'login':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
             
             if ($action === 'process') {
                 $controller->login();
@@ -97,10 +98,28 @@ try {
             }
             break;
 
+        case 'forgot-password':
+            $userRepo = new UserRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            $controller->forgotPassword();
+            break;
+
+        case 'reset-password':
+            $userRepo = new UserRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            if ($action === 'process') {
+                $controller->resetPassword();
+            } else {
+                $controller->resetPasswordPage();
+            }
+            break;
+
         case 'register':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
             
             if ($action === 'process') {
                 $controller->register();
@@ -112,7 +131,7 @@ try {
         case 'logout':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
             $controller->logout();
             break;
 
@@ -128,23 +147,18 @@ try {
         case 'espace-utilisateur':
             $userRepo = new UserRepository($pdo);
             $commandeRepo = new CommandeRepository($pdo);
+            $avisRepo = new AvisRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new UserController($userRepo, $commandeRepo, $authService, $logger);
-            $controller->index();
+            $controller = new UserController($userRepo, $commandeRepo, $avisRepo, $authService, $logger);
+            
+            if ($action === 'create-avis') {
+                $controller->createAvis();
+            } else {
+                $controller->index();
+            }
             break;
 
         case 'espace-admin':
-            $userRepo = new UserRepository($pdo);
-            $commandeRepo = new CommandeRepository($pdo);
-            $menuRepo = new MenuRepository($pdo);
-            $avisRepo = new AvisRepository($pdo);
-            $platRepo = new PlatRepository($pdo);
-            $horaireRepo = new HoraireRepository($pdo);
-            $authService = new AuthService($userRepo);
-            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
-            $controller->index();
-            break;
-
         case 'espace-employe':
             $userRepo = new UserRepository($pdo);
             $commandeRepo = new CommandeRepository($pdo);
@@ -152,9 +166,83 @@ try {
             $avisRepo = new AvisRepository($pdo);
             $platRepo = new PlatRepository($pdo);
             $horaireRepo = new HoraireRepository($pdo);
+            $allergeneRepo = new AllergeneRepository($pdo);
+            $themeRepo = new ThemeRepository($pdo);
+            $regimeRepo = new RegimeRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new EmployeController($commandeRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
-            $controller->index();
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            
+            if ($action === 'create-employe') {
+                $controller->createEmploye();
+            } elseif ($action === 'toggle-employe') {
+                $controller->toggleEmploye();
+            } elseif ($action === 'update-horaires') {
+                $controller->updateHoraires();
+            } elseif ($action === 'moderer-avis') {
+                $controller->modererAvis();
+            } else {
+                $controller->index();
+            }
+            break;
+
+        case 'plat-create':
+            $userRepo = new UserRepository($pdo);
+            $commandeRepo = new CommandeRepository($pdo);
+            $menuRepo = new MenuRepository($pdo);
+            $avisRepo = new AvisRepository($pdo);
+            $platRepo = new PlatRepository($pdo);
+            $horaireRepo = new HoraireRepository($pdo);
+            $allergeneRepo = new AllergeneRepository($pdo);
+            $themeRepo = new ThemeRepository($pdo);
+            $regimeRepo = new RegimeRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            
+            if ($action === 'process') {
+                $controller->processCreatePlat();
+            } else {
+                $controller->createPlat();
+            }
+            break;
+
+        case 'menu-create':
+            $userRepo = new UserRepository($pdo);
+            $commandeRepo = new CommandeRepository($pdo);
+            $menuRepo = new MenuRepository($pdo);
+            $avisRepo = new AvisRepository($pdo);
+            $platRepo = new PlatRepository($pdo);
+            $horaireRepo = new HoraireRepository($pdo);
+            $allergeneRepo = new AllergeneRepository($pdo);
+            $themeRepo = new ThemeRepository($pdo);
+            $regimeRepo = new RegimeRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            
+            if ($action === 'process') {
+                $controller->processCreateMenu();
+            } else {
+                $controller->createMenu();
+            }
+            break;
+
+        case 'menu-edit':
+            $userRepo = new UserRepository($pdo);
+            $commandeRepo = new CommandeRepository($pdo);
+            $menuRepo = new MenuRepository($pdo);
+            $avisRepo = new AvisRepository($pdo);
+            $platRepo = new PlatRepository($pdo);
+            $horaireRepo = new HoraireRepository($pdo);
+            $allergeneRepo = new AllergeneRepository($pdo);
+            $themeRepo = new ThemeRepository($pdo);
+            $regimeRepo = new RegimeRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            
+            if ($action === 'process') {
+                $controller->processEditMenu();
+            } else {
+                $controller->editMenu();
+            }
             break;
         
         case 'cgv':
@@ -183,3 +271,5 @@ try {
     $logger->log('critical_error', ['message' => $e->getMessage(), 'page' => $page]);
     echo "Une erreur est survenue : " . htmlspecialchars($e->getMessage());
 }
+
+require_once __DIR__ . '/includes/layout.php';
