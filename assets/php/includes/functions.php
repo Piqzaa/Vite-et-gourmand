@@ -37,7 +37,7 @@ function getRoleMenuLinks(): array {
     if (!isset($_SESSION['user_id'])) {
         return [
             ['index.php?page=login', 'Connexion 🔐', 'navbar__cta'],
-            ['inscription.php', 'Inscription 📝', 'navbar__cta--secondary']
+            ['index.php?page=register', 'Inscription 📝', 'navbar__cta--secondary']
         ];
     }
 
