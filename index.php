@@ -12,6 +12,7 @@ require_once __DIR__ . '/assets/php/config/db.php';
 require_once __DIR__ . '/assets/php/includes/functions.php';
 require_once __DIR__ . '/assets/php/config/db.php';
 
+
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
 use App\Controller\AuthController;
@@ -19,6 +20,9 @@ use App\Controller\MenuController;
 use App\Controller\ContactController;
 use App\Controller\UserController;
 use App\Controller\LegalController;
+use App\Controller\AdminController;
+use App\Repository\PlatRepository;
+use App\Repository\HoraireRepository;
 use App\Repository\MenuRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
@@ -125,6 +129,18 @@ try {
             $commandeRepo = new CommandeRepository($pdo);
             $authService = new AuthService($userRepo);
             $controller = new UserController($userRepo, $commandeRepo, $authService, $logger);
+            $controller->index();
+            break;
+
+        case 'espace-admin':
+            $userRepo = new UserRepository($pdo);
+            $commandeRepo = new CommandeRepository($pdo);
+            $menuRepo = new MenuRepository($pdo);
+            $avisRepo = new AvisRepository($pdo);
+            $platRepo = new PlatRepository($pdo);
+            $horaireRepo = new HoraireRepository($pdo);
+            $authService = new AuthService($userRepo);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
             $controller->index();
             break;
         
