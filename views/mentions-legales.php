@@ -1,6 +1,4 @@
 <?php
-$title = 'Mentions légales';
-$description = 'Découvrez les mentions légales de Vite & Gourmand, incluant les informations sur l\'éditeur du site, l\'hébergement, la propriété intellectuelle, les données personnelles (RGPD), les cookies et la responsabilité.';
 ob_start();
 ?>
       <section class="page-header">
@@ -32,8 +30,8 @@ ob_start();
             <h2 class="legal-content__title">Hébergement</h2>
             <p>Le site est hébergé par :</p>
             <ul>
-              <li><strong>Société :</strong> Fly.io</li>
-              <li><strong>Site web :</strong> https://fly.io</li>
+              <li><strong>Société :</strong> Infinityfree</li>
+              <li><strong>Site web :</strong> https://www.infinityfree.com/</li>
             </ul>
           </div>
 

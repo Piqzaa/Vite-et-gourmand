@@ -1,6 +1,4 @@
 <?php
-$title = 'Conditions générales de vente';
-$description = 'Vite & Gourmand - Conditions générales de vente';
 ob_start();
 ?>
       <section class="page-header">
