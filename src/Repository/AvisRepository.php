@@ -20,4 +20,18 @@ class AvisRepository {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function findPending(): array {
+        $stmt = $this->pdo->prepare('
+            SELECT a.*, u.prenom AS client_prenom, u.nom AS client_nom, m.titre AS menu_titre
+            FROM avis a
+            JOIN utilisateur u ON a.utilisateur_id = u.utilisateur_id
+            JOIN commande c ON a.commande_id = c.commande_id
+            JOIN menu m ON c.menu_id = m.menu_id
+            WHERE a.est_valide = 0
+            ORDER BY a.date_publication DESC
+        ');
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
