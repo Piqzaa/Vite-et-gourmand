@@ -44,4 +44,8 @@ class AuthService {
     public function isEmploye(): bool {
         return ($this->isConnected() && ($_SESSION['user_role'] === 'employe' || $_SESSION['user_role'] === 'admin'));
     }
+
+    public function isUser(): bool {
+        return ($this->isConnected() && $_SESSION['user_role'] === 'utilisateur');
+    }
 }

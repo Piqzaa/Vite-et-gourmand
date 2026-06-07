@@ -23,6 +23,14 @@ class UserController
       exit;
     }
 
+    if (!$this->authService->isUser()) {
+      $redirect = 'index.php?page=espace-utilisateur';
+        if ($this->authService->isAdmin()) $redirect = 'index.php?page=espace-admin';
+        elseif ($this->authService->isEmploye()) $redirect = 'index.php?page=espace-employe';
+      header('Location: ' . $redirect);
+      exit;
+    }
+    
     $userId = $_SESSION['user_id'];
     $user = $this->userRepository->findById($userId);
     $commandesRaw = $this->commandeRepository->findByUserId($userId);
