@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
+use App\Repository\AvisRepository;
 use App\Service\AuthService;
 use App\Service\LoggerService;
 
@@ -12,6 +13,7 @@ class UserController
   public function __construct(
     private UserRepository $userRepository,
     private CommandeRepository $commandeRepository,
+    private AvisRepository $avisRepository,
     private AuthService $authService,
     private LoggerService $logger
   ) {}
@@ -24,11 +26,11 @@ class UserController
     }
 
     if (!$this->authService->isUser()) {
-      $redirect = 'index.php?page=espace-utilisateur';
+        $redirect = 'index.php?page=home';
         if ($this->authService->isAdmin()) $redirect = 'index.php?page=espace-admin';
         elseif ($this->authService->isEmploye()) $redirect = 'index.php?page=espace-employe';
-      header('Location: ' . $redirect);
-      exit;
+        header('Location: ' . $redirect);
+        exit;
     }
     
     $userId = $_SESSION['user_id'];
@@ -37,14 +39,53 @@ class UserController
     
     $commandes = [];
     foreach ($commandesRaw as $cmd) {
-    $cmd['suivi_affichage'] = $this->calculateSuivi($cmd);
-    $cmd['has_avis'] = $this->commandeRepository->hasAvis($cmd['commande_id']);
-    $commandes[] = $cmd;
+        $cmd['suivi_affichage'] = $this->calculateSuivi($cmd);
+        $cmd['has_avis'] = $this->avisRepository->existsForCommande($cmd['commande_id']);
+        $commandes[] = $cmd;
     }
 
     $title = 'Mon compte';
+    $description = 'Gérez votre profil et suivez vos commandes Vite & Gourmand.';
 
     require __DIR__ . '/../../views/espace-utilisateur.php';
+  }
+
+  /**
+   * Créer un avis
+   */
+  public function createAvis(): void {
+    if (!$this->authService->isUser()) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+
+    $userId = $_SESSION['user_id'];
+    $commandeId = (int)($_POST['commande_id'] ?? 0);
+    $note = (int)($_POST['note'] ?? 0);
+    $commentaire = trim($_POST['commentaire'] ?? '');
+
+    $commande = $this->commandeRepository->findById($commandeId);
+    if (!$commande || $commande['utilisateur_id'] !== $userId || $commande['statut'] !== 'terminée') {
+        header('Location: index.php?page=espace-utilisateur&error=avis_non_autorise#commandes');
+        exit;
+    }
+
+    if ($this->avisRepository->existsForCommande($commandeId)) {
+        header('Location: index.php?page=espace-utilisateur&error=avis_existant#commandes');
+        exit;
+    }
+
+    if ($this->avisRepository->save([
+        'note' => $note,
+        'commentaire' => $commentaire,
+        'utilisateur_id' => $userId,
+        'commande_id' => $commandeId
+    ])) {
+        header('Location: index.php?page=espace-utilisateur&success=avis_envoye#commandes');
+    } else {
+        header('Location: index.php?page=espace-utilisateur&error=save_failed#commandes');
+    }
+    exit;
   }
 
   private function calculateSuivi(array $cmd): array {
