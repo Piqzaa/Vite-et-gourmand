@@ -18,6 +18,7 @@ use App\Controller\AuthController;
 use App\Controller\MenuController;
 use App\Controller\ContactController;
 use App\Controller\UserController;
+use App\Controller\LegalController;
 use App\Repository\MenuRepository;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
@@ -125,6 +126,16 @@ try {
             $authService = new AuthService($userRepo);
             $controller = new UserController($userRepo, $commandeRepo, $authService, $logger);
             $controller->index();
+            break;
+        
+        case 'cgv':
+            $controller = new LegalController();
+            $controller->cgv();
+            break;
+        
+        case 'mentions':
+            $controller = new LegalController();
+            $controller->mentions();
             break;
 
         default:
