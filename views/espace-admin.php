@@ -11,15 +11,10 @@ ob_start();
               <p class="dashboard__role">Administrateur</p>
             </div>
           </div>
-
-          <nav class="dashboard__nav" aria-label="Navigation espace admin">
+          <nav class="dashboard__nav" aria-label="Navigation administration">
             <ul class="dashboard__nav-list">
               <li>
-                <a
-                  href="#statistiques"
-                  class="dashboard__nav-link dashboard__nav-link--active"
-                  >Statistiques</a
-                >
+                <a href="#stats" class="dashboard__nav-link dashboard__nav-link--active">Statistiques</a>
               </li>
               <li>
                 <a href="#commandes" class="dashboard__nav-link">Commandes</a>
@@ -40,57 +35,11 @@ ob_start();
           </nav>
         </aside>
 
+        <!-- CONTENU -->
         <div class="dashboard__content">
-          <!-- STATISTIQUES (données MongoDB) -->
-          <section class="dashboard__section" id="statistiques">
-            <div class="dashboard__section-header">
-              <h1 class="dashboard__section-title">Statistiques</h1>
-            </div>
-
-            <!-- Filtres CA -->
-            <div class="admin-stats-filters">
-              <div class="form-group">
-                <label class="form-label" for="stats-menu"
-                  >Filtrer par menu</label
-                >
-                <select id="stats-menu" class="filters__select">
-                    <option value="">Tous les menus</option>
-                    <?php foreach ($menus as $m): ?>
-                        <option value="<?= $m['menu_id'] ?>"><?= htmlspecialchars($m['titre']) ?></option>
-                    <?php endforeach; ?>
-                </select>
-              </div>
-              <div class="form-group">
-                <div class="space-sm"></div>
-                <label class="form-label" for="stats-debut"
-                  >Date de début</label
-                >
-                <input
-                  type="date"
-                  id="stats-debut"
-                  name="date_debut"
-                  class="form-input"
-                />
-              </div>
-              <div class="form-group">
-                <div class="space-sm"></div>
-                <label class="form-label" for="stats-fin">Date de fin</label>
-                <input
-                  type="date"
-                  id="stats-fin"
-                  name="date_fin"
-                  class="form-input"
-                />
-              </div>
-              <div class="space-sm"></div>
-              <button
-                type="button"
-                class="btn btn--primary btn--sm"
-                id="btn-filtrer-stats"
-              >
-                Filtrer
-              </button>
-            </div>
+          <!-- STATISTIQUES -->
+          <section class="dashboard__section" id="stats">
+            <h2 class="dashboard__section-title">Tableau de bord</h2>
 
             <!-- Chiffre d'affaires -->
             <div class="admin-ca">
@@ -102,91 +51,37 @@ ob_start();
                 <p class="admin-ca__label">Commandes totales</p>
                 <p class="admin-ca__value" id="commandes-total"><?= $statsCA['nb_commandes'] ?? 0 ?></p>
               </div>
-              <div class="admin-ca__card">
-                <p class="admin-ca__label">Panier moyen</p>
-                <p class="admin-ca__value" id="panier-moyen"><?= number_format($statsCA['panier_moyen'] ?? 0, 2) ?> €</p>
-              </div>
             </div>
 
-            <!-- Graphique commandes par menu (données MongoDB) -->
-            <div class="admin-chart">
-              <h2 class="admin-chart__title">Commandes par menu</h2>
-              <canvas id="chart-commandes" 
-                data-stats='<?= json_encode([
-                    "labels" => array_column($statsParMenu, "titre"),
-                    "commandes" => array_column($statsParMenu, "nb_commandes"),
-                    "ca" => array_column($statsParMenu, "ca")
-                ]) ?>' 
-                height="80">
-            </canvas>
+            <!-- Graphique -->
+            <div class="admin-chart-container">
+              <canvas id="adminChart" data-stats='<?= json_encode($statsParMenu) ?>'></canvas>
             </div>
-
-              <div class="admin-chart__fallback">
-                <table class="admin-chart__fallback-table">
-                  <tbody>
-                    <?php foreach ($statsParMenu as $stat): ?>
-                    <tr>
-                      <td><?= htmlspecialchars($stat['titre']) ?></td>
-                      <td><?= $stat['nb_commandes'] ?> cmd. — <?= number_format($stat['ca'], 2) ?>€</td>
-                    </tr>
-                    <?php endforeach; ?>
-                  </tbody>
-                </table>
-              </div>
-
           </section>
 
           <!-- COMMANDES -->
           <section class="dashboard__section" id="commandes">
-            <div class="dashboard__section-header">
-              <h2 class="dashboard__section-title">Commandes</h2>
-            </div>
-
-            <!-- Filtres commandes -->
-            <div class="employe-filters">
-              <div class="form-group">
-                <label class="form-label" for="filtre-statut">Statut</label>
-                <select id="filtre-statut" class="filters__select">
-                  <option value="">Tous les statuts</option>
-                  <option value="en attente">En attente</option>
-                  <option value="accepté">Acceptée</option>
-                  <option value="en préparation">En préparation</option>
-                  <option value="en cours de livraison">En cours de livraison</option>
-                  <option value="livré">Livrée</option>
-                  <option value="en attente du retour de matériel">Retour matériel</option>
-                  <option value="terminée">Terminée</option>
-                  <option value="annulée">Annulée</option>
-                </select>
-              </div>
-              <div class="space-sm"></div>
-              <div class="form-group">
-                <label class="form-label" for="filtre-client">Client</label>
-                <input
-                  type="text"
-                  id="filtre-client"
-                  class="form-input"
-                  placeholder="Nom ou email..."
-                />
-              </div>
-            </div>
-
-            <!-- Liste commandes -->
+            <h2 class="dashboard__section-title">Toutes les commandes</h2>
             <div class="employe-commandes">
               <?php foreach ($commandes as $cmd): ?>
                   <div class="space-sm"></div>
-                  <article class="commande-card" data-statut="<?= $cmd['statut'] ?>" data-client="<?= htmlspecialchars(strtolower($cmd['client_nom'] . ' ' . $cmd['client_email'])) ?>">
+                  <article class="commande-card">
                       <div class="commande-card__header">
                           <div>
                               <span class="commande-card__id">#CMD-<?= $cmd['commande_id'] ?></span>
-                              <h2 class="commande-card__menu">
-                                  <?= htmlspecialchars($cmd['menu_nom']) ?> — 
-                                  <?= htmlspecialchars($cmd['client_prenom'] . ' ' . $cmd['client_nom']) ?>
-                              </h2>
+                              <h2 class="commande-card__menu"><?= htmlspecialchars($cmd['menu_nom']) ?> — <?= htmlspecialchars($cmd['client_prenom'] . ' ' . $cmd['client_nom']) ?></h2>
                           </div>
                           <span class="commande-card__status"><?= ucfirst($cmd['statut']) ?></span>
                       </div>
-
                       <div class="commande-card__infos">
+                          <div class="commande-card__info">
+                              <span class="commande-card__info-label">Email client</span>
+                              <span><?= htmlspecialchars($cmd['client_email']) ?></span>
+                          </div>
+                          <div class="commande-card__info">
+                              <span class="commande-card__info-label">GSM client</span>
+                              <span><?= htmlspecialchars($cmd['client_gsm']) ?></span>
+                          </div>
                           <div class="commande-card__info">
                               <span class="commande-card__info-label">Date prestation</span>
                               <span><?= date('d/m/Y', strtotime($cmd['date_prestation'])) ?> à <?= $cmd['heure_prestation'] ?></span>
@@ -196,106 +91,45 @@ ob_start();
                               <span><?= htmlspecialchars($cmd['adresse_livraison']) ?></span>
                           </div>
                           <div class="commande-card__info">
-                              <span class="commande-card__info-label">GSM client</span>
-                              <span><?= htmlspecialchars($cmd['client_gsm']) ?></span>
-                          </div>
-                          <div class="commande-card__info">
-                              <span class="commande-card__info-label">Personnes</span>
-                              <span><?= $cmd['nombre_personnes'] ?> pers.</span>
-                          </div>
-                          <div class="commande-card__info">
                               <span class="commande-card__info-label">Total</span>
                               <span class="commande-card__price"><?= number_format($cmd['prix_total_ttc'], 2) ?>€</span>
                           </div>
                       </div>
-
-                      <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
-
-                      <div>
-                          <form action="assets/php/commande/update-statut.php" method="POST">
-                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
-                              <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
-                              <div class="form-group">
-                                  <label class="form-label">Changer le statut</label>
-                                  <select name="statut" class="filters__select">
-                                      <?php
-                                      $statuts = ['en attente', 'accepté', 'en préparation', 'en cours de livraison', 'livré', 'en attente du retour de matériel', 'terminée'];
-                                      foreach ($statuts as $s):
-                                      ?>
-                                      <option value="<?= $s ?>" <?= $cmd['statut'] === $s ? 'selected' : '' ?>>
-                                          <?= ucfirst($s) ?>
-                                      </option>
-                                      <?php endforeach; ?>
-                                  </select>
-                              </div>
-                              <div class="space-sm"></div>
-                              <button type="submit" class="btn btn--primary btn--sm">Mettre à jour</button>
-                          </form>
-
-                          <form action="assets/php/commande/annuler-employe.php" method="POST"
-                                style="margin-top: 0.5rem"
-                                onsubmit="return confirm('Annuler cette commande ?')">
-                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
-                              <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
-                              <div class="form-group">
-                                  <label class="form-label">Mode de contact client</label>
-                                  <select name="mode_contact" class="filters__select" required>
-                                      <option value="gsm">Appel GSM</option>
-                                      <option value="mail">Mail</option>
-                                  </select>
-                              </div>
-                              <div class="form-group">
-                                  <label class="form-label">Motif d'annulation</label>
-                                  <textarea name="motif" class="form-input" rows="2" 
-                                            placeholder="Expliquez le motif..." required></textarea>
-                              </div>
-                              <div class="space-sm"></div>
-                              <button type="submit" class="btn btn--secondary btn--sm">Annuler la commande</button>
-                          </form>
-                      </div>
-                      <?php endif; ?>
                   </article>
               <?php endforeach; ?>
-              </div>
+            </div>
           </section>
 
-          <!-- GESTION EMPLOYÉS -->
+          <!-- EMPLOYÉS -->
           <section class="dashboard__section" id="employes">
             <div class="dashboard__section-header">
-              <h1 class="dashboard__section-title">Employés</h1>
+              <h2 class="dashboard__section-title">Gestion des employés</h2>
+              <button class="btn btn--primary btn--sm" id="btn-add-employe">
+                + Nouvel employé
+              </button>
             </div>
 
-            <!-- Créer un employé -->
-            <div class="admin-create-employe">
-              <h2 class="admin-create-employe__title">
-                Créer un compte employé
-              </h2>
-              <div class="space-sm"></div>
-              <form
-                class="auth-form"
-                action="assets/php/admin/create-employe.php"
-                method="POST"
-              >
+            <!-- Formulaire ajout (masqué par défaut) -->
+            <div class="admin-form-box" id="form-employe" style="display: none">
+              <form action="index.php?page=espace-admin&action=create-employe" method="POST" class="auth-form">
                 <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                 <div class="form-row">
                   <div class="form-group">
-                      <label class="form-label" for="employe-nom">Nom</label>
-                      <input type="text" id="employe-nom" name="nom" class="form-input" placeholder="Dupont" required />
+                    <label class="form-label" for="prenom">Prénom</label>
+                    <input type="text" name="prenom" class="form-input" required />
                   </div>
                   <div class="form-group">
-                      <label class="form-label" for="employe-prenom">Prénom</label>
-                      <input type="text" id="employe-prenom" name="prenom" class="form-input" placeholder="Jean" required />
+                    <label class="form-label" for="nom">Nom</label>
+                    <input type="text" name="nom" class="form-input" required />
                   </div>
-              </div>
-              <div class="form-row">
-                  <div class="form-group">
-                      <label class="form-label" for="employe-email">Email (username)</label>
-                      <input type="email" id="employe-email" name="email" class="form-input" placeholder="employe@viteetgourmand.com" required />
-                  </div>
-                  <div class="form-group">
-                      <label class="form-label" for="employe-password">Mot de passe</label>
-                      <input type="password" id="employe-password" name="password" class="form-input" placeholder="••••••••••" required />
-                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="email">Email professionnel</label>
+                  <input type="email" name="email" class="form-input" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="password">Mot de passe temporaire</label>
+                  <input type="password" name="password" class="form-input" required />
                 </div>
                 <p class="form-hint">
                   Le mot de passe ne sera pas communiqué par email — l'employé
@@ -312,9 +146,9 @@ ob_start();
             <table class="employe-table">
               <thead>
                 <tr>
+                  <th>Nom</th>
                   <th>Email</th>
                   <th>Statut</th>
-                  <th>Activité</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -329,8 +163,8 @@ ob_start();
                         </span>
                     </td>
                     <td>
-                        <form action="assets/php/admin/toggle-employe.php" method="POST" style="display:inline">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                        <form action="index.php?page=espace-admin&action=toggle-employe" method="POST" style="display:inline">
+                            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                             <input type="hidden" name="employe_id" value="<?= $emp['utilisateur_id'] ?>">
                             <input type="hidden" name="actif" value="<?= $emp['actif'] ? 0 : 1 ?>">
                             <button type="submit" class="btn btn--secondary btn--sm">
@@ -348,10 +182,7 @@ ob_start();
           <section class="dashboard__section" id="menus">
             <div class="dashboard__section-header">
               <h2 class="dashboard__section-title">Menus &amp; Plats</h2>
-              
-              <a href="menu-create.php" class="btn btn--primary btn--sm">+ Nouveau menu</a>
-              
-            
+              <a href="index.php?page=menu-create" class="btn btn--primary btn--sm">+ Nouveau menu</a>
             </div>
 
             <table class="employe-table">
@@ -372,10 +203,10 @@ ob_start();
                     <td><?= $menu['prix_base'] ?>€</td>
                     <td><?= $menu['stock_disponible'] ?></td>
                     <td class="employe-table__actions">
-                        <a href="menu-edit.php?id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
+                        <a href="index.php?page=menu-edit&id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                         <form action="assets/php/menu/delete.php" method="POST" style="display:inline"
                               onsubmit="return confirm('Supprimer ce menu ?')">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                             <input type="hidden" name="menu_id" value="<?= $menu['menu_id'] ?>">
                             <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                         </form>
@@ -387,7 +218,7 @@ ob_start();
             <div class="space-md"></div>
             <div class="dashboard__section-header">
             <h2 class="dashboard__section-title">Plats</h2>
-            <a href="plat-create.php" class="btn btn--primary btn--sm">+ Nouveau plat</a>
+            <a href="index.php?page=plat-create" class="btn btn--primary btn--sm">+ Nouveau plat</a>
             </div>
             <table class="employe-table">
                 <thead>
@@ -413,7 +244,7 @@ ob_start();
                             <?php endif; ?>
                         </td>
                         <td>
-                            <form action="assets/php/plat/delete.php" method="POST"
+                            <form action="assets/php/plat/delete.php" method="POST" 
                                   style="display:inline"
                                   onsubmit="return confirm('Supprimer ce plat ? Il sera retiré de tous les menus associés.')">
                                 <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
@@ -433,11 +264,7 @@ ob_start();
               <h2 class="dashboard__section-title">Horaires</h2>
             </div>
 
-            <form
-              class="auth-form"
-              action="assets/php/horaires/update.php"
-              method="POST"
-            >
+            <form class="auth-form" action="index.php?page=espace-admin&action=update-horaires" method="POST">
               <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
               <table class="employe-table">
                 <thead>
@@ -490,7 +317,7 @@ ob_start();
                               <span class="avis-card__stars"><?= str_repeat('★', $a['note']) ?></span>
                               <p class="avis-moderation__author">
                                   <?= htmlspecialchars($a['client_prenom'] . ' ' . $a['client_nom']) ?> — 
-                                  <?= htmlspecialchars($a['menu_nom']) ?>
+                                  <?= htmlspecialchars($a['menu_titre']) ?>
                               </p>
                           </div>
                           <span class="commande-card__status commande-card__status--en-attente">En attente</span>
@@ -500,15 +327,15 @@ ob_start();
                       </blockquote>
                       <div class="avis-moderation__actions">
                           <form action="assets/php/avis/moderer.php" method="POST" style="display:inline">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
-    <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
-    <input type="hidden" name="action" value="valider">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
+                              <input type="hidden" name="action" value="valider">
                               <button type="submit" class="btn btn--primary btn--sm">Valider</button>
                           </form>
                           <form action="assets/php/avis/moderer.php" method="POST" style="display:inline">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
-    <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
-    <input type="hidden" name="action" value="refuser">
+                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
+                              <input type="hidden" name="action" value="refuser">
                               <button type="submit" class="btn btn--secondary btn--sm">Refuser</button>
                           </form>
                       </div>
@@ -521,5 +348,4 @@ ob_start();
       </div>
 <?php
 $content = ob_get_clean();
-require_once __DIR__ . '/../includes/layout.php';
 ?>

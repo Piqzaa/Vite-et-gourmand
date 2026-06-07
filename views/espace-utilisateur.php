@@ -99,7 +99,7 @@ ob_start();
                             ?>
                             <div class="avis-form">
                                 <h3 class="avis-form__title">Votre avis nous intéresse</h3>
-                                <form action="assets/php/avis/create.php" method="POST">
+                                <form action="index.php?page=espace-utilisateur&action=create-avis" method="POST">
     <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <div class="form-group">

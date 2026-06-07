@@ -163,10 +163,7 @@ ob_start();
           <section class="dashboard__section" id="menus">
             <div class="dashboard__section-header">
               <h2 class="dashboard__section-title">Menus &amp; Plats</h2>
-              
-              <a href="menu-create.php" class="btn btn--primary btn--sm">+ Nouveau menu</a>
-              
-            
+              <a href="index.php?page=menu-create" class="btn btn--primary btn--sm">+ Nouveau menu</a>
             </div>
 
             <table class="employe-table">
@@ -187,7 +184,7 @@ ob_start();
                     <td><?= $menu['prix_base'] ?>€</td>
                     <td><?= $menu['stock_disponible'] ?></td>
                     <td class="employe-table__actions">
-                        <a href="menu-edit.php?id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
+                        <a href="index.php?page=menu-edit&id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                         <form action="assets/php/menu/delete.php" method="POST" style="display:inline"
                               onsubmit="return confirm('Supprimer ce menu ?')">
                             <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
@@ -202,7 +199,7 @@ ob_start();
             <div class="space-md"></div>
             <div class="dashboard__section-header">
             <h2 class="dashboard__section-title">Plats</h2>
-            <a href="plat-create.php" class="btn btn--primary btn--sm">+ Nouveau plat</a>
+            <a href="index.php?page=plat-create" class="btn btn--primary btn--sm">+ Nouveau plat</a>
             </div>
             <table class="employe-table">
                 <thead>
@@ -251,7 +248,7 @@ ob_start();
 
             <form
               class="auth-form"
-              action="assets/php/horaires/update.php"
+              action="index.php?page=espace-employe&action=update-horaires"
               method="POST"
             >
               <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
@@ -306,7 +303,7 @@ ob_start();
                               <span class="avis-card__stars"><?= str_repeat('★', $a['note']) ?></span>
                               <p class="avis-moderation__author">
                                   <?= htmlspecialchars($a['client_prenom'] . ' ' . $a['client_nom']) ?> — 
-                                  <?= htmlspecialchars($a['menu_nom']) ?>
+                                  <?= htmlspecialchars($a['menu_titre']) ?>
                               </p>
                           </div>
                           <span class="commande-card__status commande-card__status--en-attente">En attente</span>
@@ -337,5 +334,4 @@ ob_start();
       </div>
 <?php
 $content = ob_get_clean();
-require_once __DIR__ . '/../includes/layout.php';
 ?>
