@@ -53,17 +53,14 @@ class CommandeController {
         require __DIR__ . '/../../views/commande.php';
     }
 
-    /**
-     * Traite la création d'une commande
-     */
     public function create(): void {
         if (!$this->authService->isConnected()) {
-            header('Location: connexion.php');
+            header('Location: index.php?page=login');
             exit;
         }
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header('Location: commande.php');
+            header('Location: index.php?page=commande');
             exit;
         }
 
@@ -84,7 +81,7 @@ class CommandeController {
             $hours = ($diff->days * 24) + $diff->h;
 
             if ($dateObj <= $now || $hours < 72) {
-                header('Location: commande.php?error=date_trop_proche');
+                header('Location: index.php?page=commande&error=date_trop_proche');
                 exit;
             }
 
@@ -95,15 +92,15 @@ class CommandeController {
             $this->sendConfirmationMail($commandeId);
 
             // Redirection selon le rôle
-            $redirect = 'espace-utilisateur.php';
-            if ($this->authService->isAdmin()) $redirect = 'espace-admin.php';
-            elseif ($this->authService->isEmploye()) $redirect = 'espace-employe.php';
+            $redirect = 'index.php?page=espace-utilisateur';
+            if ($this->authService->isAdmin()) $redirect = 'index.php?page=espace-admin';
+            elseif ($this->authService->isEmploye()) $redirect = 'index.php?page=espace-employe';
 
-            header("Location: $redirect?success=1&commande=$commandeId");
+            header("Location: $redirect&success=1&commande=$commandeId");
             exit;
 
         } catch (Exception $e) {
-            header('Location: commande.php?error=' . urlencode($e->getMessage()));
+            header('Location: index.php?page=commande&error=' . urlencode($e->getMessage()));
             exit;
         }
     }
