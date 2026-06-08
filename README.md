@@ -65,7 +65,7 @@ http://localhost/Vite-et-gourmand
 
 ### 4. Configurer la connexion BDD
 
-Ouvre `assets/php/config/db.php` et vérifie les constantes :
+Ouvre `config/db.php` et vérifie les constantes :
 
 ```php
 define('DB_HOST', 'localhost');
@@ -110,43 +110,19 @@ Vite-et-gourmand/
 │   ├── js/
 │   │   ├── main.js   ← Point d'entrée JS
 │   │   └── modules/  ← Modules JS (burger, filter, stepper...)
-│   ├── php/
-│   │   ├── config/   ← db.php (connexion PDO + constantes)
-│   │   ├── includes/ ← session.php, mailer.php
-│   │   ├── auth/     ← login, logout, register, reset-password
-│   │   ├── commande/ ← create, annuler, update-statut
-│   │   ├── user/     ← update profil
-│   │   ├── admin/    ← create-employe, toggle-employe, get-stats
-│   │   ├── menu/     ← create, update, delete
-│   │   ├── plat/     ← create, delete
-│   │   ├── avis/     ← create, moderer
-│   │   ├── horaires/ ← update
-│   │   └── contact/  ← send
-│   │   └── api/      ← Endpoints JSON pour le filtrage dynamique (Fetch API)
 │   └── scss/         ← Sources SCSS (BEM)
-├── includes/
-│   ├── head.php      ← Balises <head>
-│   ├── header.php    ← Navigation
-│   ├── footer.php    ← Pied de page dynamique
-│   └── layout.php    ← layout pour patter ob_start
-├── Database/
-│   └── vite_et_gourmand.sql
-├── index.php
-├── menus.php
-├── menu-create.php
-├── menu-edit.php
-├── menu-detail.php
-├── commande.php
-├── connexion.php
-├── inscription.php
-├── espace-utilisateur.php
-├── espace-employe.php
-├── espace-admin.php
-├── contact.php
-├── mentions-legales.php
-├── cgv.php
-├── plat-create.php
-├── reset-password.php
+├── config/           ← db.php (connexion PDO + constantes)
+├── Database/         ← Scripts SQL (schema, seed)
+├── includes/         ← Layout, header, footer, functions, session
+├── src/
+│   ├── Controller/   ← Logique des pages
+│   ├── Entity/       ← Objets métier (optionnel ici)
+│   ├── Repository/   ← Accès à la base de données
+│   └── Service/      ← Services (Mail, Logger, Auth, Commande)
+├── views/            ← Fichiers de vue (HTML/PHP)
+├── vendor/           ← Dépendances Composer
+├── composer.json
+├── index.php         ← Front Controller
 └── README.md
 ```
 
