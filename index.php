@@ -147,12 +147,17 @@ try {
         case 'espace-utilisateur':
             $userRepo = new UserRepository($pdo);
             $commandeRepo = new CommandeRepository($pdo);
+            $menuRepo = new MenuRepository($pdo);
             $avisRepo = new AvisRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new UserController($userRepo, $commandeRepo, $avisRepo, $authService, $logger);
+            $controller = new UserController($userRepo, $commandeRepo, $avisRepo, $menuRepo, $authService, $logger);
             
             if ($action === 'create-avis') {
                 $controller->createAvis();
+            } elseif ($action === 'cancel-commande') {
+                $controller->cancelCommande();
+            } elseif ($action === 'update-profil') {
+                $controller->updateProfil();
             } else {
                 $controller->index();
             }
@@ -180,6 +185,16 @@ try {
                 $controller->updateHoraires();
             } elseif ($action === 'moderer-avis') {
                 $controller->modererAvis();
+            } elseif ($action === 'delete-menu') {
+                $controller->deleteMenu();
+            } elseif ($action === 'delete-plat') {
+                $controller->deletePlat();
+            } elseif ($action === 'update-commande-statut') {
+                $controller->updateCommandeStatut();
+            } elseif ($action === 'annuler-commande') {
+                $controller->annulerCommande();
+            } elseif ($action === 'api-stats') {
+                $controller->apiStats();
             } else {
                 $controller->index();
             }
@@ -271,5 +286,3 @@ try {
     $logger->log('critical_error', ['message' => $e->getMessage(), 'page' => $page]);
     echo "Une erreur est survenue : " . htmlspecialchars($e->getMessage());
 }
-
-require_once __DIR__ . '/includes/layout.php';
