@@ -182,8 +182,9 @@ ob_start();
                     <td><span class="menu-card__tag"><?= htmlspecialchars($menu['theme'] ?? '—') ?></span></td>
                     <td><?= $menu['prix_base'] ?>€</td>
                     <td><?= $menu['stock_disponible'] ?></td>
-                    <td class="employe-table__actions">
+                    <td>
                         <a href="index.php?page=menu-edit&id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
+                        <div class="space-sm"></div>
                         <form action="index.php?page=espace-employe&action=delete-menu" method="POST"
                               onsubmit="return confirm('Supprimer ce menu ?')">
                             <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
