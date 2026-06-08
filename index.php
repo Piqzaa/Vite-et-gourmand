@@ -180,28 +180,34 @@ try {
             $themeRepo = new ThemeRepository($pdo);
             $regimeRepo = new RegimeRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
             
-            if ($action === 'create-employe') {
-                $controller->createEmploye();
-            } elseif ($action === 'toggle-employe') {
-                $controller->toggleEmploye();
-            } elseif ($action === 'update-horaires') {
-                $controller->updateHoraires();
-            } elseif ($action === 'moderer-avis') {
-                $controller->modererAvis();
-            } elseif ($action === 'delete-menu') {
-                $controller->deleteMenu();
-            } elseif ($action === 'delete-plat') {
-                $controller->deletePlat();
-            } elseif ($action === 'update-commande-statut') {
-                $controller->updateCommandeStatut();
-            } elseif ($action === 'annuler-commande') {
-                $controller->annulerCommande();
-            } elseif ($action === 'api-stats') {
-                $controller->apiStats();
-            } else {
+            if ($page === 'espace-employe' && ($action === 'index' || empty($action))) {
+                $controller = new EmployeController($commandeRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
                 $controller->index();
+            } else {
+                $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+                
+                if ($action === 'create-employe') {
+                    $controller->createEmploye();
+                } elseif ($action === 'toggle-employe') {
+                    $controller->toggleEmploye();
+                } elseif ($action === 'update-horaires') {
+                    $controller->updateHoraires();
+                } elseif ($action === 'moderer-avis') {
+                    $controller->modererAvis();
+                } elseif ($action === 'delete-menu') {
+                    $controller->deleteMenu();
+                } elseif ($action === 'delete-plat') {
+                    $controller->deletePlat();
+                } elseif ($action === 'update-commande-statut') {
+                    $controller->updateCommandeStatut();
+                } elseif ($action === 'annuler-commande') {
+                    $controller->annulerCommande();
+                } elseif ($action === 'api-stats') {
+                    $controller->apiStats();
+                } else {
+                    $controller->index();
+                }
             }
             break;
 

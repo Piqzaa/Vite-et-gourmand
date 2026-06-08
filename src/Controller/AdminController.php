@@ -41,6 +41,7 @@ class AdminController {
         $statsCA = $this->commandeRepo->getGlobalStats();
         $statsParMenu = $this->commandeRepo->getStatsByMenu();
         $horaires = $this->horaireRepo->findAll();
+        $securityService = new \App\Service\SecurityService();
 
         $title = 'Espace de gestion';
         $description = 'Gérez les commandes, les employés, les menus et les avis clients.';

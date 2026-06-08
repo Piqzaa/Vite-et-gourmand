@@ -30,6 +30,7 @@ class EmployeController {
         $avis = $this->avisRepo->findPending();
         $platsAvecAllergenes = $this->platRepo->findAllWithAllergenes();
         $horaires = $this->horaireRepo->findAll();
+        $securityService = new \App\Service\SecurityService();
 
         $title = 'Espace employé';
         $description = 'Gérez les commandes, consultez les avis clients et mettez à jour les horaires d\'ouverture.';

@@ -46,6 +46,7 @@ class UserController
         $commandes[] = $cmd;
     }
 
+    $securityService = new \App\Service\SecurityService();
     $title = 'Mon compte';
     $description = 'Gérez votre profil et suivez vos commandes Vite & Gourmand.';
 
