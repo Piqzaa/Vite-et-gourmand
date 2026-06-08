@@ -113,7 +113,7 @@ ob_start();
                       <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
                       <div>
                           <form action="index.php?page=espace-employe&action=update-commande-statut" method="POST">
-                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Changer le statut</label>
@@ -134,7 +134,7 @@ ob_start();
 
                           <form action="index.php?page=espace-employe&action=annuler-commande" method="POST" 
                                 onsubmit="return confirm('Annuler cette commande ?')">
-                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                               <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                               <div class="form-group">
                                   <label class="form-label">Mode de contact client</label>
@@ -186,7 +186,7 @@ ob_start();
                         <a href="index.php?page=menu-edit&id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                         <form action="index.php?page=espace-employe&action=delete-menu" method="POST"
                               onsubmit="return confirm('Supprimer ce menu ?')">
-                            <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                            <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                             <input type="hidden" name="menu_id" value="<?= $menu['menu_id'] ?>">
                             <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                         </form>
@@ -226,7 +226,7 @@ ob_start();
                         <td>
                             <form action="index.php?page=espace-employe&action=delete-plat" method="POST" 
                                   onsubmit="return confirm('Supprimer ce plat ? Il sera retiré de tous les menus associés.')">
-                                <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                                <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                                 <input type="hidden" name="plat_id" value="<?= $plat['plat_id'] ?>">
                                 <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                             </form>
@@ -249,7 +249,7 @@ ob_start();
               action="index.php?page=espace-employe&action=update-horaires"
               method="POST"
             >
-              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
               <table class="employe-table">
                 <thead>
                   <tr>
@@ -311,13 +311,13 @@ ob_start();
                       </blockquote>
                       <div class="avis-moderation__actions">
                           <form action="index.php?page=espace-employe&action=moderer-avis" method="POST">
-                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                               <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
                               <input type="hidden" name="action" value="valider">
                               <button type="submit" class="btn btn--primary btn--sm">Valider</button>
                           </form>
                           <form action="index.php?page=espace-employe&action=moderer-avis" method="POST">
-                              <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                               <input type="hidden" name="avis_id" value="<?= $a['avis_id'] ?>">
                               <input type="hidden" name="action" value="refuser">
                               <button type="submit" class="btn btn--secondary btn--sm">Refuser</button>
@@ -332,5 +332,5 @@ ob_start();
       </div>
 <?php
 $content = ob_get_clean();
-require_once __DIR__ . '/../includes/layout.php';
+require_once __DIR__ . '/layout/main.php';
 ?>

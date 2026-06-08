@@ -24,7 +24,7 @@ ob_start();
 
             <div class="hero__actions">
               <a href="index.php?page=menus" class="btn btn--primary">Voir nos menus</a>
-              <a href="contact.php" class="btn btn--secondary"
+              <a href="index.php?page=contact" class="btn btn--secondary"
                 >Nous contacter</a
               >
             </div>
@@ -190,5 +190,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-require_once __DIR__ . '/../includes/layout.php';
+require_once __DIR__ . '/layout/main.php';
 ?>

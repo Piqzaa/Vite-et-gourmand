@@ -39,7 +39,7 @@ ob_start();
                                 <span class="commande-card__id">#CMD-<?= $cmd['commande_id'] ?></span>
                                 <h2 class="commande-card__menu"><?= htmlspecialchars($cmd['menu_nom']) ?></h2>
                             </div>
-                            <span class="commande-card__status <?= getStatusClass($cmd['statut']) ?>">
+                            <span class="commande-card__status <?= App\Helper\ViewHelper::getStatusClass($cmd['statut']) ?>">
                                 <?= ucfirst($cmd['statut']) ?>
                             </span>
                         </div>
@@ -85,7 +85,7 @@ ob_start();
                             <div class="commande-card__actions">
                                 <a href="index.php?page=commande-edit&id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                                 <form action="index.php?page=espace-utilisateur&action=cancel-commande" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
-                                    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                                    <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <button type="submit" class="btn btn--primary btn--sm">Annuler</button>
                                 </form>
@@ -100,7 +100,7 @@ ob_start();
                             <div class="avis-form">
                                 <h3 class="avis-form__title">Votre avis nous intéresse</h3>
                                 <form action="index.php?page=espace-utilisateur&action=create-avis" method="POST">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+    <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <div class="form-group">
                                         <label class="form-label">Note</label>
@@ -132,7 +132,7 @@ ob_start();
             </div>
 
             <form class="auth-form" action="index.php?page=espace-utilisateur&action=update-profil" method="POST">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+    <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label" for="profil-prenom">Prénom</label>
@@ -231,5 +231,5 @@ ob_start();
       </div>
 <?php
 $content = ob_get_clean();
-require_once __DIR__ . '/../includes/layout.php';
+require_once __DIR__ . '/layout/main.php';
 ?>

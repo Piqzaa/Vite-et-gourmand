@@ -149,5 +149,5 @@ ob_start();
     
 <?php
 $content = ob_get_clean();
-require_once __DIR__ . '/../includes/layout.php';
+require_once __DIR__ . '/layout/main.php';
 ?>
