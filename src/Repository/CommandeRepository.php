@@ -104,27 +104,64 @@ class CommandeRepository {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getGlobalStats(): array {
-        $stmt = $this->pdo->query('
+    public function getGlobalStats(array $filters = []): array {
+        $where = ["statut != 'annulée'"];
+        $params = [];
+
+        if (!empty($filters['menu_id'])) {
+            $where[] = 'menu_id = ?';
+            $params[] = (int)$filters['menu_id'];
+        }
+        if (!empty($filters['date_debut'])) {
+            $where[] = 'date_commande >= ?';
+            $params[] = $filters['date_debut'] . ' 00:00:00';
+        }
+        if (!empty($filters['date_fin'])) {
+            $where[] = 'date_commande <= ?';
+            $params[] = $filters['date_fin'] . ' 23:59:59';
+        }
+
+        $sql = '
             SELECT
                 COUNT(*) AS nb_commandes,
-                SUM(prix_total_ttc) AS total_ttc,
-                AVG(prix_total_ttc) AS panier_moyen
+                COALESCE(SUM(prix_total_ttc), 0) AS total_ttc,
+                COALESCE(AVG(prix_total_ttc), 0) AS panier_moyen
             FROM commande
-            WHERE statut != "annulée"
-        ');
+            WHERE ' . implode(' AND ', $where);
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
     }
 
-    public function getStatsByMenu(): array {
-        $stmt = $this->pdo->query('
+    public function getStatsByMenu(array $filters = []): array {
+        $where = ["c.statut != 'annulée'"];
+        $params = [];
+
+        if (!empty($filters['menu_id'])) {
+            $where[] = 'c.menu_id = ?';
+            $params[] = (int)$filters['menu_id'];
+        }
+        if (!empty($filters['date_debut'])) {
+            $where[] = 'c.date_commande >= ?';
+            $params[] = $filters['date_debut'] . ' 00:00:00';
+        }
+        if (!empty($filters['date_fin'])) {
+            $where[] = 'c.date_commande <= ?';
+            $params[] = $filters['date_fin'] . ' 23:59:59';
+        }
+
+        $sql = '
             SELECT m.titre, COUNT(c.commande_id) AS nombre_commandes, SUM(c.prix_total_ttc) AS ca
             FROM commande c
             JOIN menu m ON c.menu_id = m.menu_id
-            WHERE c.statut != "annulée"
+            WHERE ' . implode(' AND ', $where) . '
             GROUP BY m.menu_id, m.titre
             ORDER BY nombre_commandes DESC
-        ');
+        ';
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

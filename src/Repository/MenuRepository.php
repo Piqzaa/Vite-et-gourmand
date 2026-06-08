@@ -112,6 +112,11 @@ class MenuRepository {
         return $stmt->execute([$menuId]);
     }
 
+    public function incrementStock(int $menuId): bool {
+        $stmt = $this->pdo->prepare('UPDATE menu SET stock_disponible = stock_disponible + 1 WHERE menu_id = ?');
+        return $stmt->execute([$menuId]);
+    }
+
     public function findPlatsByMenuId(int $menuId): array {
         $stmt = $this->pdo->prepare('
             SELECT p.plat_id, p.libelle AS plat_titre, p.type, p.image_path,

@@ -52,6 +52,19 @@ class UserRepository {
         return $stmt->execute([(int)$actif, $userId]);
     }
 
+    public function update(int $userId, array $data): bool {
+        $fields = [];
+        $params = [];
+        foreach ($data as $key => $value) {
+            $fields[] = "$key = ?";
+            $params[] = $value;
+        }
+        $params[] = $userId;
+        
+        $sql = "UPDATE utilisateur SET " . implode(', ', $fields) . " WHERE utilisateur_id = ?";
+        return $this->pdo->prepare($sql)->execute($params);
+    }
+
     public function findByRole(string $role): array {
         $stmt = $this->pdo->prepare('SELECT utilisateur_id, nom, prenom, email, actif FROM utilisateur WHERE role = ? ORDER BY nom');
         $stmt->execute([$role]);
