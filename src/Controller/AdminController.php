@@ -365,4 +365,169 @@ class AdminController {
         header("Location: index.php?page=$redirect&success=avis_modere#avis");
         exit;
     }
+
+    /**
+     * Supprime un menu
+     */
+    public function deleteMenu(): void {
+        if (!$this->authService->isEmploye()) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $id = (int)($_POST['menu_id'] ?? 0);
+        
+        // Vérification si des commandes actives y sont liées
+        $stmt = $this->menuRepo->findById($id);
+        if (!$stmt) {
+             header('Location: index.php?page=espace-admin&error=menu_introuvable#menus');
+             exit;
+        }
+
+        try {
+            if ($this->menuRepo->delete($id)) {
+                $redirect = $this->authService->isAdmin() ? 'espace-admin' : 'espace-employe';
+                header("Location: index.php?page=$redirect&success=menu_supprime#menus");
+            } else {
+                header('Location: index.php?page=espace-admin&error=delete_failed#menus');
+            }
+        } catch (Exception $e) {
+            header('Location: index.php?page=espace-admin&error=menu_commande_active#menus');
+        }
+        exit;
+    }
+
+    /**
+     * Supprime un plat
+     */
+    public function deletePlat(): void {
+        if (!$this->authService->isEmploye()) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $id = (int)($_POST['plat_id'] ?? 0);
+
+        try {
+            if ($this->platRepo->delete($id)) {
+                $redirect = $this->authService->isAdmin() ? 'espace-admin' : 'espace-employe';
+                header("Location: index.php?page=$redirect&success=plat_supprime#menus");
+            } else {
+                header('Location: index.php?page=espace-admin&error=delete_failed#menus');
+            }
+        } catch (Exception $e) {
+            header('Location: index.php?page=espace-admin&error=plat_utilise#menus');
+        }
+        exit;
+    }
+
+    /**
+     * Met à jour le statut d'une commande
+     */
+    public function updateCommandeStatut(): void {
+        if (!$this->authService->isEmploye()) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $commandeId = (int)($_POST['commande_id'] ?? 0);
+        $nouveauStatut = $_POST['statut'] ?? '';
+        $commentaire = $_POST['commentaire'] ?? '';
+
+        if (!$commandeId || !$nouveauStatut) {
+            header('Location: index.php?page=espace-employe&error=champs_manquants');
+            exit;
+        }
+
+        try {
+            $this->commandeRepo->beginTransaction();
+            $this->commandeRepo->updateStatut($commandeId, $nouveauStatut);
+            $this->commandeRepo->addSuivi($commandeId, $nouveauStatut, $commentaire);
+            $this->commandeRepo->commit();
+
+            $redirect = $this->authService->isAdmin() ? 'espace-admin' : 'espace-employe';
+            header("Location: index.php?page=$redirect&success=statut_mis_a_jour#commandes");
+        } catch (Exception $e) {
+            $this->commandeRepo->rollBack();
+            header('Location: index.php?page=espace-employe&error=erreur_serveur');
+        }
+        exit;
+    }
+
+    /**
+     * Annule une commande (action employe)
+     */
+    public function annulerCommande(): void {
+        if (!$this->authService->isEmploye()) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+
+        $commandeId = (int)($_POST['commande_id'] ?? 0);
+        $motif = $_POST['motif'] ?? 'Annulée par le personnel';
+
+        if (!$commandeId) {
+            header('Location: index.php?page=espace-employe&error=commande_invalide');
+            exit;
+        }
+
+        try {
+            $this->commandeRepo->beginTransaction();
+            
+            // Mise à jour statut
+            $this->commandeRepo->updateStatut($commandeId, 'annulée');
+            $this->commandeRepo->addSuivi($commandeId, 'annulée', $motif);
+            
+            // Remise en stock
+            $commande = $this->commandeRepo->findById($commandeId);
+            if ($commande) {
+                $this->menuRepo->incrementStock($commande['menu_id']);
+            }
+
+            $this->commandeRepo->commit();
+            $redirect = $this->authService->isAdmin() ? 'espace-admin' : 'espace-employe';
+            header("Location: index.php?page=$redirect&success=commande_annulee#commandes");
+        } catch (Exception $e) {
+            $this->commandeRepo->rollBack();
+            header('Location: index.php?page=espace-employe&error=erreur_serveur');
+        }
+        exit;
+    }
+
+    /**
+     * API pour les statistiques (Admin Chart)
+     */
+    public function apiStats(): void {
+        if (!$this->authService->isEmploye()) {
+            header('HTTP/1.0 403 Forbidden');
+            exit;
+        }
+
+        header('Content-Type: application/json');
+        
+        $filters = [
+            'menu_id'    => $_GET['menu_id'] ?? null,
+            'date_debut' => $_GET['date_debut'] ?? null,
+            'date_fin'   => $_GET['date_fin'] ?? null
+        ];
+
+        $totals = $this->commandeRepo->getGlobalStats($filters);
+        $chartRaw = $this->commandeRepo->getStatsByMenu($filters);
+
+        $response = [
+            'totals' => [
+                'ca'  => (float)$totals['total_ttc'],
+                'nb'  => (int)$totals['nb_commandes'],
+                'moy' => (float)$totals['panier_moyen']
+            ],
+            'chart' => [
+                'labels'    => array_column($chartRaw, 'titre'),
+                'commandes' => array_map('intval', array_column($chartRaw, 'nombre_commandes')),
+                'ca'        => array_map('floatval', array_column($chartRaw, 'ca'))
+            ]
+        ];
+
+        echo json_encode($response);
+        exit;
+    }
 }
