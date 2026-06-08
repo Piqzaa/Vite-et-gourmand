@@ -28,7 +28,11 @@ class AdminController {
     ) {}
 
     public function index(): void {
-        if (!$this->authService->isAdmin() && !$this->authService->isEmploye()) {
+        if (!$this->authService->isAdmin()) {
+            if ($this->authService->isEmploye()) {
+                header('Location: index.php?page=espace-employe');
+                exit;
+            }
             header('Location: index.php?page=login');
             exit;
         }

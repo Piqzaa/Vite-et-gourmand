@@ -25,6 +25,11 @@ class EmployeController {
             exit;
         }
 
+        if ($this->authService->isAdmin()) {
+            header('Location: index.php?page=espace-admin');
+            exit;
+        }
+
         $commandes = $this->commandeRepo->findAllWithDetails();
         $menus = $this->menuRepo->findAll();
         $avis = $this->avisRepo->findPending();
