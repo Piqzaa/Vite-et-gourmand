@@ -83,9 +83,9 @@ ob_start();
 
                         <?php if ($cmd['statut'] === 'en attente'): ?>
                             <div class="commande-card__actions">
-                                <a href="modifier-commande.php?id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
-                                <form action="assets/php/user/cancel-commande.php" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
-    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
+                                <a href="index.php?page=commande-edit&id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
+                                <form action="index.php?page=espace-utilisateur&action=cancel-commande" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
+                                    <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
                                     <button type="submit" class="btn btn--primary btn--sm">Annuler</button>
                                 </form>
@@ -131,7 +131,7 @@ ob_start();
               <h1 class="dashboard__section-title">Mon profil</h1>
             </div>
 
-            <form class="auth-form" action="assets/php/user/update-profil.php" method="POST">
+            <form class="auth-form" action="index.php?page=espace-utilisateur&action=update-profil" method="POST">
     <input type="hidden" name="csrf_token" value="<?= generateCsrfToken() ?>">
               <div class="form-row">
                 <div class="form-group">
@@ -231,5 +231,5 @@ ob_start();
       </div>
 <?php
 $content = ob_get_clean();
-require_once 'includes/layout.php';
+require_once __DIR__ . '/../includes/layout.php';
 ?>

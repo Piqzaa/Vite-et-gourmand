@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\UserRepository;
 use App\Repository\CommandeRepository;
 use App\Repository\AvisRepository;
+use App\Repository\MenuRepository;
 use App\Service\AuthService;
 use App\Service\LoggerService;
 
@@ -14,6 +15,7 @@ class UserController
     private UserRepository $userRepository,
     private CommandeRepository $commandeRepository,
     private AvisRepository $avisRepository,
+    private MenuRepository $menuRepository,
     private AuthService $authService,
     private LoggerService $logger
   ) {}
@@ -136,5 +138,100 @@ class UserController
         ];
     }
     return $etapesVue;
+  }
+
+  /**
+   * Annuler une commande (action client)
+   */
+  public function cancelCommande(): void {
+    if (!$this->authService->isUser()) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+
+    $userId = $_SESSION['user_id'];
+    $commandeId = (int)($_POST['commande_id'] ?? 0);
+
+    $commande = $this->commandeRepository->findById($commandeId);
+    if (!$commande || $commande['utilisateur_id'] !== $userId) {
+        header('Location: index.php?page=espace-utilisateur&error=commande_introuvable');
+        exit;
+    }
+
+    if ($commande['statut'] !== 'en attente') {
+        header('Location: index.php?page=espace-utilisateur&error=annulation_impossible');
+        exit;
+    }
+
+    try {
+        $this->commandeRepository->beginTransaction();
+
+        // Mise à jour statut
+        $this->commandeRepository->updateStatut($commandeId, 'annulée');
+        $this->commandeRepository->addSuivi($commandeId, 'annulée', 'Commande annulée par le client');
+
+        // Remise en stock
+        $this->menuRepository->incrementStock($commande['menu_id']);
+
+        $this->commandeRepository->commit();
+        header('Location: index.php?page=espace-utilisateur&success=commande_annulee#commandes');
+    } catch (\Exception $e) {
+        $this->commandeRepository->rollBack();
+        header('Location: index.php?page=espace-utilisateur&error=erreur_serveur');
+    }
+    exit;
+  }
+
+  /**
+   * Mettre à jour le profil
+   */
+  public function updateProfil(): void {
+    if (!$this->authService->isConnected()) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+
+    $userId = $_SESSION['user_id'];
+    $data = [
+        'prenom' => trim($_POST['prenom'] ?? ''),
+        'nom' => trim($_POST['nom'] ?? ''),
+        'email' => trim($_POST['email'] ?? ''),
+        'gsm' => trim($_POST['gsm'] ?? ''),
+        'adresse_postale' => trim($_POST['adresse'] ?? ''),
+        'ville' => trim($_POST['ville'] ?? '')
+    ];
+
+    $password = $_POST['password'] ?? '';
+    $passwordConfirm = $_POST['password_confirm'] ?? '';
+
+    if (!$data['prenom'] || !$data['nom'] || !$data['email'] || !$data['gsm']) {
+        header('Location: index.php?page=espace-utilisateur&error=champs_manquants#profil');
+        exit;
+    }
+
+    // Vérification email unique
+    $existingUser = $this->userRepository->findByEmail($data['email']);
+    if ($existingUser && (int)$existingUser['utilisateur_id'] !== $userId) {
+        header('Location: index.php?page=espace-utilisateur&error=email_pris#profil');
+        exit;
+    }
+
+    if (!empty($password)) {
+        if ($password !== $passwordConfirm) {
+            header('Location: index.php?page=espace-utilisateur&error=password_mismatch#profil');
+            exit;
+        }
+        $data['password'] = password_hash($password, PASSWORD_BCRYPT);
+    }
+
+    if ($this->userRepository->update($userId, $data)) {
+        // Mise à jour session
+        $_SESSION['user_prenom'] = $data['prenom'];
+        $_SESSION['user_nom'] = $data['nom'];
+        header('Location: index.php?page=espace-utilisateur&success=profil_mis_a_jour#profil');
+    } else {
+        header('Location: index.php?page=espace-utilisateur&error=update_failed#profil');
+    }
+    exit;
   }
 }
