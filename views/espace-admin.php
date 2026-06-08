@@ -38,8 +38,55 @@ ob_start();
         <!-- CONTENU -->
         <div class="dashboard__content">
           <!-- STATISTIQUES -->
-          <section class="dashboard__section" id="stats">
-            <h2 class="dashboard__section-title">Tableau de bord</h2>
+          <section class="dashboard__section" id="statistiques">
+            <div class="dashboard__section-header">
+              <h1 class="dashboard__section-title">Statistiques</h1>
+            </div>
+
+            <!-- Filtres CA -->
+            <div class="admin-stats-filters">
+              <div class="form-group">
+                <label class="form-label" for="stats-menu"
+                  >Filtrer par menu</label
+                >
+                <select id="stats-menu" class="filters__select">
+                    <option value="">Tous les menus</option>
+                    <?php foreach ($menus as $m): ?>
+                        <option value="<?= $m['menu_id'] ?>"><?= htmlspecialchars($m['titre']) ?></option>
+                    <?php endforeach; ?>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="space-sm"></div>
+                <label class="form-label" for="stats-debut"
+                  >Date de début</label
+                >
+                <input
+                  type="date"
+                  id="stats-debut"
+                  name="date_debut"
+                  class="form-input"
+                />
+              </div>
+              <div class="form-group">
+                <div class="space-sm"></div>
+                <label class="form-label" for="stats-fin">Date de fin</label>
+                <input
+                  type="date"
+                  id="stats-fin"
+                  name="date_fin"
+                  class="form-input"
+                />
+              </div>
+              <div class="space-sm"></div>
+              <button
+                type="button"
+                class="btn btn--primary btn--sm"
+                id="btn-filtrer-stats"
+              >
+                Filtrer
+              </button>
+            </div>
 
             <!-- Chiffre d'affaires -->
             <div class="admin-ca">
@@ -49,14 +96,40 @@ ob_start();
               </div>
               <div class="admin-ca__card">
                 <p class="admin-ca__label">Commandes totales</p>
-                <p class="admin-ca__value" id="commandes-total"><?= $statsCA['nb_commandes'] ?? 0 ?></p>
+                <p class="admin-ca__value" id="commandes-total"><?= $statsCA['nombre_commandes'] ?? 0 ?></p>
+              </div>
+              <div class="admin-ca__card">
+                <p class="admin-ca__label">Panier moyen</p>
+                <p class="admin-ca__value" id="panier-moyen"><?= number_format($statsCA['panier_moyen'] ?? 0, 2) ?> €</p>
               </div>
             </div>
 
-            <!-- Graphique -->
-            <div class="admin-chart-container">
-              <canvas id="adminChart" data-stats='<?= json_encode($statsParMenu) ?>'></canvas>
+            <!-- Graphique commandes par menu (données MongoDB) -->
+            <div class="admin-chart">
+              <h2 class="admin-chart__title">Commandes par menu</h2>
+              <canvas id="chart-commandes" 
+                data-stats='<?= json_encode([
+                    "labels" => array_column($statsParMenu, "titre"),
+                    "commandes" => array_column($statsParMenu, "nombre_commandes"),
+                    "ca" => array_column($statsParMenu, "ca")
+                ]) ?>' 
+                height="80">
+            </canvas>
             </div>
+
+              <div class="admin-chart__fallback">
+                <table class="admin-chart__fallback-table">
+                  <tbody>
+                    <?php foreach ($statsParMenu as $stat): ?>
+                    <tr>
+                      <td><?= htmlspecialchars($stat['titre']) ?></td>
+                      <td><?= $stat['nombre_commandes'] ?> cmd. — <?= number_format($stat['ca'], 2) ?>€</td>
+                    </tr>
+                    <?php endforeach; ?>
+                  </tbody>
+                </table>
+              </div>
+
           </section>
 
           <!-- COMMANDES -->
@@ -202,8 +275,9 @@ ob_start();
                     <td><span class="menu-card__tag"><?= htmlspecialchars($menu['theme'] ?? '—') ?></span></td>
                     <td><?= $menu['prix_base'] ?>€</td>
                     <td><?= $menu['stock_disponible'] ?></td>
-                    <td class="employe-table__actions">
+                    <td>
                         <a href="index.php?page=menu-edit&id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
+                        <div class="space-sm"></div>
                         <form action="index.php?page=espace-admin&action=delete-menu" method="POST"
                               onsubmit="return confirm('Supprimer ce menu ?')">
                             <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
