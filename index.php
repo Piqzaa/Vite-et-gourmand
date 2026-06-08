@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/assets/php/includes/session.php';
+require_once __DIR__ . '/includes/session.php';
 sessionStart();
 
 /**
@@ -8,8 +8,8 @@ sessionStart();
  */
 
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/assets/php/config/db.php';
-require_once __DIR__ . '/assets/php/includes/functions.php';
+require_once __DIR__ . '/config/db.php';
+require_once __DIR__ . '/includes/functions.php';
 
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
