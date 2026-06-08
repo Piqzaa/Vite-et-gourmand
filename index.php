@@ -1,6 +1,10 @@
 <?php
-require_once __DIR__ . '/includes/session.php';
-sessionStart();
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_httponly', '1');
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.cookie_samesite', 'Strict');
+    session_start();
+}
 
 /**
  * FRONT CONTROLLER - Vite & Gourmand
@@ -9,7 +13,6 @@ sessionStart();
 
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/includes/functions.php';
 
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
@@ -33,6 +36,7 @@ use App\Service\AuthService;
 use App\Service\CommandeService;
 use App\Service\MailService;
 use App\Service\LoggerService;
+use App\Service\SecurityService;
 
 // 1. Initialisation
 $pdo = getDB();
@@ -42,6 +46,7 @@ $action = $_GET['action'] ?? 'index';
 // 2. Initialisation des services partagés
 $logger = new LoggerService();
 $mailService = new MailService();
+$securityService = new SecurityService();
 
 // 3. Routage
 try {
