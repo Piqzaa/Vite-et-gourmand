@@ -46,7 +46,8 @@ ob_start();
             </div>
             <div class="space-sm"></div>
 
-            <form action="assets/php/auth/forgot-password.php" method="POST" class="auth-form">
+            <form action="index.php?page=forgot-password" method="POST" class="auth-form">
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
                 <div class="form-group">
                     <label class="form-label" for="forgot-email">Votre email</label>
                     <input type="email" id="forgot-email" name="email" class="form-input" placeholder="votre@email.com" required />

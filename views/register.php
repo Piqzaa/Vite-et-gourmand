@@ -140,11 +140,11 @@ ob_start();
                 <input type="checkbox" name="cgv" required />
                 <span
                   >J'accepte les
-                  <a href="cgv.php" class="form-link"
+                  <a href="index.php?page=cgv" class="form-link"
                     >conditions générales de vente</a
                   >
                   et la
-                  <a href="mentions-legales.php" class="form-link"
+                  <a href="index.php?page=mentions" class="form-link"
                     >politique de confidentialité</a
                   >.</span
                 >
