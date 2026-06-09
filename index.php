@@ -37,6 +37,7 @@ use App\Service\CommandeService;
 use App\Service\MailService;
 use App\Service\LoggerService;
 use App\Service\SecurityService;
+use App\Service\FileService;
 
 // 1. Initialisation
 $pdo = getDB();
@@ -47,6 +48,7 @@ $action = $_GET['action'] ?? 'index';
 $logger = new LoggerService();
 $mailService = new MailService();
 $securityService = new SecurityService();
+$fileService = new FileService(__DIR__ . '/assets/img/plats/');
 
 // 3. Routage
 try {
@@ -185,7 +187,7 @@ try {
                 $controller = new EmployeController($commandeRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $authService);
                 $controller->index();
             } else {
-                $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+                $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService, $fileService);
                 
                 if ($action === 'create-employe') {
                     $controller->createEmploye();
@@ -222,7 +224,7 @@ try {
             $themeRepo = new ThemeRepository($pdo);
             $regimeRepo = new RegimeRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService, $fileService);
             
             if ($action === 'process') {
                 $controller->processCreatePlat();
@@ -242,7 +244,7 @@ try {
             $themeRepo = new ThemeRepository($pdo);
             $regimeRepo = new RegimeRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService, $fileService);
             
             if ($action === 'process') {
                 $controller->processCreateMenu();
@@ -262,7 +264,7 @@ try {
             $themeRepo = new ThemeRepository($pdo);
             $regimeRepo = new RegimeRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService);
+            $controller = new AdminController($commandeRepo, $userRepo, $menuRepo, $avisRepo, $platRepo, $horaireRepo, $allergeneRepo, $themeRepo, $regimeRepo, $authService, $fileService);
             
             if ($action === 'process') {
                 $controller->processEditMenu();

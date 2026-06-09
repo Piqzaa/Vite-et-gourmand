@@ -11,6 +11,7 @@ use App\Repository\AllergeneRepository;
 use App\Repository\ThemeRepository;
 use App\Repository\RegimeRepository;
 use App\Service\AuthService;
+use App\Service\FileService;
 use Exception;
 
 class AdminController {
@@ -24,7 +25,8 @@ class AdminController {
         private AllergeneRepository $allergeneRepo,
         private ThemeRepository $themeRepo,
         private RegimeRepository $regimeRepo,
-        private AuthService $authService
+        private AuthService $authService,
+        private FileService $fileService
     ) {}
 
     public function index(): void {
@@ -106,36 +108,31 @@ class AdminController {
             exit;
         }
 
-        // Gestion de l'upload d'image
-        $uploadDir = __DIR__ . '/../../assets/img/plats/';
+        // Gestion de l'upload d'image via le FileService
         $imagePath = null;
-
-        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $fileType = $_FILES['image']['type'];
-            $fileSize = $_FILES['image']['size'];
-
-            if (!in_array($fileType, ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])) {
-                header('Location: index.php?page=plat-create&error=format_invalide');
+        try {
+            if (!isset($_FILES['image']) || $_FILES['image']['error'] === UPLOAD_ERR_NO_FILE) {
+                header('Location: index.php?page=plat-create&error=image_manquante');
                 exit;
             }
 
-            if ($fileSize > 2 * 1024 * 1024) {
-                header('Location: index.php?page=plat-create&error=fichier_trop_lourd');
-                exit;
-            }
-
-            $extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $newFileName = uniqid('plat_', true) . '.' . $extension;
+            $imagePath = $this->fileService->uploadImage($_FILES['image'], 'plat_');
+        } catch (Exception $e) {
+            // Mapping des messages d'erreur du service vers des codes d'erreur URL
+            $errorMap = [
+                "Format d'image non supporté" => 'format_invalide',
+                "Le fichier est trop volumineux" => 'fichier_trop_lourd',
+                "Erreur lors du transfert" => 'upload_echoue'
+            ];
             
-            if (!is_dir($uploadDir)) mkdir($uploadDir, 0755, true);
-
-            if (!move_uploaded_file($_FILES['image']['tmp_name'], $uploadDir . $newFileName)) {
-                header('Location: index.php?page=plat-create&error=upload_echoue');
-                exit;
+            $errorCode = 'upload_echoue';
+            foreach ($errorMap as $msg => $code) {
+                if (str_contains($e->getMessage(), $msg)) {
+                    $errorCode = $code;
+                    break;
+                }
             }
-            $imagePath = $newFileName;
-        } else {
-            header('Location: index.php?page=plat-create&error=image_manquante');
+            header("Location: index.php?page=plat-create&error=$errorCode");
             exit;
         }
 
@@ -160,7 +157,7 @@ class AdminController {
 
         } catch (Exception $e) {
             $this->platRepo->rollBack();
-            if ($imagePath && file_exists($uploadDir . $imagePath)) unlink($uploadDir . $imagePath);
+            if ($imagePath) $this->fileService->deleteFile($imagePath);
             header('Location: index.php?page=plat-create&error=erreur_serveur');
             exit;
         }
