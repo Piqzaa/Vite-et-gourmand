@@ -2,31 +2,49 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use PDO;
 
 class UserRepository {
     public function __construct(private PDO $pdo) {}
 
-    public function findByEmail(string $email): ?array {
+    private function mapToEntity(array $data): User {
+        return new User(
+            id: (int)$data['utilisateur_id'],
+            nom: $data['nom'],
+            prenom: $data['prenom'],
+            email: $data['email'],
+            password: $data['password'] ?? null,
+            role: $data['role'],
+            gsm: $data['gsm'] ?? '',
+            adressePostale: $data['adresse_postale'] ?? '',
+            ville: $data['ville'] ?? '',
+            actif: (bool)$data['actif']
+        );
+    }
+
+    public function findByEmail(string $email): ?User {
         $stmt = $this->pdo->prepare('SELECT * FROM utilisateur WHERE email = ?');
         $stmt->execute([$email]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $user ?: null;
+        return $user ? $this->mapToEntity($user) : null;
     }
 
-    public function findById(int $id): ?array {
+    public function findById(int $id): ?User {
         $stmt = $this->pdo->prepare('SELECT * FROM utilisateur WHERE utilisateur_id = ?');
         $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? $this->mapToEntity($data) : null;
     }
 
-    public function findByResetToken(string $token): ?array {
+    public function findByResetToken(string $token): ?User {
         $stmt = $this->pdo->prepare('
             SELECT * FROM utilisateur 
             WHERE reset_token = ? AND reset_token_expire > NOW()
         ');
         $stmt->execute([$token]);
-        return $stmt->fetch(PDO::FETCH_ASSOC) ?: null;
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? $this->mapToEntity($data) : null;
     }
 
     public function setResetToken(int $userId, string $token, string $expire): bool {
@@ -66,8 +84,9 @@ class UserRepository {
     }
 
     public function findByRole(string $role): array {
-        $stmt = $this->pdo->prepare('SELECT utilisateur_id, nom, prenom, email, actif FROM utilisateur WHERE role = ? ORDER BY nom');
+        $stmt = $this->pdo->prepare('SELECT * FROM utilisateur WHERE role = ? ORDER BY nom');
         $stmt->execute([$role]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 }

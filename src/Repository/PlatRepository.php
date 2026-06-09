@@ -2,10 +2,25 @@
 
 namespace App\Repository;
 
+use App\Entity\Plat;
 use PDO;
 
 class PlatRepository {
     public function __construct(private PDO $pdo) {}
+
+    private function mapToEntity(array $data): Plat {
+        $allergenes = !empty($data['allergenes']) ? 
+            (is_array($data['allergenes']) ? $data['allergenes'] : explode('||', $data['allergenes'])) 
+            : [];
+
+        return new Plat(
+            id: (int)$data['plat_id'],
+            libelle: $data['libelle'],
+            type: $data['type'],
+            imagePath: $data['image_path'] ?? null,
+            allergenes: $allergenes
+        );
+    }
 
     public function findByMenuId(int $menuId): array {
         $stmt = $this->pdo->prepare('
@@ -15,12 +30,14 @@ class PlatRepository {
             WHERE cm.menu_id = ?
         ');
         $stmt->execute([$menuId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
     public function findAll(): array {
         $stmt = $this->pdo->query('SELECT * FROM plat ORDER BY libelle');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
     public function findAllWithAllergenes(): array {
@@ -33,13 +50,8 @@ class PlatRepository {
             GROUP BY p.plat_id
             ORDER BY p.type, p.libelle
         ');
-        $plats = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        foreach ($plats as &$plat) {
-            $plat['allergenes'] = !empty($plat['allergenes']) ? explode('||', $plat['allergenes']) : [];
-        }
-        
-        return $plats;
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
     public function save(array $data): int {
         $stmt = $this->pdo->prepare('

@@ -2,17 +2,36 @@
 
 namespace App\Repository;
 
+use App\Entity\Menu;
 use PDO;
 
 class MenuRepository {
     public function __construct(private PDO $pdo) {}
+
+    private function mapToEntity(array $data): Menu {
+        return new Menu(
+            id: (int)($data['menu_id'] ?? 0),
+            titre: $data['titre'],
+            description: $data['description'] ?? '',
+            nombrePersonneMin: (int)($data['nombre_personne_min'] ?? 0),
+            prixBase: (float)($data['prix_base'] ?? 0),
+            stockDisponible: (int)($data['stock_disponible'] ?? 0),
+            conditionsParticulieres: $data['conditions_particulieres'] ?? null,
+            themeId: isset($data['theme_id']) ? (int)$data['theme_id'] : null,
+            regimeId: isset($data['regime_id']) ? (int)$data['regime_id'] : null,
+            themeLabel: $data['theme'] ?? null,
+            regimeLabel: $data['regime'] ?? null,
+            imagePath: $data['image_path'] ?? null
+        );
+    }
 
     public function findAll(): array {
         $stmt = $this->pdo->query('
             SELECT * FROM menu
             ORDER BY titre
         ');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
     public function findAllAvailable(): array {
         $stmt = $this->pdo->query('
@@ -20,10 +39,11 @@ class MenuRepository {
             WHERE stock_disponible > 0
             ORDER BY titre
         ');
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
-    public function findById(int $id): ?array {
+    public function findById(int $id): ?Menu {
         $stmt = $this->pdo->prepare('
             SELECT m.*, t.libelle as theme, r.libelle as regime
             FROM menu m
@@ -32,8 +52,8 @@ class MenuRepository {
             WHERE m.menu_id = ?
         ');
         $stmt->execute([$id]);
-        $menu = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $menu ?: null;
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? $this->mapToEntity($data) : null;
     }
 
     public function findByFilters(array $filters): array {
@@ -83,7 +103,8 @@ class MenuRepository {
 
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
     public function findRandomAvailable(int $limit = 3): array {
@@ -104,7 +125,8 @@ class MenuRepository {
         ');
         $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
     public function decrementStock(int $menuId): bool {

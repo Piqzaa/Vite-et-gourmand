@@ -2,12 +2,38 @@
 
 namespace App\Repository;
 
+use App\Entity\Commande;
+use DateTime;
 use PDO;
 
 class CommandeRepository {
     public function __construct(private PDO $pdo) {}
 
-    public function findById(int $id): ?array {
+    private function mapToEntity(array $data): Commande {
+        return new Commande(
+            id: (int)$data['commande_id'],
+            dateCommande: new DateTime($data['date_commande']),
+            datePrestation: new DateTime($data['date_prestation']),
+            heurePrestation: $data['heure_prestation'],
+            adresseLivraison: $data['adresse_livraison'],
+            estHorsBordeaux: (bool)$data['est_hors_bordeaux'],
+            nombrePersonnes: (int)$data['nombre_personnes'],
+            prixTotalTtc: (float)$data['prix_total_ttc'],
+            statut: $data['statut'],
+            motifAnnulation: $data['motif_annulation'] ?? null,
+            pretMateriel: (bool)$data['pret_materiel'],
+            materielRendu: (bool)$data['materiel_rendu'],
+            utilisateurId: isset($data['utilisateur_id']) ? (int)$data['utilisateur_id'] : null,
+            menuId: isset($data['menu_id']) ? (int)$data['menu_id'] : null,
+            menuNom: $data['menu_titre'] ?? $data['menu_nom'] ?? null,
+            clientNom: $data['nom'] ?? $data['client_nom'] ?? null,
+            clientPrenom: $data['prenom'] ?? $data['client_prenom'] ?? null,
+            clientEmail: $data['email'] ?? $data['client_email'] ?? null,
+            clientGsm: $data['gsm'] ?? $data['client_gsm'] ?? null
+        );
+    }
+
+    public function findById(int $id): ?Commande {
         $stmt = $this->pdo->prepare('
             SELECT c.*, m.titre as menu_titre, u.email, u.prenom, u.nom
             FROM commande c
@@ -16,8 +42,8 @@ class CommandeRepository {
             WHERE c.commande_id = ?
         ');
         $stmt->execute([$id]);
-        $commande = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $commande ?: null;
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data ? $this->mapToEntity($data) : null;
     }
 
     public function findByUserId(int $userId): array {
@@ -29,7 +55,8 @@ class CommandeRepository {
             ORDER BY c.date_commande DESC
         ');
         $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
     public function getSuiviByCommandeId(int $commandeId): array {
@@ -101,7 +128,8 @@ class CommandeRepository {
             ORDER BY c.date_commande DESC
         ');
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return array_map([$this, 'mapToEntity'], $results);
     }
 
     public function getGlobalStats(array $filters = []): array {
