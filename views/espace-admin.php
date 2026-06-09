@@ -52,7 +52,7 @@ ob_start();
                 <select id="stats-menu" class="filters__select">
                     <option value="">Tous les menus</option>
                     <?php foreach ($menus as $m): ?>
-                        <option value="<?= $m['menu_id'] ?>"><?= htmlspecialchars($m['titre']) ?></option>
+                        <option value="<?= $m->getId() ?>"><?= htmlspecialchars($m->getTitre()) ?></option>
                     <?php endforeach; ?>
                 </select>
               </div>
@@ -228,20 +228,20 @@ ob_start();
               <tbody>
                 <?php foreach ($employes as $emp): ?>
                 <tr>
-                    <td><?= htmlspecialchars($emp['prenom'] . ' ' . $emp['nom']) ?></td>
-                    <td><?= htmlspecialchars($emp['email']) ?></td>
+                    <td><?= htmlspecialchars($emp->getPrenom() . ' ' . $emp->getNom()) ?></td>
+                    <td><?= htmlspecialchars($emp->getEmail()) ?></td>
                     <td>
-                        <span class="commande-card__status <?= $emp['actif'] ? 'commande-card__status--accepte' : 'commande-card__status--annulee' ?>">
-                            <?= $emp['actif'] ? 'Actif' : 'Désactivé' ?>
+                        <span class="commande-card__status <?= $emp->isActif() ? 'commande-card__status--accepte' : 'commande-card__status--annulee' ?>">
+                            <?= $emp->isActif() ? 'Actif' : 'Désactivé' ?>
                         </span>
                     </td>
                     <td>
                         <form action="index.php?page=espace-admin&action=toggle-employe" method="POST" style="display:inline">
                             <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
-                            <input type="hidden" name="employe_id" value="<?= $emp['utilisateur_id'] ?>">
-                            <input type="hidden" name="actif" value="<?= $emp['actif'] ? 0 : 1 ?>">
+                            <input type="hidden" name="employe_id" value="<?= $emp->getId() ?>">
+                            <input type="hidden" name="actif" value="<?= $emp->isActif() ? 0 : 1 ?>">
                             <button type="submit" class="btn btn--secondary btn--sm">
-                                <?= $emp['actif'] ? 'Désactiver' : 'Réactiver' ?>
+                                <?= $emp->isActif() ? 'Désactiver' : 'Réactiver' ?>
                             </button>
                         </form>
                     </td>
@@ -271,17 +271,17 @@ ob_start();
               <tbody>
                 <?php foreach ($menus as $menu): ?>
                 <tr>
-                    <td><?= htmlspecialchars($menu['titre']) ?></td>
-                    <td><span class="menu-card__tag"><?= htmlspecialchars($menu['theme'] ?? '—') ?></span></td>
-                    <td><?= $menu['prix_base'] ?>€</td>
-                    <td><?= $menu['stock_disponible'] ?></td>
+                    <td><?= htmlspecialchars($menu->getTitre()) ?></td>
+                    <td><span class="menu-card__tag"><?= htmlspecialchars($menu->getThemeLabel() ?? '—') ?></span></td>
+                    <td><?= $menu->getPrixBase() ?>€</td>
+                    <td><?= $menu->getStockDisponible() ?></td>
                     <td>
-                        <a href="index.php?page=menu-edit&id=<?= $menu['menu_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
+                        <a href="index.php?page=menu-edit&id=<?= $menu->getId() ?>" class="btn btn--secondary btn--sm">Modifier</a>
                         <div class="space-sm"></div>
                         <form action="index.php?page=espace-admin&action=delete-menu" method="POST"
                               onsubmit="return confirm('Supprimer ce menu ?')">
                             <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
-                            <input type="hidden" name="menu_id" value="<?= $menu['menu_id'] ?>">
+                            <input type="hidden" name="menu_id" value="<?= $menu->getId() ?>">
                             <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                         </form>
                     </td>
@@ -306,11 +306,11 @@ ob_start();
                 <tbody>
                     <?php foreach ($platsAvecAllergenes as $plat): ?>
                     <tr>
-                        <td><?= htmlspecialchars($plat['libelle']) ?></td>
-                        <td><?= ucfirst($plat['type']) ?></td>
+                        <td><?= htmlspecialchars($plat->getLibelle()) ?></td>
+                        <td><?= ucfirst($plat->getType()) ?></td>
                         <td>
-                            <?php if (!empty($plat['allergenes'])): ?>
-                                <?php foreach ($plat['allergenes'] as $a): ?>
+                            <?php if (!empty($plat->getAllergenes())): ?>
+                                <?php foreach ($plat->getAllergenes() as $a): ?>
                                     <span class="allergene"><?= htmlspecialchars($a) ?></span>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -321,7 +321,7 @@ ob_start();
                             <form action="index.php?page=espace-admin&action=delete-plat" method="POST" 
                                   onsubmit="return confirm('Supprimer ce plat ? Il sera retiré de tous les menus associés.')">
                                 <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
-                                <input type="hidden" name="plat_id" value="<?= $plat['plat_id'] ?>">
+                                <input type="hidden" name="plat_id" value="<?= $plat->getId() ?>">
                                 <button type="submit" class="btn btn--sm btn--primary">Supprimer</button>
                             </form>
                         </td>

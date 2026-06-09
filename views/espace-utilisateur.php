@@ -5,10 +5,10 @@ ob_start();
         <aside class="dashboard__sidebar">
           <div class="dashboard__user">
             <div class="dashboard__avatar">
-              <?= strtoupper(substr($user['prenom'], 0, 1) . substr($user['nom'], 0, 1)) ?>
+              <?= strtoupper(substr($user->getPrenom(), 0, 1) . substr($user->getNom(), 0, 1)) ?>
             </div>
             <div>
-              <p class="dashboard__username"><?= htmlspecialchars($user['prenom'] . ' ' . $user['nom']) ?></p>
+              <p class="dashboard__username"><?= htmlspecialchars($user->getPrenom() . ' ' . $user->getNom()) ?></p>
               <p class="dashboard__role">Utilisateur</p>
             </div>
           </div>
@@ -141,7 +141,7 @@ ob_start();
                     id="profil-prenom"
                     name="prenom"
                     class="form-input"
-                    value="<?= htmlspecialchars($user['prenom']) ?>"
+                    value="<?= htmlspecialchars($user->getPrenom()) ?>"
                     required
                   />
                 </div>
@@ -152,7 +152,7 @@ ob_start();
                     id="profil-nom"
                     name="nom"
                     class="form-input"
-                    value="<?= htmlspecialchars($user['nom']) ?>"
+                    value="<?= htmlspecialchars($user->getNom()) ?>"
                     required
                   />
                 </div>
@@ -165,7 +165,7 @@ ob_start();
                   id="profil-email"
                   name="email"
                   class="form-input"
-                  value="<?= htmlspecialchars($user['email']) ?>"
+                  value="<?= htmlspecialchars($user->getEmail()) ?>"
                   required
                 />
               </div>
@@ -177,7 +177,7 @@ ob_start();
                   id="profil-gsm"
                   name="gsm"
                   class="form-input"
-                  value="<?= htmlspecialchars($user['gsm']) ?>"
+                  value="<?= htmlspecialchars($user->getGsm()) ?>"
                   required
                 />
               </div>
@@ -191,7 +191,7 @@ ob_start();
                   id="profil-adresse"
                   name="adresse"
                   class="form-input"
-                  value="<?= htmlspecialchars($user['adresse_postale'] ?? '') ?>"
+                  value="<?= htmlspecialchars($user->getAdressePostale()) ?>"
                   required
                 />
               </div>
@@ -205,7 +205,7 @@ ob_start();
                   id="profil-ville"
                   name="ville"
                   class="form-input"
-                  value="<?= htmlspecialchars($user['ville'] ?? '') ?>"
+                  value="<?= htmlspecialchars($user->getVille()) ?>"
                   required
                 />
               </div>

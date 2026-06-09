@@ -86,8 +86,8 @@ ob_start();
                         <div class="plats-checkboxes">
                             <?php foreach ($items as $plat): ?>
                             <label class="plat-checkbox">
-                                <input type="checkbox" name="plats[]" value="<?= $plat['plat_id'] ?>" />
-                                <?= htmlspecialchars($plat['libelle']) ?>
+                                <input type="checkbox" name="plats[]" value="<?= $plat->getId() ?>" />
+                                <?= htmlspecialchars($plat->getLibelle()) ?>
                             </label>
                             <?php endforeach; ?>
                         </div>

@@ -130,21 +130,21 @@ ob_start();
                   <article class="menu-card">
                       <div class="menu-card__img-wrapper">
                           <img
-                              src="<?= !empty($menu['image_path']) 
-                                  ? 'assets/img/plats/' . htmlspecialchars($menu['image_path']) 
+                              src="<?= !empty($menu->getImagePath()) 
+                                  ? 'assets/img/plats/' . htmlspecialchars($menu->getImagePath()) 
                                   : 'assets/img/menu-placeholder.jpg' ?>"
-                              alt="<?= htmlspecialchars($menu['titre']) ?>"
+                              alt="<?= htmlspecialchars($menu->getTitre()) ?>"
                               class="menu-card__img"
                               onerror="this.onerror=null; this.src='assets/img/menu-placeholder.jpg';"
                           />
                       </div>
                       <div class="menu-card__body">
-                          <span class="menu-card__tag"><?= htmlspecialchars($menu['theme'] ?? '—') ?></span>
-                          <h3 class="menu-card__title"><?= htmlspecialchars($menu['titre']) ?></h3>
+                          <span class="menu-card__tag"><?= htmlspecialchars($menu->getThemeLabel() ?? '—') ?></span>
+                          <h3 class="menu-card__title"><?= htmlspecialchars($menu->getTitre()) ?></h3>
                           <p class="menu-card__info">
-                              À partir de <?= $menu['prix_base'] ?>€ · <?= $menu['nombre_personne_min'] ?> personnes min.
+                              À partir de <?= $menu->getPrixBase() ?>€ · <?= $menu->getNombrePersonneMin() ?> personnes min.
                           </p>
-                          <a href="index.php?page=menu-detail&id=<?= $menu['menu_id'] ?>" class="btn btn--outline">
+                          <a href="index.php?page=menu-detail&id=<?= $menu->getId() ?>" class="btn btn--outline">
                               Voir le détail
                           </a>
                       </div>

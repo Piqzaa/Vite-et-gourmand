@@ -19,7 +19,7 @@ ob_start();
         ?>
         <img
             src="<?= $firstImg ?>"
-            alt="<?= htmlspecialchars($menu['titre']) ?>"
+            alt="<?= htmlspecialchars($menu->getTitre()) ?>"
             class="menu-gallery__img"
             id="gallery-main-img"
             onerror="this.onerror=null; this.src='assets/img/menu-placeholder.jpg';"
@@ -72,44 +72,44 @@ ob_start();
       <div class="menu-detail__right">
         <div class="menu-detail__header">
           <div class="menu-detail__tags">
-            <span class="menu-card__tag"><?= htmlspecialchars($menu['theme'] ?? '—') ?></span>
-            <span class="menu-card__tag"><?= htmlspecialchars($menu['regime'] ?? '—') ?></span>
+            <span class="menu-card__tag"><?= htmlspecialchars($menu->getThemeLabel() ?? '—') ?></span>
+            <span class="menu-card__tag"><?= htmlspecialchars($menu->getRegimeLabel() ?? '—') ?></span>
           </div>
-          <h1 class="menu-detail__title"><?= htmlspecialchars($menu['titre']) ?></h1>
-          <p class="menu-detail__desc"><?= htmlspecialchars($menu['description']) ?></p>
+          <h1 class="menu-detail__title"><?= htmlspecialchars($menu->getTitre()) ?></h1>
+          <p class="menu-detail__desc"><?= htmlspecialchars($menu->getDescription()) ?></p>
         </div>
 
         <div class="menu-detail__infos">
           <div class="menu-info">
             <span class="menu-info__label">Prix de base</span>
-            <span class="menu-info__value menu-info__value--price"><?= $menu['prix_base'] ?>€</span>
+            <span class="menu-info__value menu-info__value--price"><?= $menu->getPrixBase() ?>€</span>
           </div>
           <div class="menu-info">
             <span class="menu-info__label">Personnes minimum</span>
-            <span class="menu-info__value"><?= $menu['nombre_personne_min'] ?> personnes</span>
+            <span class="menu-info__value"><?= $menu->getNombrePersonneMin() ?> personnes</span>
           </div>
           <div class="menu-info">
             <span class="menu-info__label">Régime</span>
-            <span class="menu-info__value"><?= htmlspecialchars($menu['regime'] ?? '—') ?></span>
+            <span class="menu-info__value"><?= htmlspecialchars($menu->getRegimeLabel() ?? '—') ?></span>
           </div>
           <div class="menu-info">
             <span class="menu-info__label">Stock disponible</span>
-            <span class="menu-info__value"><?= $menu['stock_disponible'] ?> commandes restantes</span>
+            <span class="menu-info__value"><?= $menu->getStockDisponible() ?> commandes restantes</span>
           </div>
         </div>
 
-        <?php if ($menu['conditions_particulieres']): ?>
+        <?php if ($menu->getConditionsParticulieres()): ?>
         <div class="menu-conditions">
           <div class="menu-conditions__header">
             <span class="menu-conditions__icon" aria-hidden="true">⚠️</span>
             <h2 class="menu-conditions__title">Conditions importantes</h2>
           </div>
-          <p><?= htmlspecialchars($menu['conditions_particulieres']) ?></p>
+          <p><?= htmlspecialchars($menu->getConditionsParticulieres()) ?></p>
         </div>
         <?php endif; ?>
 
         <div class="menu-detail__cta">
-          <a href="index.php?page=commande&menu=<?= $menu['menu_id'] ?>" class="btn btn--primary btn--full">
+          <a href="index.php?page=commande&menu=<?= $menu->getId() ?>" class="btn btn--primary btn--full">
             Commander ce menu
           </a>
         </div>
