@@ -11,16 +11,16 @@ class AuthService {
     public function login(string $email, string $password): bool {
         $user = $this->userRepository->findByEmail($email);
         
-        if ($user && password_verify($password, $user['password'])) {
-            if (!$user['actif']) {
+        if ($user && password_verify($password, $user->getPassword())) {
+            if (!$user->isActif()) {
                 return false;
             }
             
-            $_SESSION['user_id'] = $user['utilisateur_id'];
-            $_SESSION['user_nom'] = $user['nom'];
-            $_SESSION['user_prenom'] = $user['prenom'];
-            $_SESSION['user_email'] = $user['email'];
-            $_SESSION['user_role'] = $user['role'];
+            $_SESSION['user_id'] = $user->getId();
+            $_SESSION['user_nom'] = $user->getNom();
+            $_SESSION['user_prenom'] = $user->getPrenom();
+            $_SESSION['user_email'] = $user->getEmail();
+            $_SESSION['user_role'] = $user->getRole();
             
             return true;
         }

@@ -20,19 +20,19 @@ class CommandeService {
             throw new Exception("Menu introuvable");
         }
 
-        if ($menu['stock_disponible'] <= 0) {
+        if ($menu->getStockDisponible() <= 0) {
             throw new Exception("Stock épuisé");
         }
 
-        if ($data['nb_personnes'] < $menu['nombre_personne_min']) {
+        if ($data['nb_personnes'] < $menu->getNombrePersonneMin()) {
             throw new Exception("Nombre de personnes insuffisant");
         }
 
         // Calcul prix
-        $prixParPers = $menu['prix_base'] / $menu['nombre_personne_min'];
+        $prixParPers = $menu->getPrixBase() / $menu->getNombrePersonneMin();
         $prixMenu = $prixParPers * $data['nb_personnes'];
         
-        if ($data['nb_personnes'] >= $menu['nombre_personne_min'] + 5) {
+        if ($data['nb_personnes'] >= $menu->getNombrePersonneMin() + 5) {
             $prixMenu *= 0.90; // Réduction 10%
         }
 
