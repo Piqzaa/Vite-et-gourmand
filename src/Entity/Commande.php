@@ -19,7 +19,12 @@ class Commande {
         private bool $pretMateriel = false,
         private bool $materielRendu = false,
         private ?int $utilisateurId = null,
-        private ?int $menuId = null
+        private ?int $menuId = null,
+        private ?string $menuNom = null,
+        private ?string $clientNom = null,
+        private ?string $clientPrenom = null,
+        private ?string $clientEmail = null,
+        private ?string $clientGsm = null
     ) {}
 
     public function getId(): ?int { return $this->id; }
@@ -36,4 +41,9 @@ class Commande {
     public function isMaterielRendu(): bool { return $this->materielRendu; }
     public function getUtilisateurId(): ?int { return $this->utilisateurId; }
     public function getMenuId(): ?int { return $this->menuId; }
+    public function getMenuNom(): ?string { return $this->menuNom; }
+    public function getClientNom(): ?string { return $this->clientNom; }
+    public function getClientPrenom(): ?string { return $this->clientPrenom; }
+    public function getClientEmail(): ?string { return $this->clientEmail; }
+    public function getClientGsm(): ?string { return $this->clientGsm; }
 }

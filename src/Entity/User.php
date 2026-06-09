@@ -8,6 +8,7 @@ class User {
         private string $nom,
         private string $prenom,
         private string $email,
+        private ?string $password = null,
         private string $role = 'utilisateur',
         private string $gsm = '',
         private string $adressePostale = '',
@@ -19,6 +20,7 @@ class User {
     public function getNom(): string { return $this->nom; }
     public function getPrenom(): string { return $this->prenom; }
     public function getEmail(): string { return $this->email; }
+    public function getPassword(): ?string { return $this->password; }
     public function getRole(): string { return $this->role; }
     public function getGsm(): string { return $this->gsm; }
     public function getAdressePostale(): string { return $this->adressePostale; }
