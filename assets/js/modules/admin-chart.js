@@ -13,7 +13,7 @@ export function initAdminChart() {
     const fin = document.getElementById("stats-fin").value;
 
     const response = await fetch(
-      `assets/php/admin/get-stats.php?menu_id=${menuId}&date_debut=${debut}&date_fin=${fin}`,
+      `index.php?page=espace-admin&action=api-stats&menu_id=${menuId}&date_debut=${debut}&date_fin=${fin}`,
     );
     const data = await response.json();
 

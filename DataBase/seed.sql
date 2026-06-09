@@ -2,6 +2,8 @@
 -- VITE & GOURMAND - Données de test
 -- ==============================================
 
+SET NAMES 'utf8mb4';
+
 -- Insertion des thèmes de référence
 INSERT INTO theme (libelle) VALUES 
 ('Noël'), 

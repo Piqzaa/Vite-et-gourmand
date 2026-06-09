@@ -1,0 +1,75 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: vg_db
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_DATABASE: ${DB_NAME:-vite_et_gourmand}
+      MYSQL_ROOT_PASSWORD: ${DB_PASS:-root}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./DataBase/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./DataBase/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - vg_db_data:/var/lib/mysql
+
+  mongo:
+    image: mongo:latest
+    container_name: vg_mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - vg_mongo_data:/data/db
+
+  php:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: vg_php
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      DB_HOST: ${DB_HOST:-db}
+      DB_NAME: ${DB_NAME:-vite_et_gourmand}
+      DB_USER: ${DB_USER:-root}
+      DB_PASS: ${DB_PASS:-root}
+      DB_CHARSET: ${DB_CHARSET:-utf8mb4}
+      MONGODB_URI: ${MONGODB_URI:-mongodb://mongo:27017}
+      BASE_URL: ${BASE_URL:-""}
+      SMTP_HOST: ${SMTP_HOST:-mailpit}
+      SMTP_PORT: ${SMTP_PORT:-1025}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      SMTP_FROM: ${SMTP_FROM:-noreply@viteetgourmand.fr}
+      SMTP_FROM_NAME: ${SMTP_FROM_NAME:-Vite & Gourmand}
+    depends_on:
+      - db
+      - mongo
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: vg_pma
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+    depends_on:
+      - db
+
+  mailpit:
+    image: axllent/mailpit
+    container_name: vg_mailpit
+    restart: always
+    ports:
+      - "1025:1025" # Port SMTP
+      - "8025:8025" # Interface Web
+
+volumes:
+  vg_db_data:
+  vg_mongo_data:
