@@ -70,12 +70,23 @@ class UserRepository {
         return $stmt->execute([(int)$actif, $userId]);
     }
 
+    private const ALLOWED_COLUMNS = [
+        'nom', 'prenom', 'email', 'gsm', 'adresse_postale', 'ville',
+        'password', 'role', 'actif',
+    ];
+
     public function update(int $userId, array $data): bool {
         $fields = [];
         $params = [];
         foreach ($data as $key => $value) {
+            if (!in_array($key, self::ALLOWED_COLUMNS, true)) {
+                continue;
+            }
             $fields[] = "$key = ?";
             $params[] = $value;
+        }
+        if (empty($fields)) {
+            return false;
         }
         $params[] = $userId;
         
