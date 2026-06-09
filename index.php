@@ -96,7 +96,7 @@ try {
         case 'login':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService, $securityService);
             
             if ($action === 'process') {
                 $controller->login();
@@ -108,14 +108,14 @@ try {
         case 'forgot-password':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService, $securityService);
             $controller->forgotPassword();
             break;
 
         case 'reset-password':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService, $securityService);
             if ($action === 'process') {
                 $controller->resetPassword();
             } else {
@@ -126,7 +126,7 @@ try {
         case 'register':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService, $securityService);
             
             if ($action === 'process') {
                 $controller->register();
@@ -138,7 +138,7 @@ try {
         case 'logout':
             $userRepo = new UserRepository($pdo);
             $authService = new AuthService($userRepo);
-            $controller = new AuthController($authService, $logger, $userRepo, $mailService);
+            $controller = new AuthController($authService, $logger, $userRepo, $mailService, $securityService);
             $controller->logout();
             break;
 

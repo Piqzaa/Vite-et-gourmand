@@ -6,13 +6,15 @@ use App\Service\AuthService;
 use App\Service\LoggerService;
 use App\Repository\UserRepository;
 use App\Service\MailService;
+use App\Service\SecurityService;
 
 class AuthController {
     public function __construct(
         private AuthService $authService,
         private LoggerService $logger,
         private UserRepository $userRepository,
-        private MailService $mailService
+        private MailService $mailService,
+        private SecurityService $securityService
     ) {}
 
     /**
@@ -23,6 +25,9 @@ class AuthController {
             header('Location: index.php?page=home');
             exit;
         }
+
+        // On génère le token CSRF pour la page de login
+        $this->securityService->generateCsrfToken();
 
         $redirect = $_GET['redirect'] ?? '';
         $title = 'Connexion';
@@ -35,12 +40,18 @@ class AuthController {
      * Traite la soumission du formulaire de connexion
      */
     public function login(): void {
-        $email = $_POST['email'] ?? '';
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=login&error=csrf_invalid');
+            exit;
+        }
+
+        $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $redirectUrl = $_POST['redirect'] ?? '';
 
         if ($this->authService->login($email, $password)) {
             $this->logger->log('auth_success', ['email' => $email]);
+            $this->securityService->regenerateCsrfToken(); // Sécurité : on change le token après login
             
             if (!empty($redirectUrl)) {
                 header("Location: $redirectUrl");
@@ -69,6 +80,7 @@ class AuthController {
      */
     public function logout(): void {
         $this->authService->logout();
+        session_destroy(); // On détruit tout pour plus de sécurité
         header('Location: index.php?page=home');
         exit;
     }
@@ -77,6 +89,7 @@ class AuthController {
      * Affiche la page d'inscription
      */
     public function registerPage(): void {
+        $this->securityService->generateCsrfToken();
         $title = 'Inscription';
         $description = 'Créez votre compte client Vite & Gourmand.';
         require __DIR__ . '/../../views/register.php';
@@ -86,20 +99,65 @@ class AuthController {
      * Traite l'inscription
      */
     public function register(): void {
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=register&error=csrf_invalid');
+            exit;
+        }
+
+        $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
+        $password = $_POST['password'] ?? '';
+        $confirm = $_POST['password_confirm'] ?? '';
+        $nom = trim($_POST['nom'] ?? '');
+        $prenom = trim($_POST['prenom'] ?? '');
+        $gsm = trim($_POST['gsm'] ?? '');
+        $adresse = trim($_POST['adresse'] ?? '');
+        $ville = trim($_POST['ville'] ?? '');
+
+        // 1. Validations de base
+        if (!$email || !$password || !$nom || !$prenom || !$gsm || !$adresse || !$ville) {
+            header('Location: index.php?page=register&error=champs_manquants');
+            exit;
+        }
+
+        // 2. Vérification mot de passe identique
+        if ($password !== $confirm) {
+            header('Location: index.php?page=register&error=password_mismatch');
+            exit;
+        }
+
+        // 3. Force du mot de passe (min 10 car, 1 maj, 1 min, 1 chiffre, 1 spécial)
+        if (strlen($password) < 10 || !preg_match('/[A-Z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[^a-zA-Z0-9]/', $password)) {
+            header('Location: index.php?page=register&error=password_weak');
+            exit;
+        }
+
+        // 4. Format GSM (simplifié)
+        if (!preg_match('/^[0-9+ \.]{10,20}$/', $gsm)) {
+            header('Location: index.php?page=register&error=gsm_invalid');
+            exit;
+        }
+
+        // 5. Vérification email unique
+        if ($this->userRepository->findByEmail($email)) {
+            header('Location: index.php?page=register&error=email_exists');
+            exit;
+        }
+
         $data = [
-            'nom' => $_POST['nom'] ?? '',
-            'prenom' => $_POST['prenom'] ?? '',
-            'email' => $_POST['email'] ?? '',
-            'gsm' => $_POST['gsm'] ?? '',
-            'password' => password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT),
-            'adresse_postale' => $_POST['adresse_postale'] ?? '',
-            'ville' => $_POST['ville'] ?? '',
+            'nom' => $nom,
+            'prenom' => $prenom,
+            'email' => $email,
+            'gsm' => $gsm,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'adresse_postale' => $adresse,
+            'ville' => $ville,
             'role' => 'utilisateur',
             'actif' => 1
         ];
 
         if ($this->userRepository->save($data)) {
-            $this->logger->log('user_registered', ['email' => $data['email']]);
+            $this->logger->log('user_registered', ['email' => $email]);
+            $this->securityService->regenerateCsrfToken();
             header('Location: index.php?page=login&success=registered');
         } else {
             header('Location: index.php?page=register&error=save_failed');
@@ -111,7 +169,12 @@ class AuthController {
      * Traite la demande de mot de passe oublié
      */
     public function forgotPassword(): void {
-        $email = trim($_POST['email'] ?? '');
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=login&error=csrf_invalid');
+            exit;
+        }
+
+        $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
         if (!$email) {
             header('Location: index.php?page=login&error=email_manquant');
             exit;
@@ -153,6 +216,7 @@ class AuthController {
             exit;
         }
 
+        $this->securityService->generateCsrfToken();
         $title = 'Réinitialisation du mot de passe';
         require __DIR__ . '/../../views/reset-password.php';
     }
@@ -161,6 +225,12 @@ class AuthController {
      * Traite la réinitialisation du mot de passe
      */
     public function resetPassword(): void {
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            $token = $_POST['token'] ?? '';
+            header("Location: index.php?page=reset-password&token=$token&error=csrf_invalid");
+            exit;
+        }
+
         $token = $_POST['token'] ?? '';
         $password = $_POST['password'] ?? '';
         $confirm = $_POST['password_confirm'] ?? '';
@@ -184,6 +254,7 @@ class AuthController {
 
         if ($this->userRepository->updatePassword($user->getId(), password_hash($password, PASSWORD_DEFAULT))) {
             $this->logger->log('password_reset', ['user_id' => $user->getId()]);
+            $this->securityService->regenerateCsrfToken();
             header('Location: index.php?page=login&success=password_updated');
         } else {
             header("Location: index.php?page=reset-password&token=$token&error=db_error");
