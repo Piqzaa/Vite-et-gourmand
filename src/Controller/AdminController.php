@@ -37,7 +37,23 @@ class AdminController {
             exit;
         }
 
-        $commandes = $this->commandeRepo->findAllWithDetails();
+        $commandesRaw = $this->commandeRepo->findAllWithDetails();
+        $commandes = [];
+        foreach ($commandesRaw as $cmd) {
+            $commandes[] = [
+                'commande_id' => $cmd->getId(),
+                'menu_nom' => $cmd->getMenuNom(),
+                'client_nom' => $cmd->getClientNom(),
+                'client_prenom' => $cmd->getClientPrenom(),
+                'client_email' => $cmd->getClientEmail(),
+                'client_gsm' => $cmd->getClientGsm(),
+                'statut' => $cmd->getStatut(),
+                'date_prestation' => $cmd->getDatePrestation()->format('Y-m-d'),
+                'heure_prestation' => $cmd->getHeurePrestation(),
+                'adresse_livraison' => $cmd->getAdresseLivraison(),
+                'prix_total_ttc' => $cmd->getPrixTotalTtc()
+            ];
+        }
         $employes = $this->userRepo->findByRole('employe');
         $menus = $this->menuRepo->findAll();
         $avis = $this->avisRepo->findPending();
@@ -165,7 +181,7 @@ class AdminController {
 
         $platsByType = ['entrée' => [], 'plat' => [], 'dessert' => []];
         foreach ($plats as $plat) {
-            $platsByType[$plat['type']][] = $plat;
+            $platsByType[$plat->getType()][] = $plat;
         }
 
         $title = 'Créer un menu';
@@ -235,7 +251,7 @@ class AdminController {
 
         $platsByType = ['entrée' => [], 'plat' => [], 'dessert' => []];
         foreach ($plats as $plat) {
-            $platsByType[$plat['type']][] = $plat;
+            $platsByType[$plat->getType()][] = $plat;
         }
 
         $title = 'Modifier le menu';
@@ -383,8 +399,8 @@ class AdminController {
         $id = (int)($_POST['menu_id'] ?? 0);
         
         // Vérification si des commandes actives y sont liées
-        $stmt = $this->menuRepo->findById($id);
-        if (!$stmt) {
+        $menu = $this->menuRepo->findById($id);
+        if (!$menu) {
              header('Location: index.php?page=espace-admin&error=menu_introuvable#menus');
              exit;
         }
@@ -486,7 +502,7 @@ class AdminController {
             // Remise en stock
             $commande = $this->commandeRepo->findById($commandeId);
             if ($commande) {
-                $this->menuRepo->incrementStock($commande['menu_id']);
+                $this->menuRepo->incrementStock($commande->getMenuId());
             }
 
             $this->commandeRepo->commit();

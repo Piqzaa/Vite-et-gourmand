@@ -41,9 +41,19 @@ class UserController
     
     $commandes = [];
     foreach ($commandesRaw as $cmd) {
-        $cmd['suivi_affichage'] = $this->calculateSuivi($cmd);
-        $cmd['has_avis'] = $this->avisRepository->existsForCommande($cmd['commande_id']);
-        $commandes[] = $cmd;
+        $cmdObj = [
+            'commande_id' => $cmd->getId(),
+            'menu_nom' => $cmd->getMenuNom(),
+            'statut' => $cmd->getStatut(),
+            'date_commande' => $cmd->getDateCommande()->format('Y-m-d H:i:s'),
+            'nombre_personnes' => $cmd->getNombrePersonnes(),
+            'prix_total_ttc' => $cmd->getPrixTotalTtc(),
+            'utilisateur_id' => $cmd->getUtilisateurId(),
+            'menu_id' => $cmd->getMenuId()
+        ];
+        $cmdObj['suivi_affichage'] = $this->calculateSuivi($cmd);
+        $cmdObj['has_avis'] = $this->avisRepository->existsForCommande($cmd->getId());
+        $commandes[] = $cmdObj;
     }
 
     $securityService = new \App\Service\SecurityService();
@@ -68,7 +78,7 @@ class UserController
     $commentaire = trim($_POST['commentaire'] ?? '');
 
     $commande = $this->commandeRepository->findById($commandeId);
-    if (!$commande || $commande['utilisateur_id'] !== $userId || $commande['statut'] !== 'terminée') {
+    if (!$commande || $commande->getUtilisateurId() !== $userId || $commande->getStatut() !== 'terminée') {
         header('Location: index.php?page=espace-utilisateur&error=avis_non_autorise#commandes');
         exit;
     }
@@ -91,9 +101,9 @@ class UserController
     exit;
   }
 
-  private function calculateSuivi(array $cmd): array {
+  private function calculateSuivi(\App\Entity\Commande $cmd): array {
     $workflow = ['en attente', 'accepté', 'en préparation', 'en cours de livraison', 'en attente du retour de matériel', 'livré', 'terminée'];
-    $historiqueDB = $this->commandeRepository->getSuiviByCommandeId($cmd['commande_id']);
+    $historiqueDB = $this->commandeRepository->getSuiviByCommandeId($cmd->getId());
 
     $suiviIndexed = [];
     foreach ($historiqueDB as $h) {
@@ -103,11 +113,11 @@ class UserController
     $etapesVue = [];
     $foundActive = false;
     $nextDisplayed = false;
-    $isFinalStatus = ($cmd['statut'] === 'terminée' || $cmd['statut'] === 'annulée');
+    $isFinalStatus = ($cmd->getStatut() === 'terminée' || $cmd->getStatut() === 'annulée');
 
     foreach ($workflow as $statusName) {
         $isDone = isset($suiviIndexed[$statusName]);
-        $isActive = ($cmd['statut'] === $statusName);
+        $isActive = ($cmd->getStatut() === $statusName);
         
         $classe = "";
         if ($isActive) {
@@ -130,7 +140,7 @@ class UserController
         ];
     }
 
-    if ($cmd['statut'] === 'annulée') {
+    if ($cmd->getStatut() === 'annulée') {
         $etapesVue[] = [
             'nom' => 'annulée',
             'classe' => 'commande-suivi__step--done',
@@ -154,12 +164,12 @@ class UserController
     $commandeId = (int)($_POST['commande_id'] ?? 0);
 
     $commande = $this->commandeRepository->findById($commandeId);
-    if (!$commande || $commande['utilisateur_id'] !== $userId) {
+    if (!$commande || $commande->getUtilisateurId() !== $userId) {
         header('Location: index.php?page=espace-utilisateur&error=commande_introuvable');
         exit;
     }
 
-    if ($commande['statut'] !== 'en attente') {
+    if ($commande->getStatut() !== 'en attente') {
         header('Location: index.php?page=espace-utilisateur&error=annulation_impossible');
         exit;
     }
@@ -172,7 +182,7 @@ class UserController
         $this->commandeRepository->addSuivi($commandeId, 'annulée', 'Commande annulée par le client');
 
         // Remise en stock
-        $this->menuRepository->incrementStock($commande['menu_id']);
+        $this->menuRepository->incrementStock($commande->getMenuId());
 
         $this->commandeRepository->commit();
         header('Location: index.php?page=espace-utilisateur&success=commande_annulee#commandes');
@@ -212,7 +222,7 @@ class UserController
 
     // Vérification email unique
     $existingUser = $this->userRepository->findByEmail($data['email']);
-    if ($existingUser && (int)$existingUser['utilisateur_id'] !== $userId) {
+    if ($existingUser && $existingUser->getId() !== $userId) {
         header('Location: index.php?page=espace-utilisateur&error=email_pris#profil');
         exit;
     }

@@ -121,7 +121,7 @@ class AuthController {
         if ($user) {
             $token = bin2hex(random_bytes(32));
             $expire = date('Y-m-d H:i:s', strtotime('+1 hour'));
-            $this->userRepository->setResetToken($user['utilisateur_id'], $token, $expire);
+            $this->userRepository->setResetToken($user->getId(), $token, $expire);
 
             $resetUrl = "http://" . $_SERVER['HTTP_HOST'] . "/index.php?page=reset-password&token=" . $token;
             $htmlBody = "<h1>Réinitialisation de mot de passe</h1>
@@ -129,7 +129,7 @@ class AuthController {
                          <p><a href='$resetUrl'>$resetUrl</a></p>
                          <p>Ce lien expirera dans 1 heure.</p>";
             
-            $this->mailService->send($user['email'], $user['prenom'] . ' ' . $user['nom'], 'Réinitialisation de mot de passe', $htmlBody);
+            $this->mailService->send($user->getEmail(), $user->getPrenom() . ' ' . $user->getNom(), 'Réinitialisation de mot de passe', $htmlBody);
         }
 
         // On redirige toujours avec un message de succès pour éviter le user enumeration
@@ -182,8 +182,8 @@ class AuthController {
             exit;
         }
 
-        if ($this->userRepository->updatePassword($user['utilisateur_id'], password_hash($password, PASSWORD_DEFAULT))) {
-            $this->logger->log('password_reset', ['user_id' => $user['utilisateur_id']]);
+        if ($this->userRepository->updatePassword($user->getId(), password_hash($password, PASSWORD_DEFAULT))) {
+            $this->logger->log('password_reset', ['user_id' => $user->getId()]);
             header('Location: index.php?page=login&success=password_updated');
         } else {
             header("Location: index.php?page=reset-password&token=$token&error=db_error");

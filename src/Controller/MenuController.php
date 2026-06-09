@@ -48,8 +48,8 @@ class MenuController {
             }
         }
 
-        $title = 'Détails du menu ' . $menu['titre'];
-        $description = 'Découvrez la composition détaillée du menu ' . $menu['titre'];
+        $title = 'Détails du menu ' . $menu->getTitre();
+        $description = 'Découvrez la composition détaillée du menu ' . $menu->getTitre();
 
         require __DIR__ . '/../../views/menu-detail.php';
     }

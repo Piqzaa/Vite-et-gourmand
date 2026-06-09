@@ -30,7 +30,23 @@ class EmployeController {
             exit;
         }
 
-        $commandes = $this->commandeRepo->findAllWithDetails();
+        $commandesRaw = $this->commandeRepo->findAllWithDetails();
+        $commandes = [];
+        foreach ($commandesRaw as $cmd) {
+            $commandes[] = [
+                'commande_id' => $cmd->getId(),
+                'menu_nom' => $cmd->getMenuNom(),
+                'client_nom' => $cmd->getClientNom(),
+                'client_prenom' => $cmd->getClientPrenom(),
+                'client_email' => $cmd->getClientEmail(),
+                'client_gsm' => $cmd->getClientGsm(),
+                'statut' => $cmd->getStatut(),
+                'date_prestation' => $cmd->getDatePrestation()->format('Y-m-d'),
+                'heure_prestation' => $cmd->getHeurePrestation(),
+                'adresse_livraison' => $cmd->getAdresseLivraison(),
+                'prix_total_ttc' => $cmd->getPrixTotalTtc()
+            ];
+        }
         $menus = $this->menuRepo->findAll();
         $avis = $this->avisRepo->findPending();
         $platsAvecAllergenes = $this->platRepo->findAllWithAllergenes();
