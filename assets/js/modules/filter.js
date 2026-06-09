@@ -120,7 +120,7 @@ export function initMenuFilters() {
     meta.append(price, persons);
 
     const link = document.createElement("a");
-    link.href = `menu-detail.php?id=${menu.menu_id}`;
+    link.href = `index.php?page=menu-detail&id=${menu.menu_id}`;
     link.className = "btn btn--outline btn--full";
     link.textContent = "Voir le détail";
 
@@ -133,7 +133,7 @@ export function initMenuFilters() {
   async function fetchMenus() {
     const params = buildParams();
     try {
-      const res = await fetch(`assets/php/api/menus.php?${params}`);
+      const res = await fetch(`index.php?page=menus&action=api&${params}`);
       const data = await res.json();
 
       // On vide TOUTE la grille avant de ré-afficher
