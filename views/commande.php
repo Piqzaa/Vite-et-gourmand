@@ -36,8 +36,8 @@ ob_start();
               action="index.php?page=commande&action=create"
               method="POST"
               novalidate
-              id="commande-form"
-            >
+              id="commande-form">
+              <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
               <!-- ÉTAPE 1 : INFOS CLIENT -->
               <div class="commande-step" id="step-1">
                 <h2 class="commande-step__title">Informations client</h2>

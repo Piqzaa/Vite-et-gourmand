@@ -4,14 +4,19 @@ namespace App\Controller;
 
 use App\Service\MailService;
 use App\Service\LoggerService;
+use App\Service\SecurityService;
 
 class ContactController {
     public function __construct(
         private ?MailService $mailService = null,
-        private ?LoggerService $logger = null
+        private ?LoggerService $logger = null,
+        private ?SecurityService $securityService = null,
     ) {}
 
     public function index() {
+      if ($this->securityService) {
+          $this->securityService->generateCsrfToken();
+      }
       $title = "Contactez-nous - Vite et Gourmand";
       $description = "Contactez Vite & Gourmand pour toute question ou demande particulière concernant nos menus traiteur à Bordeaux.";
 
@@ -21,6 +26,11 @@ class ContactController {
     public function submit() {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: index.php?page=contact');
+            exit;
+        }
+
+        if ($this->securityService && !$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=contact&error=csrf_invalid');
             exit;
         }
 

@@ -22,6 +22,7 @@ ob_start();
             <?php endif; ?>
 
             <form class="auth-form" action="index.php?page=contact&action=submit" method="POST" novalidate>
+              <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
               <div class="form-group">
                 <label class="form-label" for="contact-email">Votre adresse email (requis)</label>
                 <input

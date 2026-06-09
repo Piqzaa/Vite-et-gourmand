@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use App\Service\AuthService;
 use App\Service\CommandeService;
 use App\Service\MailService;
+use App\Service\SecurityService;
 use DateTime;
 use Exception;
 
@@ -16,13 +17,16 @@ class CommandeController {
         private UserRepository $userRepository,
         private AuthService $authService,
         private CommandeService $commandeService,
-        private MailService $mailService
+        private MailService $mailService,
+        private SecurityService $securityService
     ) {}
 
     /**
      * Affiche le formulaire de commande
      */
     public function index(): void {
+        $this->securityService->generateCsrfToken();
+
         if (!$this->authService->isConnected()) {
             $redirectUrl = 'index.php?page=commande';
             if (isset($_GET['menu'])) {
@@ -61,6 +65,11 @@ class CommandeController {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: index.php?page=commande');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=commande&error=csrf_invalid');
             exit;
         }
 
