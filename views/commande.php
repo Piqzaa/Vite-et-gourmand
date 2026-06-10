@@ -4,7 +4,7 @@ ob_start();
       <section class="page-header">
         <div class="page-header__container">
           <span class="section-eyebrow">Espace commande</span>
-          <h1 class="page-header__title"><?= $title ?></h1>
+          <h1 class="page-header__title"><?= $title ?? 'Commander un menu' ?></h1>
           <p class="page-header__sub">
             Remplissez le formulaire ci-dessous pour finaliser votre commande.
           </p>
@@ -36,7 +36,8 @@ ob_start();
               action="index.php?page=commande&action=create"
               method="POST"
               novalidate
-              id="commande-form">
+              id="commande-form"
+            >
               <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
               <!-- ÉTAPE 1 : INFOS CLIENT -->
               <div class="commande-step" id="step-1">
@@ -173,12 +174,12 @@ ob_start();
                   <select id="menu-choisi" name="menu_id" class="filters__select" required>
                     <option value="">Choisir un menu</option>
                     <?php foreach ($menus as $m): ?>
-                    <option value="<?= $m['menu_id'] ?>"
-                        data-prix="<?= $m['prix_base'] ?>"
-                        data-min="<?= $m['nombre_personne_min'] ?>"
-                        data-conditions="<?= htmlspecialchars($m['conditions_particulieres'] ?? '') ?>"
-                        <?= $menuPreselect === $m['menu_id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($m['titre']) ?> — <?= $m['prix_base'] ?>€ / <?= $m['nombre_personne_min'] ?> pers. min.
+                    <option value="<?= $m->getId() ?>"
+                        data-prix="<?= $m->getPrixBase() ?>"
+                        data-min="<?= $m->getNombrePersonneMin() ?>"
+                        data-conditions="<?= htmlspecialchars($m->getConditionsParticulieres() ?? '') ?>"
+                        <?= $menuPreselect === $m->getId() ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($m->getTitre()) ?> — <?= $m->getPrixBase() ?>€ / <?= $m->getNombrePersonneMin() ?> pers. min.
                     </option>
                     <?php endforeach; ?>
                 </select>

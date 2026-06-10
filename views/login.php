@@ -17,9 +17,19 @@ ob_start();
                     <input type="hidden" name="redirect" value="<?= htmlspecialchars($redirect) ?>">
                 <?php endif; ?>
                 <?php if (isset($_GET['error'])): ?>
+                    <?php if ($_GET['error'] === 'trop_de_tentatives'): ?>
+                    <p class="form-error" style="color: var(--error-color, red); margin-bottom: 1rem;">
+                        Trop de tentatives. Réessayez dans 15 minutes.
+                    </p>
+                    <?php elseif ($_GET['error'] === 'token_invalide'): ?>
+                    <p class="form-error" style="color: var(--error-color, red); margin-bottom: 1rem;">
+                        Lien invalide ou expiré.
+                    </p>
+                    <?php else: ?>
                     <p class="form-error" style="color: var(--error-color, red); margin-bottom: 1rem;">
                         Identifiants incorrects ou compte inactif.
                     </p>
+                    <?php endif; ?>
                 <?php endif; ?>
                 <div class="space-sm"></div>
                 <div class="form-group">

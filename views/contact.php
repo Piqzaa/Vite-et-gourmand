@@ -14,11 +14,11 @@ ob_start();
           <div class="contact-form-wrapper">
             
             <?php if(isset($_SESSION['contact_success'])): ?>
-              <div class="alert alert--success" role="status"><?= $_SESSION['contact_success']; unset($_SESSION['contact_success']); ?></div>
+              <div class="alert alert--success" role="status"><?= htmlspecialchars($_SESSION['contact_success']); unset($_SESSION['contact_success']); ?></div>
             <?php endif; ?>
             
             <?php if(isset($_SESSION['contact_error'])): ?>
-              <div class="alert alert--error" role="alert"><?= $_SESSION['contact_error']; unset($_SESSION['contact_error']); ?></div>
+              <div class="alert alert--error" role="alert"><?= htmlspecialchars($_SESSION['contact_error']); unset($_SESSION['contact_error']); ?></div>
             <?php endif; ?>
 
             <form class="auth-form" action="index.php?page=contact&action=submit" method="POST" novalidate>

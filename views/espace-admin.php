@@ -134,18 +134,54 @@ ob_start();
 
           <!-- COMMANDES -->
           <section class="dashboard__section" id="commandes">
-            <h2 class="dashboard__section-title">Toutes les commandes</h2>
+            <div class="dashboard__section-header">
+              <h2 class="dashboard__section-title">Commandes</h2>
+            </div>
+
+            <!-- Filtres commandes -->
+            <div class="employe-filters">
+              <div class="form-group">
+                <label class="form-label" for="filtre-statut">Statut</label>
+                <select id="filtre-statut" class="filters__select">
+                  <option value="">Tous les statuts</option>
+                  <option value="en attente">En attente</option>
+                  <option value="accepté">Acceptée</option>
+                  <option value="en préparation">En préparation</option>
+                  <option value="en cours de livraison">En cours de livraison</option>
+                  <option value="livré">Livrée</option>
+                  <option value="en attente du retour de matériel">Retour matériel</option>
+                  <option value="terminée">Terminée</option>
+                  <option value="annulée">Annulée</option>
+                </select>
+              </div>
+              <div class="space-sm"></div>
+              <div class="form-group">
+                <label class="form-label" for="filtre-client">Client</label>
+                <input
+                  type="text"
+                  id="filtre-client"
+                  class="form-input"
+                  placeholder="Nom ou email..."
+                />
+              </div>
+            </div>
+
+            <!-- Liste commandes -->
             <div class="employe-commandes">
               <?php foreach ($commandes as $cmd): ?>
                   <div class="space-sm"></div>
-                  <article class="commande-card">
+                  <article class="commande-card" data-statut="<?= $cmd['statut'] ?>" data-client="<?= htmlspecialchars(strtolower($cmd['client_nom'] . ' ' . $cmd['client_email'])) ?>">
                       <div class="commande-card__header">
                           <div>
                               <span class="commande-card__id">#CMD-<?= $cmd['commande_id'] ?></span>
-                              <h2 class="commande-card__menu"><?= htmlspecialchars($cmd['menu_nom']) ?> — <?= htmlspecialchars($cmd['client_prenom'] . ' ' . $cmd['client_nom']) ?></h2>
+                              <h2 class="commande-card__menu">
+                                  <?= htmlspecialchars($cmd['menu_nom']) ?> — 
+                                  <?= htmlspecialchars($cmd['client_prenom'] . ' ' . $cmd['client_nom']) ?>
+                              </h2>
                           </div>
                           <span class="commande-card__status"><?= ucfirst($cmd['statut']) ?></span>
                       </div>
+
                       <div class="commande-card__infos">
                           <div class="commande-card__info">
                               <span class="commande-card__info-label">Email client</span>
@@ -164,13 +200,54 @@ ob_start();
                               <span><?= htmlspecialchars($cmd['adresse_livraison']) ?></span>
                           </div>
                           <div class="commande-card__info">
+                              <span class="commande-card__info-label">Personnes</span>
+                              <span><?= $cmd['nombre_personnes'] ?> pers.</span>
+                          </div>
+                          <div class="commande-card__info">
                               <span class="commande-card__info-label">Total</span>
                               <span class="commande-card__price"><?= number_format($cmd['prix_total_ttc'], 2) ?>€</span>
                           </div>
                       </div>
+
+                      <?php if ($cmd['statut'] !== 'annulée' && $cmd['statut'] !== 'terminée'): ?>
+                      <div>
+                          <form action="index.php?page=espace-admin&action=update-commande-statut" method="POST">
+                              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
+                              <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
+                              <div class="form-group">
+                                  <label class="form-label">Changer le statut</label>
+                                  <select name="statut" class="filters__select">
+                                      <?php
+                                      $statuts = ['en attente', 'accepté', 'en préparation', 'en cours de livraison', 'livré', 'en attente du retour de matériel', 'terminée'];
+                                      foreach ($statuts as $s):
+                                      ?>
+                                      <option value="<?= $s ?>" <?= $cmd['statut'] === $s ? 'selected' : '' ?>>
+                                          <?= ucfirst($s) ?>
+                                      </option>
+                                      <?php endforeach; ?>
+                                  </select>
+                              </div>
+                              <div class="space-sm"></div>
+                              <button type="submit" class="btn btn--primary btn--sm">Mettre à jour</button>
+                          </form>
+
+                          <form action="index.php?page=espace-admin&action=annuler-commande" method="POST" 
+                                onsubmit="return confirm('Annuler cette commande ?')">
+                              <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
+                              <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
+                              <div class="form-group">
+                                  <label class="form-label">Motif d'annulation</label>
+                                  <textarea name="motif" class="form-input" rows="2" 
+                                            placeholder="Expliquez le motif..." required></textarea>
+                              </div>
+                              <div class="space-sm"></div>
+                              <button type="submit" class="btn btn--secondary btn--sm">Annuler la commande</button>
+                          </form>
+                      </div>
+                      <?php endif; ?>
                   </article>
               <?php endforeach; ?>
-            </div>
+              </div>
           </section>
 
           <!-- EMPLOYÉS -->

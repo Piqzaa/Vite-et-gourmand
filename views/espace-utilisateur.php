@@ -29,7 +29,7 @@ ob_start();
             <?php if (empty($commandes)): ?>
                 <div class="empty-state">
                     <p>Vous n'avez pas encore passé de commande.</p>
-                    <a href="menu.php" class="btn btn--primary">Découvrir la carte</a>
+                    <a href="index.php?page=menus" class="btn btn--primary">Découvrir la carte</a>
                 </div>
             <?php else: ?>
                 <?php foreach ($commandes as $cmd): ?>
@@ -83,7 +83,6 @@ ob_start();
 
                         <?php if ($cmd['statut'] === 'en attente'): ?>
                             <div class="commande-card__actions">
-                                <a href="index.php?page=commande-edit&id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                                 <form action="index.php?page=espace-utilisateur&action=cancel-commande" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
                                     <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">
@@ -117,7 +116,7 @@ ob_start();
                                 </form>
                             </div>
                             <?php else: ?>
-                                <p class="text-success"><i class="fas fa-check"></i> Avis déjà envoyé. Merci !</p>
+                                <p class="text-success"><span style="color: var(--success-color, #28a745);">&#10003;</span> Avis déjà envoyé. Merci !</p>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>
