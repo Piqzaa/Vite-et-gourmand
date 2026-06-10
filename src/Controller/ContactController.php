@@ -12,7 +12,8 @@ class ContactController {
         private SecurityService $securityService,
         private RateLimiter $rateLimiter,
         private ?MailService $mailService = null,
-        private ?LoggerService $logger = null
+        private ?LoggerService $logger = null,
+        private ?SecurityService $securityService = null,
     ) {}
 
     public function index() {

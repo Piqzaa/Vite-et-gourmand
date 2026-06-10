@@ -25,6 +25,8 @@ class CommandeController {
      * Affiche le formulaire de commande
      */
     public function index(): void {
+        $this->securityService->generateCsrfToken();
+
         if (!$this->authService->isConnected()) {
             $redirectUrl = 'index.php?page=commande';
             if (isset($_GET['menu'])) {
@@ -69,6 +71,11 @@ class CommandeController {
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: index.php?page=commande');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=commande&error=csrf_invalid');
             exit;
         }
 
