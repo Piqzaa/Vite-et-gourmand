@@ -43,6 +43,16 @@ class ViewHelper {
     }
 
     /**
+     * Retourne l'URL de déconnexion avec token anti-CSRF
+     */
+    private static function getLogoutUrl(): string {
+        if (empty($_SESSION['logout_token'])) {
+            $_SESSION['logout_token'] = bin2hex(random_bytes(32));
+        }
+        return 'index.php?page=logout&token=' . $_SESSION['logout_token'];
+    }
+
+    /**
      * Génère les liens de navigation selon le rôle
      */
     public static function getRoleMenuLinks(): array {
@@ -56,15 +66,15 @@ class ViewHelper {
         return match ($_SESSION['user_role'] ?? 'user') {
             'admin' => [
                 ['index.php?page=espace-admin', 'Administration 🛠️', 'navbar__cta--secondary'],
-                ['index.php?page=logout', 'Déconnexion ➜]', 'navbar__cta']
+                [self::getLogoutUrl(), 'Déconnexion ➜]', 'navbar__cta']
             ],
             'employe' => [
                 ['index.php?page=espace-employe', 'Espace employé 🧑‍🍳', 'navbar__cta--secondary'],
-                ['index.php?page=logout', 'Déconnexion ➜]', 'navbar__cta']
+                [self::getLogoutUrl(), 'Déconnexion ➜]', 'navbar__cta']
             ],
             default => [
                 ['index.php?page=espace-utilisateur', 'Mon compte 👤', 'navbar__cta--secondary'],
-                ['index.php?page=logout', 'Déconnexion ➜]', 'navbar__cta']
+                [self::getLogoutUrl(), 'Déconnexion ➜]', 'navbar__cta']
             ],
         };
     }
