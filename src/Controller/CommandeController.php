@@ -36,12 +36,12 @@ class CommandeController {
         $userData = $this->userRepository->findById($userId);
         
         $user = [
-            'prenom'          => $userData['prenom'] ?? '',
-            'nom'             => $userData['nom'] ?? '',
-            'email'           => $userData['email'] ?? '',
-            'gsm'             => $userData['gsm'] ?? '',
-            'adresse_postale' => $userData['adresse_postale'] ?? '',
-            'ville'           => $userData['ville'] ?? ''
+            'prenom'          => $userData->getPrenom(),
+            'nom'             => $userData->getNom(),
+            'email'           => $userData->getEmail(),
+            'gsm'             => $userData->getGsm(),
+            'adresse_postale' => $userData->getAdressePostale(),
+            'ville'           => $userData->getVille()
         ];
 
         $menuPreselect = isset($_GET['menu']) ? (int)$_GET['menu'] : 0;
