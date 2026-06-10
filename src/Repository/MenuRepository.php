@@ -130,8 +130,9 @@ class MenuRepository {
     }
 
     public function decrementStock(int $menuId): bool {
-        $stmt = $this->pdo->prepare('UPDATE menu SET stock_disponible = stock_disponible - 1 WHERE menu_id = ?');
-        return $stmt->execute([$menuId]);
+        $stmt = $this->pdo->prepare('UPDATE menu SET stock_disponible = stock_disponible - 1 WHERE menu_id = ? AND stock_disponible > 0');
+        $stmt->execute([$menuId]);
+        return $stmt->rowCount() > 0;
     }
 
     public function incrementStock(int $menuId): bool {
