@@ -185,7 +185,13 @@ class AuthController {
             $expire = date('Y-m-d H:i:s', strtotime('+1 hour'));
             $this->userRepository->setResetToken($user->getId(), $token, $expire);
 
-            $resetUrl = "http://" . $_SERVER['HTTP_HOST'] . "/index.php?page=reset-password&token=" . $token;
+            // SECU : valider le host pour éviter les injections dans l'email
+            $host = $_SERVER['HTTP_HOST'];
+            if (!preg_match('/^[a-zA-Z0-9][a-zA-Z0-9.-]*(:\d+)?$/', $host)) {
+                $host = 'localhost:8080';
+            }
+            $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+            $resetUrl = "$protocol://" . $host . "/index.php?page=reset-password&token=" . $token;
             $htmlBody = "<h1>Réinitialisation de mot de passe</h1>
                          <p>Cliquez sur le lien suivant pour réinitialiser votre mot de passe :</p>
                          <p><a href='$resetUrl'>$resetUrl</a></p>
@@ -203,7 +209,8 @@ class AuthController {
      * Affiche la page de réinitialisation de mot de passe
      */
     public function resetPasswordPage(): void {
-        $token = trim($_GET['token'] ?? '');
+        $token = trim($_GET['token'] ?? $_SESSION['reset_token'] ?? '');
+        unset($_SESSION['reset_token']);
         if (!$token) {
             header('Location: index.php?page=login&error=token_manquant');
             exit;
@@ -225,8 +232,7 @@ class AuthController {
      */
     public function resetPassword(): void {
         if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
-            $token = $_POST['token'] ?? '';
-            header("Location: index.php?page=reset-password&token=$token&error=csrf_invalid");
+            header('Location: index.php?page=login&error=csrf_invalid');
             exit;
         }
 
@@ -235,13 +241,15 @@ class AuthController {
         $confirm = $_POST['password_confirm'] ?? '';
 
         if ($password !== $confirm) {
-            header("Location: index.php?page=reset-password&token=$token&error=mismatch");
+            $_SESSION['reset_token'] = $token;
+            header("Location: index.php?page=reset-password&error=mismatch");
             exit;
         }
 
         // Validation complexité mot de passe
         if (strlen($password) < 10 || !preg_match('/[A-Z]/', $password) || !preg_match('/[0-9]/', $password) || !preg_match('/[^a-zA-Z0-9]/', $password)) {
-            header("Location: index.php?page=reset-password&token=$token&error=not_complex");
+            $_SESSION['reset_token'] = $token;
+            header("Location: index.php?page=reset-password&error=not_complex");
             exit;
         }
 
@@ -256,7 +264,8 @@ class AuthController {
             $this->securityService->regenerateCsrfToken();
             header('Location: index.php?page=login&success=password_updated');
         } else {
-            header("Location: index.php?page=reset-password&token=$token&error=db_error");
+            $_SESSION['reset_token'] = $token;
+            header("Location: index.php?page=reset-password&error=db_error");
         }
         exit;
     }
