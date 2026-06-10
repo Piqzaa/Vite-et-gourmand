@@ -7,6 +7,7 @@ use App\Service\LoggerService;
 use App\Repository\UserRepository;
 use App\Service\MailService;
 use App\Service\SecurityService;
+use App\Service\RateLimiter;
 
 class AuthController {
     public function __construct(
@@ -14,7 +15,8 @@ class AuthController {
         private LoggerService $logger,
         private UserRepository $userRepository,
         private MailService $mailService,
-        private SecurityService $securityService
+        private SecurityService $securityService,
+        private RateLimiter $rateLimiter
     ) {}
 
     /**
@@ -45,11 +47,17 @@ class AuthController {
             exit;
         }
 
+        if (!$this->rateLimiter->isAllowed('login')) {
+            header('Location: index.php?page=login&error=trop_de_tentatives');
+            exit;
+        }
+
         $email = trim($_POST['email'] ?? '');
         $password = $_POST['password'] ?? '';
         $redirectUrl = $_POST['redirect'] ?? '';
 
         if ($this->authService->login($email, $password)) {
+            $this->rateLimiter->reset('login');
             $this->logger->log('auth_success', ['email' => $email]);
             $this->securityService->regenerateCsrfToken(); // Sécurité : on change le token après login
             
@@ -65,6 +73,7 @@ class AuthController {
             
             header("Location: $redirect");
         } else {
+            $this->rateLimiter->increment('login');
             $this->logger->log('auth_failed', ['email' => $email]);
             $url = 'index.php?page=login&error=1';
             if (!empty($redirectUrl)) {
@@ -76,9 +85,15 @@ class AuthController {
     }
 
     /**
-     * Déconnexion
+     * Déconnexion (protégée par token anti-CSRF)
      */
     public function logout(): void {
+        $token = $_GET['token'] ?? '';
+        if (!$this->securityService->validateLogoutToken($token)) {
+            header('Location: index.php?page=home');
+            exit;
+        }
+        $this->securityService->clearLogoutToken();
         $this->authService->logout();
         header('Location: index.php?page=home');
         exit;
@@ -100,6 +115,11 @@ class AuthController {
     public function register(): void {
         if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
             header('Location: index.php?page=register&error=csrf_invalid');
+            exit;
+        }
+
+        if (!$this->rateLimiter->isAllowed('register')) {
+            header('Location: index.php?page=register&error=trop_de_tentatives');
             exit;
         }
 
@@ -173,6 +193,12 @@ class AuthController {
             exit;
         }
 
+        if (!$this->rateLimiter->isAllowed('forgot-password')) {
+            header('Location: index.php?page=login&error=trop_de_tentatives');
+            exit;
+        }
+
+        $this->rateLimiter->increment('forgot-password');
         $email = filter_var(trim($_POST['email'] ?? ''), FILTER_VALIDATE_EMAIL);
         if (!$email) {
             header('Location: index.php?page=login&error=email_manquant');
