@@ -38,6 +38,7 @@ ob_start();
               novalidate
               id="commande-form"
             >
+              <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
               <!-- ÉTAPE 1 : INFOS CLIENT -->
               <div class="commande-step" id="step-1">
                 <h2 class="commande-step__title">Informations client</h2>
@@ -173,12 +174,12 @@ ob_start();
                   <select id="menu-choisi" name="menu_id" class="filters__select" required>
                     <option value="">Choisir un menu</option>
                     <?php foreach ($menus as $m): ?>
-                    <option value="<?= $m['menu_id'] ?>"
-                        data-prix="<?= $m['prix_base'] ?>"
-                        data-min="<?= $m['nombre_personne_min'] ?>"
-                        data-conditions="<?= htmlspecialchars($m['conditions_particulieres'] ?? '') ?>"
-                        <?= $menuPreselect === $m['menu_id'] ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($m['titre']) ?> — <?= $m['prix_base'] ?>€ / <?= $m['nombre_personne_min'] ?> pers. min.
+                    <option value="<?= $m->getId() ?>"
+                        data-prix="<?= $m->getPrixBase() ?>"
+                        data-min="<?= $m->getNombrePersonneMin() ?>"
+                        data-conditions="<?= htmlspecialchars($m->getConditionsParticulieres() ?? '') ?>"
+                        <?= $menuPreselect === $m->getId() ? 'selected' : '' ?>>
+                        <?= htmlspecialchars($m->getTitre()) ?> — <?= $m->getPrixBase() ?>€ / <?= $m->getNombrePersonneMin() ?> pers. min.
                     </option>
                     <?php endforeach; ?>
                 </select>

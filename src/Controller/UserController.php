@@ -8,6 +8,7 @@ use App\Repository\AvisRepository;
 use App\Repository\MenuRepository;
 use App\Service\AuthService;
 use App\Service\LoggerService;
+use App\Service\SecurityService;
 
 class UserController
 {
@@ -17,7 +18,8 @@ class UserController
     private AvisRepository $avisRepository,
     private MenuRepository $menuRepository,
     private AuthService $authService,
-    private LoggerService $logger
+    private LoggerService $logger,
+    private SecurityService $securityService
   ) {}
 
   public function index(): void
@@ -56,7 +58,7 @@ class UserController
         $commandes[] = $cmdObj;
     }
 
-    $securityService = new \App\Service\SecurityService();
+    $securityService = $this->securityService;
     $title = 'Mon compte';
     $description = 'Gérez votre profil et suivez vos commandes Vite & Gourmand.';
 
@@ -69,6 +71,11 @@ class UserController
   public function createAvis(): void {
     if (!$this->authService->isUser()) {
         header('Location: index.php?page=login');
+        exit;
+    }
+
+    if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+        header('Location: index.php?page=espace-utilisateur&error=csrf_invalid#commandes');
         exit;
     }
 
@@ -160,6 +167,11 @@ class UserController
         exit;
     }
 
+    if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+        header('Location: index.php?page=espace-utilisateur&error=csrf_invalid#commandes');
+        exit;
+    }
+
     $userId = $_SESSION['user_id'];
     $commandeId = (int)($_POST['commande_id'] ?? 0);
 
@@ -199,6 +211,11 @@ class UserController
   public function updateProfil(): void {
     if (!$this->authService->isConnected()) {
         header('Location: index.php?page=login');
+        exit;
+    }
+
+    if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+        header('Location: index.php?page=espace-utilisateur&error=csrf_invalid#profil');
         exit;
     }
 

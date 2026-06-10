@@ -83,7 +83,6 @@ ob_start();
 
                         <?php if ($cmd['statut'] === 'en attente'): ?>
                             <div class="commande-card__actions">
-                                <a href="index.php?page=commande-edit&id=<?= $cmd['commande_id'] ?>" class="btn btn--secondary btn--sm">Modifier</a>
                                 <form action="index.php?page=espace-utilisateur&action=cancel-commande" method="POST" onsubmit="return confirm('Annuler cette commande ?');">
                                     <input type="hidden" name="csrf_token" value="<?= $securityService->generateCsrfToken() ?>">
                                     <input type="hidden" name="commande_id" value="<?= $cmd['commande_id'] ?>">

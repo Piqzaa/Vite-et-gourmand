@@ -5,6 +5,7 @@ use App\Repository\PlatRepository;
 use App\Repository\AllergeneRepository;
 use App\Service\AuthService;
 use App\Service\FileService;
+use App\Service\SecurityService;
 use Exception;
 
 class GestionPlatController {
@@ -12,7 +13,8 @@ class GestionPlatController {
         private PlatRepository $platRepo,
         private AllergeneRepository $allergeneRepo,
         private AuthService $authService,
-        private FileService $fileService
+        private FileService $fileService,
+        private SecurityService $securityService
     ) {}
 
     public function create(): void {
@@ -30,6 +32,11 @@ class GestionPlatController {
     public function processCreate(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=plat-create&error=csrf_invalid');
             exit;
         }
 
@@ -103,6 +110,11 @@ class GestionPlatController {
     public function delete(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-admin&error=csrf_invalid#menus');
             exit;
         }
 

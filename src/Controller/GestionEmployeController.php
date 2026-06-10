@@ -3,16 +3,23 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Service\AuthService;
+use App\Service\SecurityService;
 
 class GestionEmployeController {
     public function __construct(
         private UserRepository $userRepo,
-        private AuthService $authService
+        private AuthService $authService,
+        private SecurityService $securityService
     ) {}
 
     public function create(): void {
         if (!$this->authService->isAdmin()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-admin&error=csrf_invalid#employes');
             exit;
         }
 
@@ -39,6 +46,11 @@ class GestionEmployeController {
     public function toggle(): void {
         if (!$this->authService->isAdmin()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-admin&error=csrf_invalid#employes');
             exit;
         }
 

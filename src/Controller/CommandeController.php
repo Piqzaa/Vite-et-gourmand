@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use App\Service\AuthService;
 use App\Service\CommandeService;
 use App\Service\MailService;
+use App\Service\SecurityService;
 use DateTime;
 use Exception;
 
@@ -16,7 +17,8 @@ class CommandeController {
         private UserRepository $userRepository,
         private AuthService $authService,
         private CommandeService $commandeService,
-        private MailService $mailService
+        private MailService $mailService,
+        private SecurityService $securityService
     ) {}
 
     /**
@@ -26,22 +28,23 @@ class CommandeController {
         if (!$this->authService->isConnected()) {
             $redirectUrl = 'index.php?page=commande';
             if (isset($_GET['menu'])) {
-                $redirectUrl .= urlencode('&menu=' . (int)$_GET['menu']);
+                $redirectUrl .= '&menu=' . (int)$_GET['menu'];
             }
-            header('Location: index.php?page=login&redirect=' . $redirectUrl);
+            header('Location: index.php?page=login&redirect=' . urlencode($redirectUrl));
             exit;
         }
 
+        $this->securityService->generateCsrfToken();
         $userId = $_SESSION['user_id'];
         $userData = $this->userRepository->findById($userId);
         
         $user = [
-            'prenom'          => $userData['prenom'] ?? '',
-            'nom'             => $userData['nom'] ?? '',
-            'email'           => $userData['email'] ?? '',
-            'gsm'             => $userData['gsm'] ?? '',
-            'adresse_postale' => $userData['adresse_postale'] ?? '',
-            'ville'           => $userData['ville'] ?? ''
+            'prenom'          => $userData->getPrenom(),
+            'nom'             => $userData->getNom(),
+            'email'           => $userData->getEmail(),
+            'gsm'             => $userData->getGsm(),
+            'adresse_postale' => $userData->getAdressePostale(),
+            'ville'           => $userData->getVille()
         ];
 
         $menuPreselect = isset($_GET['menu']) ? (int)$_GET['menu'] : 0;
@@ -56,6 +59,11 @@ class CommandeController {
     public function create(): void {
         if (!$this->authService->isConnected()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=commande&error=csrf_invalid');
             exit;
         }
 
@@ -109,16 +117,16 @@ class CommandeController {
         $commande = $this->commandeService->getCommandeDetails($commandeId);
         if ($commande) {
             $htmlBody = "<h1>Confirmation de commande #$commandeId</h1>";
-            $htmlBody .= "<p>Merci {$commande['prenom']} pour votre commande du menu <strong>{$commande['menu_titre']}</strong>.</p>";
+            $htmlBody .= "<p>Merci {$commande->getClientPrenom()} pour votre commande du menu <strong>{$commande->getMenuNom()}</strong>.</p>";
             $htmlBody .= "<ul>
-                <li>Date : {$commande['date_prestation']}</li>
-                <li>Adresse : {$commande['adresse_livraison']}</li>
-                <li>Total : {$commande['prix_total_ttc']}€</li>
+                <li>Date : {$commande->getDatePrestation()->format('Y-m-d')}</li>
+                <li>Adresse : {$commande->getAdresseLivraison()}</li>
+                <li>Total : {$commande->getPrixTotalTtc()}€</li>
             </ul>";
 
             $this->mailService->send(
-                $commande['email'],
-                $commande['prenom'] . ' ' . $commande['nom'],
+                $commande->getClientEmail(),
+                $commande->getClientPrenom() . ' ' . $commande->getClientNom(),
                 "Confirmation de votre commande #$commandeId - Vite & Gourmand",
                 $htmlBody
             );

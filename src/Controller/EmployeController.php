@@ -44,7 +44,8 @@ class EmployeController {
                 'date_prestation' => $cmd->getDatePrestation()->format('Y-m-d'),
                 'heure_prestation' => $cmd->getHeurePrestation(),
                 'adresse_livraison' => $cmd->getAdresseLivraison(),
-                'prix_total_ttc' => $cmd->getPrixTotalTtc()
+                'prix_total_ttc' => $cmd->getPrixTotalTtc(),
+                'nombre_personnes' => $cmd->getNombrePersonnes()
             ];
         }
         $menus = $this->menuRepo->findAll();
