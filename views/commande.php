@@ -4,7 +4,7 @@ ob_start();
       <section class="page-header">
         <div class="page-header__container">
           <span class="section-eyebrow">Espace commande</span>
-          <h1 class="page-header__title"><?= $title ?></h1>
+          <h1 class="page-header__title"><?= $title ?? 'Commander un menu' ?></h1>
           <p class="page-header__sub">
             Remplissez le formulaire ci-dessous pour finaliser votre commande.
           </p>
