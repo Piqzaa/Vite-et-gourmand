@@ -175,6 +175,11 @@ class Kernel
 
     private function handleNotFound(string $page): void
     {
+        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $page)) {
+            header('HTTP/1.0 404 Not Found');
+            echo "Page non trouvée";
+            return;
+        }
         $file = $page . '.php';
         if (file_exists($file)) {
             require $file;
