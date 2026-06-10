@@ -5,10 +5,12 @@ namespace App\Controller;
 use App\Service\MailService;
 use App\Service\LoggerService;
 use App\Service\SecurityService;
+use App\Service\RateLimiter;
 
 class ContactController {
     public function __construct(
         private SecurityService $securityService,
+        private RateLimiter $rateLimiter,
         private ?MailService $mailService = null,
         private ?LoggerService $logger = null
     ) {}
@@ -32,6 +34,14 @@ class ContactController {
             header('Location: index.php?page=contact');
             exit;
         }
+
+        if (!$this->rateLimiter->isAllowed('contact')) {
+            $_SESSION['contact_error'] = 'Trop de tentatives. Réessayez plus tard.';
+            header('Location: index.php?page=contact');
+            exit;
+        }
+
+        $this->rateLimiter->increment('contact');
 
         $email = trim($_POST['email'] ?? '');
         $titre = trim($_POST['titre'] ?? '');
