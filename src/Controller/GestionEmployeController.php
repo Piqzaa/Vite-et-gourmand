@@ -23,10 +23,18 @@ class GestionEmployeController {
             exit;
         }
 
+        $email = trim($_POST['email'] ?? '');
+
+        // Vérification unicité email
+        if ($this->userRepo->findByEmail($email)) {
+            header('Location: index.php?page=espace-admin&error=email_existant#employes');
+            exit;
+        }
+
         $data = [
             'nom' => trim($_POST['nom'] ?? ''),
             'prenom' => trim($_POST['prenom'] ?? ''),
-            'email' => trim($_POST['email'] ?? ''),
+            'email' => $email,
             'password' => password_hash($_POST['password'] ?? '', PASSWORD_DEFAULT),
             'gsm' => '',
             'adresse_postale' => '',

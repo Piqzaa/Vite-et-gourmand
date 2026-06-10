@@ -29,7 +29,7 @@ ob_start();
             <?php if (empty($commandes)): ?>
                 <div class="empty-state">
                     <p>Vous n'avez pas encore passé de commande.</p>
-                    <a href="menu.php" class="btn btn--primary">Découvrir la carte</a>
+                    <a href="index.php?page=menus" class="btn btn--primary">Découvrir la carte</a>
                 </div>
             <?php else: ?>
                 <?php foreach ($commandes as $cmd): ?>
@@ -116,7 +116,7 @@ ob_start();
                                 </form>
                             </div>
                             <?php else: ?>
-                                <p class="text-success"><i class="fas fa-check"></i> Avis déjà envoyé. Merci !</p>
+                                <p class="text-success"><span style="color: var(--success-color, #28a745);">&#10003;</span> Avis déjà envoyé. Merci !</p>
                             <?php endif; ?>
                         <?php endif; ?>
                     </div>

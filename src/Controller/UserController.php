@@ -249,7 +249,7 @@ class UserController
             header('Location: index.php?page=espace-utilisateur&error=password_mismatch#profil');
             exit;
         }
-        $data['password'] = password_hash($password, PASSWORD_BCRYPT);
+        $data['password'] = password_hash($password, PASSWORD_DEFAULT);
     }
 
     if ($this->userRepository->update($userId, $data)) {

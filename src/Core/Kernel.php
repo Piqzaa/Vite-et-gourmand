@@ -17,6 +17,7 @@ use App\Service\MailService;
 use App\Service\LoggerService;
 use App\Service\SecurityService;
 use App\Service\FileService;
+use App\Service\RateLimiter;
 use App\Controller\HomeController;
 use App\Controller\CommandeController;
 use App\Controller\AuthController;
@@ -61,6 +62,7 @@ class Kernel
             LoggerService::class,
             MailService::class,
             SecurityService::class,
+            RateLimiter::class,
         ];
         foreach ($simpleServices as $s) {
             $this->container->factory($s, fn() => new $s());

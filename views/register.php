@@ -17,9 +17,15 @@ ob_start();
           >
             <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?? '' ?>">
           <?php if (isset($_GET['error'])): ?>
+            <?php if ($_GET['error'] === 'trop_de_tentatives'): ?>
+            <div class="form-errors" style="color: red; margin-bottom: 1rem;">
+                Trop de tentatives. Réessayez dans 15 minutes.
+            </div>
+            <?php else: ?>
             <div class="form-errors" style="color: red; margin-bottom: 1rem;">
                 Une erreur est survenue lors de l'inscription. Veuillez vérifier vos informations.
             </div>
+            <?php endif; ?>
           <?php endif; ?>
 
             <div class="form-row">

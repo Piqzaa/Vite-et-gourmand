@@ -29,16 +29,23 @@ class CommandeService {
             throw new Exception("Nombre de personnes insuffisant");
         }
 
+        $nbMin = $menu->getNombrePersonneMin();
+        if ($nbMin <= 0) {
+            throw new Exception("Configuration invalide du menu");
+        }
+
         // Calcul prix
-        $prixParPers = $menu->getPrixBase() / $menu->getNombrePersonneMin();
+        $prixParPers = $menu->getPrixBase() / $nbMin;
         $prixMenu = $prixParPers * $data['nb_personnes'];
         
-        if ($data['nb_personnes'] >= $menu->getNombrePersonneMin() + 5) {
+        if ($data['nb_personnes'] >= $nbMin + 5) {
             $prixMenu *= 0.90; // Réduction 10%
         }
 
+        // Frais de livraison (CGV : forfait 5€ + 0,59€/km hors Bordeaux)
         $estHorsBordeaux = (stripos($data['ville'], 'bordeaux') === false);
-        $prixLivraison = $estHorsBordeaux ? 5.00 : 0.00;
+        $distanceKm = (int)($data['distance_km'] ?? 0);
+        $prixLivraison = $estHorsBordeaux ? (5.00 + $distanceKm * 0.59) : 0.00;
         $prixTotal = round($prixMenu + $prixLivraison, 2);
 
         try {
@@ -57,8 +64,11 @@ class CommandeService {
 
             $this->commandeRepository->addSuivi($commandeId, 'en attente', 'Commande reçue via le nouveau système');
 
-            // Décrémente le stock
-            $this->menuRepository->decrementStock($data['menu_id']);
+            // Décrémente le stock (atomique : vérifie que stock > 0)
+            $stockOk = $this->menuRepository->decrementStock($data['menu_id']);
+            if (!$stockOk) {
+                throw new Exception("Le stock a été épuisé entre-temps");
+            }
 
             $this->commandeRepository->commit();
 
