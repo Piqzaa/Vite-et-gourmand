@@ -24,11 +24,14 @@ class FileService {
             throw new Exception("Erreur lors du transfert du fichier.");
         }
 
-        $fileType = $file['type'];
         $fileSize = $file['size'];
 
-        // Validation du format
-        $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        // Validation du format via le contenu réel (pas l'extension déclarée par le client)
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $fileType = finfo_file($finfo, $file['tmp_name']);
+        finfo_close($finfo);
+
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!in_array($fileType, $allowedTypes)) {
             throw new Exception("Format d'image non supporté (JPG, PNG, WEBP acceptés).");
         }
