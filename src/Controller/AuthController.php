@@ -53,7 +53,7 @@ class AuthController {
             $this->logger->log('auth_success', ['email' => $email]);
             $this->securityService->regenerateCsrfToken(); // Sécurité : on change le token après login
             
-            if (!empty($redirectUrl)) {
+            if (!empty($redirectUrl) && $this->isInternalRedirect($redirectUrl)) {
                 header("Location: $redirectUrl");
                 exit;
             }
@@ -260,5 +260,10 @@ class AuthController {
             header("Location: index.php?page=reset-password&token=$token&error=db_error");
         }
         exit;
+    }
+
+    private function isInternalRedirect(string $url): bool
+    {
+        return str_starts_with($url, 'index.php?page=');
     }
 }
