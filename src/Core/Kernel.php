@@ -91,16 +91,16 @@ class Kernel
     private function registerRoutes(): void
     {
         $this->router->add('home', new Route(HomeController::class));
-        $this->router->add('commande', new Route(CommandeController::class, actions: ['create' => 'create']));
-        $this->router->add('menus', new Route(MenuController::class, actions: ['api' => 'apiList']));
+        $this->router->add('commande', new Route(CommandeController::class, actionMap: ['create' => 'create']));
+        $this->router->add('menus', new Route(MenuController::class, actionMap: ['api' => 'apiList']));
         $this->router->add('menu-detail', new Route(MenuController::class, defaultAction: 'detail'));
-        $this->router->add('login', new Route(AuthController::class, defaultAction: 'loginPage', actions: ['process' => 'login']));
+        $this->router->add('login', new Route(AuthController::class, defaultAction: 'loginPage', actionMap: ['process' => 'login']));
         $this->router->add('forgot-password', new Route(AuthController::class, defaultAction: 'forgotPassword'));
-        $this->router->add('reset-password', new Route(AuthController::class, defaultAction: 'resetPasswordPage', actions: ['process' => 'resetPassword']));
-        $this->router->add('register', new Route(AuthController::class, defaultAction: 'registerPage', actions: ['process' => 'register']));
+        $this->router->add('reset-password', new Route(AuthController::class, defaultAction: 'resetPasswordPage', actionMap: ['process' => 'resetPassword']));
+        $this->router->add('register', new Route(AuthController::class, defaultAction: 'registerPage', actionMap: ['process' => 'register']));
         $this->router->add('logout', new Route(AuthController::class, defaultAction: 'logout'));
-        $this->router->add('contact', new Route(ContactController::class, actions: ['submit' => 'submit']));
-        $this->router->add('espace-utilisateur', new Route(UserController::class, actions: [
+        $this->router->add('contact', new Route(ContactController::class, actionMap: ['submit' => 'submit']));
+        $this->router->add('espace-utilisateur', new Route(UserController::class, actionMap: [
             'create-avis' => 'createAvis',
             'cancel-commande' => 'cancelCommande',
             'update-profil' => 'updateProfil',
@@ -118,7 +118,7 @@ class Kernel
             'api-stats' => 'apiStats',
         ];
 
-        $this->router->add('espace-admin', new Route(AdminController::class, actions: $adminActions));
+        $this->router->add('espace-admin', new Route(AdminController::class, actionMap: $adminActions));
 
         $this->router->add('espace-employe', new Route(
             handler: function (Container $c, string $action) use ($adminActions) {
@@ -132,9 +132,9 @@ class Kernel
             }
         ));
 
-        $this->router->add('plat-create', new Route(AdminController::class, defaultAction: 'createPlat', actions: ['process' => 'processCreatePlat']));
-        $this->router->add('menu-create', new Route(AdminController::class, defaultAction: 'createMenu', actions: ['process' => 'processCreateMenu']));
-        $this->router->add('menu-edit', new Route(AdminController::class, defaultAction: 'editMenu', actions: ['process' => 'processEditMenu']));
+        $this->router->add('plat-create', new Route(AdminController::class, defaultAction: 'createPlat', actionMap: ['process' => 'processCreatePlat']));
+        $this->router->add('menu-create', new Route(AdminController::class, defaultAction: 'createMenu', actionMap: ['process' => 'processCreateMenu']));
+        $this->router->add('menu-edit', new Route(AdminController::class, defaultAction: 'editMenu', actionMap: ['process' => 'processEditMenu']));
         $this->router->add('cgv', new Route(LegalController::class, defaultAction: 'cgv'));
         $this->router->add('mentions', new Route(LegalController::class, defaultAction: 'mentions'));
     }
