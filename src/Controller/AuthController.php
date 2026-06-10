@@ -80,7 +80,6 @@ class AuthController {
      */
     public function logout(): void {
         $this->authService->logout();
-        session_destroy(); // On détruit tout pour plus de sécurité
         header('Location: index.php?page=home');
         exit;
     }

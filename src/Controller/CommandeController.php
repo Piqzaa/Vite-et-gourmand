@@ -28,9 +28,9 @@ class CommandeController {
         if (!$this->authService->isConnected()) {
             $redirectUrl = 'index.php?page=commande';
             if (isset($_GET['menu'])) {
-                $redirectUrl .= urlencode('&menu=' . (int)$_GET['menu']);
+                $redirectUrl .= '&menu=' . (int)$_GET['menu'];
             }
-            header('Location: index.php?page=login&redirect=' . $redirectUrl);
+            header('Location: index.php?page=login&redirect=' . urlencode($redirectUrl));
             exit;
         }
 
