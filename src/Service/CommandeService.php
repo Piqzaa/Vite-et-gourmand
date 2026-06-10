@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Entity\Commande;
 use App\Repository\CommandeRepository;
 use App\Repository\MenuRepository;
 use DateTime;
@@ -68,7 +69,7 @@ class CommandeService {
         }
     }
 
-    public function getCommandeDetails(int $id): ?array {
+    public function getCommandeDetails(int $id): ?Commande {
         return $this->commandeRepository->findById($id);
     }
 }

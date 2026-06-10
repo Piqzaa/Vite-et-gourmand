@@ -109,16 +109,16 @@ class CommandeController {
         $commande = $this->commandeService->getCommandeDetails($commandeId);
         if ($commande) {
             $htmlBody = "<h1>Confirmation de commande #$commandeId</h1>";
-            $htmlBody .= "<p>Merci {$commande['prenom']} pour votre commande du menu <strong>{$commande['menu_titre']}</strong>.</p>";
+            $htmlBody .= "<p>Merci {$commande->getClientPrenom()} pour votre commande du menu <strong>{$commande->getMenuNom()}</strong>.</p>";
             $htmlBody .= "<ul>
-                <li>Date : {$commande['date_prestation']}</li>
-                <li>Adresse : {$commande['adresse_livraison']}</li>
-                <li>Total : {$commande['prix_total_ttc']}€</li>
+                <li>Date : {$commande->getDatePrestation()->format('Y-m-d')}</li>
+                <li>Adresse : {$commande->getAdresseLivraison()}</li>
+                <li>Total : {$commande->getPrixTotalTtc()}€</li>
             </ul>";
 
             $this->mailService->send(
-                $commande['email'],
-                $commande['prenom'] . ' ' . $commande['nom'],
+                $commande->getClientEmail(),
+                $commande->getClientPrenom() . ' ' . $commande->getClientNom(),
                 "Confirmation de votre commande #$commandeId - Vite & Gourmand",
                 $htmlBody
             );
