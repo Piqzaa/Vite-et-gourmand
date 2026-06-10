@@ -26,6 +26,13 @@ use App\Controller\UserController;
 use App\Controller\LegalController;
 use App\Controller\AdminController;
 use App\Controller\EmployeController;
+use App\Controller\GestionPlatController;
+use App\Controller\GestionMenuController;
+use App\Controller\GestionCommandeController;
+use App\Controller\GestionEmployeController;
+use App\Controller\HoraireController;
+use App\Controller\AvisModerationController;
+use App\Controller\StatsController;
 
 class Kernel
 {
@@ -106,35 +113,58 @@ class Kernel
             'update-profil' => 'updateProfil',
         ]));
 
-        $adminActions = [
-            'create-employe' => 'createEmploye',
-            'toggle-employe' => 'toggleEmploye',
-            'update-horaires' => 'updateHoraires',
-            'moderer-avis' => 'modererAvis',
-            'delete-menu' => 'deleteMenu',
-            'delete-plat' => 'deletePlat',
-            'update-commande-statut' => 'updateCommandeStatut',
-            'annuler-commande' => 'annulerCommande',
-            'api-stats' => 'apiStats',
-        ];
+        $this->router->add('plat-create', new Route(GestionPlatController::class, defaultAction: 'create', actionMap: ['process' => 'processCreate']));
+        $this->router->add('menu-create', new Route(GestionMenuController::class, defaultAction: 'create', actionMap: ['process' => 'processCreate']));
+        $this->router->add('menu-edit', new Route(GestionMenuController::class, defaultAction: 'edit', actionMap: ['process' => 'processEdit']));
 
-        $this->router->add('espace-admin', new Route(AdminController::class, actionMap: $adminActions));
-
-        $this->router->add('espace-employe', new Route(
-            handler: function (Container $c, string $action) use ($adminActions) {
+        $this->router->add('espace-admin', new Route(
+            handler: function (Container $c, string $action) {
                 if ($action === 'index' || $action === '') {
-                    $c->resolve(EmployeController::class)->index();
-                } else {
-                    $controller = $c->resolve(AdminController::class);
-                    $method = $adminActions[$action] ?? 'index';
-                    $controller->$method();
+                    $c->resolve(AdminController::class)->index();
+                    return;
+                }
+
+                $map = [
+                    'create-employe'       => [GestionEmployeController::class, 'create'],
+                    'toggle-employe'       => [GestionEmployeController::class, 'toggle'],
+                    'update-horaires'      => [HoraireController::class, 'update'],
+                    'moderer-avis'         => [AvisModerationController::class, 'moderer'],
+                    'delete-menu'          => [GestionMenuController::class, 'delete'],
+                    'delete-plat'          => [GestionPlatController::class, 'delete'],
+                    'update-commande-statut' => [GestionCommandeController::class, 'updateStatut'],
+                    'annuler-commande'     => [GestionCommandeController::class, 'annuler'],
+                    'api-stats'            => [StatsController::class, 'api'],
+                ];
+
+                if (isset($map[$action])) {
+                    [$controllerClass, $method] = $map[$action];
+                    $c->resolve($controllerClass)->$method();
                 }
             }
         ));
 
-        $this->router->add('plat-create', new Route(AdminController::class, defaultAction: 'createPlat', actionMap: ['process' => 'processCreatePlat']));
-        $this->router->add('menu-create', new Route(AdminController::class, defaultAction: 'createMenu', actionMap: ['process' => 'processCreateMenu']));
-        $this->router->add('menu-edit', new Route(AdminController::class, defaultAction: 'editMenu', actionMap: ['process' => 'processEditMenu']));
+        $this->router->add('espace-employe', new Route(
+            handler: function (Container $c, string $action) {
+                if ($action === 'index' || $action === '') {
+                    $c->resolve(EmployeController::class)->index();
+                    return;
+                }
+
+                $map = [
+                    'update-commande-statut' => [GestionCommandeController::class, 'updateStatut'],
+                    'annuler-commande'       => [GestionCommandeController::class, 'annuler'],
+                    'update-horaires'        => [HoraireController::class, 'update'],
+                    'moderer-avis'           => [AvisModerationController::class, 'moderer'],
+                    'delete-menu'            => [GestionMenuController::class, 'delete'],
+                    'delete-plat'            => [GestionPlatController::class, 'delete'],
+                ];
+
+                if (isset($map[$action])) {
+                    [$controllerClass, $method] = $map[$action];
+                    $c->resolve($controllerClass)->$method();
+                }
+            }
+        ));
         $this->router->add('cgv', new Route(LegalController::class, defaultAction: 'cgv'));
         $this->router->add('mentions', new Route(LegalController::class, defaultAction: 'mentions'));
     }
