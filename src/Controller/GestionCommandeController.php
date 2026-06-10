@@ -4,18 +4,25 @@ namespace App\Controller;
 use App\Repository\CommandeRepository;
 use App\Repository\MenuRepository;
 use App\Service\AuthService;
+use App\Service\SecurityService;
 use Exception;
 
 class GestionCommandeController {
     public function __construct(
         private CommandeRepository $commandeRepo,
         private MenuRepository $menuRepo,
-        private AuthService $authService
+        private AuthService $authService,
+        private SecurityService $securityService
     ) {}
 
     public function updateStatut(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-employe&error=csrf_invalid');
             exit;
         }
 
@@ -46,6 +53,11 @@ class GestionCommandeController {
     public function annuler(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-employe&error=csrf_invalid');
             exit;
         }
 

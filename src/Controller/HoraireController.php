@@ -3,16 +3,23 @@ namespace App\Controller;
 
 use App\Repository\HoraireRepository;
 use App\Service\AuthService;
+use App\Service\SecurityService;
 
 class HoraireController {
     public function __construct(
         private HoraireRepository $horaireRepo,
-        private AuthService $authService
+        private AuthService $authService,
+        private SecurityService $securityService
     ) {}
 
     public function update(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-employe&error=csrf_invalid#horaires');
             exit;
         }
 

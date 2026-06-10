@@ -7,6 +7,7 @@ use App\Repository\UserRepository;
 use App\Service\AuthService;
 use App\Service\CommandeService;
 use App\Service\MailService;
+use App\Service\SecurityService;
 use DateTime;
 use Exception;
 
@@ -16,7 +17,8 @@ class CommandeController {
         private UserRepository $userRepository,
         private AuthService $authService,
         private CommandeService $commandeService,
-        private MailService $mailService
+        private MailService $mailService,
+        private SecurityService $securityService
     ) {}
 
     /**
@@ -32,6 +34,7 @@ class CommandeController {
             exit;
         }
 
+        $this->securityService->generateCsrfToken();
         $userId = $_SESSION['user_id'];
         $userData = $this->userRepository->findById($userId);
         
@@ -56,6 +59,11 @@ class CommandeController {
     public function create(): void {
         if (!$this->authService->isConnected()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=commande&error=csrf_invalid');
             exit;
         }
 

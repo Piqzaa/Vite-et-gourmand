@@ -6,6 +6,7 @@ use App\Repository\PlatRepository;
 use App\Repository\ThemeRepository;
 use App\Repository\RegimeRepository;
 use App\Service\AuthService;
+use App\Service\SecurityService;
 use Exception;
 
 class GestionMenuController {
@@ -14,7 +15,8 @@ class GestionMenuController {
         private PlatRepository $platRepo,
         private ThemeRepository $themeRepo,
         private RegimeRepository $regimeRepo,
-        private AuthService $authService
+        private AuthService $authService,
+        private SecurityService $securityService
     ) {}
 
     public function create(): void {
@@ -39,6 +41,11 @@ class GestionMenuController {
     public function processCreate(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=menu-create&error=csrf_invalid');
             exit;
         }
 
@@ -106,6 +113,12 @@ class GestionMenuController {
             exit;
         }
 
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            $id = (int)($_POST['menu_id'] ?? 0);
+            header("Location: index.php?page=menu-edit&id=$id&error=csrf_invalid");
+            exit;
+        }
+
         $id = (int)($_POST['menu_id'] ?? 0);
         $data = [
             'titre' => trim($_POST['titre'] ?? ''),
@@ -141,6 +154,11 @@ class GestionMenuController {
     public function delete(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-admin&error=csrf_invalid#menus');
             exit;
         }
 

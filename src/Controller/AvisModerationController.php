@@ -3,16 +3,23 @@ namespace App\Controller;
 
 use App\Repository\AvisRepository;
 use App\Service\AuthService;
+use App\Service\SecurityService;
 
 class AvisModerationController {
     public function __construct(
         private AvisRepository $avisRepo,
-        private AuthService $authService
+        private AuthService $authService,
+        private SecurityService $securityService
     ) {}
 
     public function moderer(): void {
         if (!$this->authService->isEmploye()) {
             header('Location: index.php?page=login');
+            exit;
+        }
+
+        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
+            header('Location: index.php?page=espace-employe&error=csrf_invalid#avis');
             exit;
         }
 
