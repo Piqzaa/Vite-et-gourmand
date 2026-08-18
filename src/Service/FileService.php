@@ -70,11 +70,4 @@ class FileService {
         }
         return false;
     }
-
-    /**
-     * Retourne le chemin complet du dossier d'upload
-     */
-    public function getUploadDir(): string {
-        return $this->uploadDir;
-    }
 }

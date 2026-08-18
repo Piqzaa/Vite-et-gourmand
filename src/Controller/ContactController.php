@@ -11,9 +11,8 @@ class ContactController {
     public function __construct(
         private SecurityService $securityService,
         private RateLimiter $rateLimiter,
-        private ?MailService $mailService = null,
-        private ?LoggerService $logger = null,
-        private ?SecurityService $securityService = null,
+        private MailService $mailService,
+        private LoggerService $logger,
     ) {}
 
     public function index() {
@@ -61,25 +60,20 @@ class ContactController {
         }
 
         // 1. Logging
-        if ($this->logger) {
-            $this->logger->log('contact_form_submit', ['email' => $email, 'subject' => $titre]);
-        }
+        $this->logger->log('contact_form_submit', ['email' => $email, 'subject' => $titre]);
 
         // 2. Envoi de l'email (vers l'admin)
-        $emailSent = false;
-        if ($this->mailService) {
-            $htmlBody = "<h2>Nouveau message de contact</h2>";
-            $htmlBody .= "<p><strong>De :</strong> " . htmlspecialchars($email) . "</p>";
-            $htmlBody .= "<p><strong>Sujet :</strong> " . htmlspecialchars($titre) . "</p>";
-            $htmlBody .= "<p><strong>Message :</strong><br>" . nl2br(htmlspecialchars($message)) . "</p>";
+        $htmlBody = "<h2>Nouveau message de contact</h2>";
+        $htmlBody .= "<p><strong>De :</strong> " . htmlspecialchars($email) . "</p>";
+        $htmlBody .= "<p><strong>Sujet :</strong> " . htmlspecialchars($titre) . "</p>";
+        $htmlBody .= "<p><strong>Message :</strong><br>" . nl2br(htmlspecialchars($message)) . "</p>";
 
-            $emailSent = $this->mailService->send(
-                getenv('SMTP_FROM') ?: 'admin@viteetgourmand.fr',
-                'Admin Vite & Gourmand',
-                "Nouveau message : " . htmlspecialchars($titre),
-                $htmlBody
-            );
-        }
+        $emailSent = $this->mailService->send(
+            getenv('SMTP_FROM') ?: 'admin@viteetgourmand.fr',
+            'Admin Vite & Gourmand',
+            "Nouveau message : " . htmlspecialchars($titre),
+            $htmlBody
+        );
 
         if ($emailSent) {
             $_SESSION['contact_success'] = 'Message envoyé avec succès. Nous vous répondrons rapidement.';

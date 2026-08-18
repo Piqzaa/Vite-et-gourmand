@@ -7,7 +7,6 @@ use App\Repository\CommandeRepository;
 use App\Repository\AvisRepository;
 use App\Repository\MenuRepository;
 use App\Service\AuthService;
-use App\Service\LoggerService;
 use App\Service\SecurityService;
 
 class UserController
@@ -18,7 +17,6 @@ class UserController
     private AvisRepository $avisRepository,
     private MenuRepository $menuRepository,
     private AuthService $authService,
-    private LoggerService $logger,
     private SecurityService $securityService
   ) {}
 
