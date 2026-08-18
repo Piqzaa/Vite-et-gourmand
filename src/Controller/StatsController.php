@@ -30,7 +30,7 @@ class StatsController {
         $response = [
             'totals' => [
                 'ca'  => (float)$totals['total_ttc'],
-                'nb'  => (int)$totals['nb_commandes'],
+                'nb'  => (int)$totals['nombre_commandes'],
                 'moy' => (float)$totals['panier_moyen']
             ],
             'chart' => [
