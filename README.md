@@ -7,33 +7,44 @@ Développée dans le cadre du TP Développeur Web et Web Mobile (Bac+2 RNCP5) �
 
 ## Stack technique
 
-- **Front-end** : HTML5, SCSS (BEM), JavaScript ES Modules
-- **Back-end** : PHP 8+ avec PDO
-- **Base de données relationnelle** : MySQL / MariaDB
-- **Environnement local** : Laragon
+- **Front-end** : HTML5, SCSS (BEM), JavaScript ES Modules (API DOM, aucune `innerHTML`)
+- **Back-end** : PHP 8+ orienté objet (MVC, PSR-4, injection de dépendances)
+- **Base de données relationnelle** : MySQL 8 (accès via PDO + requêtes préparées)
+- **Base de données NoSQL** : MongoDB (journalisation des logs applicatifs)
+- **Conteneurisation** : Docker / Docker Compose (services MySQL, MongoDB, PHP, phpMyAdmin, Mailpit)
 - **Versioning** : Git / GitHub
 
 ---
 
 ## Prérequis
 
-- [Laragon](https://laragon.org/download/) (Full recommandé)
-- PHP 8.0+
-- MySQL 8.0 / MariaDB 10.4+
+- **Option A (recommandée)** : Docker Desktop + Docker Compose
+- **Option B (alternative)** : [Laragon](https://laragon.org/download/) (Full recommandé), PHP 8.0+, MySQL 8.0, extension MongoDB (`mongodb`), Composer
 - Git
 
 ---
 
 ## Installation en local
 
-### 1. Cloner le dépôt
+### Option A — Avec Docker (recommandé)
 
 ```bash
 git clone https://github.com/piqzaa/vite-et-gourmand.git
 cd vite-et-gourmand
+docker compose up -d --build
 ```
 
-### 2. Placer le projet dans Laragon
+Le `docker-compose.yml` démarre :
+
+- `db` — MySQL 8, initialisé avec `DataBase/schema.sql` + `DataBase/seed.sql`
+- `mongo` — MongoDB (port `27017`, volume persistant), utilisé pour les logs
+- `php` — Apache + PHP 8.2 avec extension MongoDB
+- `phpmyadmin` — interface web (port `8081`)
+- `mailpit` — interceptor de mails (interface `8025`)
+
+L'application est alors accessible sur : `http://localhost:8080`
+
+### Option B — Avec Laragon
 
 Copie le dossier dans `C:/laragon/www/` ou clone directement dedans.
 
@@ -49,7 +60,7 @@ ou
 http://localhost/Vite-et-gourmand
 ```
 
-### 3. Créer la base de données
+### Créer la base de données (sans Docker)
 
 1. Ouvrir phpMyAdmin (`http://localhost/phpmyadmin`) ou utiliser le client MySQL de votre choix.
 
@@ -63,9 +74,9 @@ http://localhost/Vite-et-gourmand
 - Fichier de seed (données initiales : menus, plats, horaires, utilisateurs de test) :
   Database/seed.sql
 
-### 4. Configurer la connexion BDD
+### Configurer la connexion BDD
 
-Ouvre `config/db.php` et vérifie les constantes :
+Ouvre `config/db.php` (ou `.env` sous Docker) et vérifie les constantes :
 
 ```php
 define('DB_HOST', 'localhost');
@@ -77,7 +88,7 @@ define('BASE_URL', '/Vite-et-gourmand');
 
 Adapte `BASE_URL` selon ton environnement Laragon.
 
-### 5. Compiler le SCSS (optionnel)
+### Compiler le SCSS (optionnel)
 
 Le CSS compilé est déjà présent dans `assets/css/`.  
 Si tu veux modifier le SCSS, utilise l'extension **Live Sass Compiler** dans VS Code.
@@ -112,13 +123,14 @@ Vite-et-gourmand/
 │   │   └── modules/  ← Modules JS (burger, filter, stepper...)
 │   └── scss/         ← Sources SCSS (BEM)
 ├── config/           ← db.php (connexion PDO + constantes)
-├── Database/         ← Scripts SQL (schema, seed)
-├── includes/         ← Layout, header, footer, functions, session
+├── DataBase/         ← Scripts SQL (schema, seed)
+├── docker/           ← Dockerfile PHP, configs
+├── docker-compose.yml← Orchestration (MySQL, MongoDB, PHP, phpMyAdmin, Mailpit)
 ├── src/
 │   ├── Controller/   ← Logique des pages
-│   ├── Entity/       ← Objets métier (optionnel ici)
-│   ├── Repository/   ← Accès à la base de données
-│   └── Service/      ← Services (Mail, Logger, Auth, Commande)
+│   ├── Entity/       ← Objets métier
+│   ├── Repository/   ← Accès aux données (SQL via PDO, NoSQL via MongoDB)
+│   └── Service/      ← Services (Mail, Logger, Auth, Commande, Security...)
 ├── views/            ← Fichiers de vue (HTML/PHP)
 ├── vendor/           ← Dépendances Composer
 ├── composer.json
@@ -160,7 +172,7 @@ Vite-et-gourmand/
 
 ## Mails transactionnels
 
-En développement, les mails sont interceptés par **Mailpit** (intégré à Laragon).  
+En développement, les mails sont interceptés par **Mailpit** (service Docker).  
 Interface accessible sur : `http://localhost:8025`
 
 Mails envoyés automatiquement :
@@ -170,6 +182,10 @@ Mails envoyés automatiquement :
 - Notification retour de matériel
 - Invitation à laisser un avis (commande terminée)
 - Lien de réinitialisation du mot de passe
+
+## Journalisation NoSQL (MongoDB)
+
+Les logs applicatifs (authentification, envoi du formulaire de contact, erreurs critiques…) sont enregistrés dans une base **MongoDB** (`vite_et_gourmand_logs`, collection `app_logs`) via le service `LoggerService`. L'accès NoSQL est donc dissocié du stockage relationnel SQL (MySQL) utilisé pour les données métier et les statistiques du tableau de bord.
 
 ## API — Filtrage des menus
 
