@@ -30,7 +30,18 @@ class GestionCommandeController {
         $nouveauStatut = $_POST['statut'] ?? '';
         $commentaire = $_POST['commentaire'] ?? '';
 
-        if (!$commandeId || !$nouveauStatut) {
+        // Liste blanche des statuts autorisés
+        $statutsAutorises = [
+            'en attente',
+            'accepté',
+            'en préparation',
+            'en cours de livraison',
+            'livré',
+            'en attente du retour de matériel',
+            'terminée',
+        ];
+
+        if (!$commandeId || !in_array($nouveauStatut, $statutsAutorises, true)) {
             header('Location: index.php?page=espace-employe&error=champs_manquants');
             exit;
         }

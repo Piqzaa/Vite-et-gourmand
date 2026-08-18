@@ -4,7 +4,7 @@ export function initAdminChart() {
   if (!canvas) return;
   const btn = document.getElementById("btn-filtrer-stats");
   if (!btn) return;
-  const initialData = JSON.parse(canvas.getAttribute("data-stats"));
+  const initialData = JSON.parse(canvas.getAttribute("data-stats") || "{}");
   renderChart(canvas, initialData);
 
   btn.addEventListener("click", async () => {
@@ -12,34 +12,44 @@ export function initAdminChart() {
     const debut = document.getElementById("stats-debut").value;
     const fin = document.getElementById("stats-fin").value;
 
-    const response = await fetch(
-      `index.php?page=espace-admin&action=api-stats&menu_id=${menuId}&date_debut=${debut}&date_fin=${fin}`,
-    );
-    const data = await response.json();
+    try {
+      const response = await fetch(
+        `index.php?page=espace-admin&action=api-stats&menu_id=${menuId}&date_debut=${debut}&date_fin=${fin}`,
+      );
+      if (!response.ok) {
+        throw new Error("Réponse du serveur invalide");
+      }
+      const data = await response.json();
 
-    document.getElementById("ca-total").textContent = new Intl.NumberFormat(
-      "fr-FR",
-      { style: "currency", currency: "EUR" },
-    ).format(data.totals.ca || 0);
-    document.getElementById("commandes-total").textContent =
-      data.totals.nb || 0;
-    document.getElementById("panier-moyen").textContent = new Intl.NumberFormat(
-      "fr-FR",
-      { style: "currency", currency: "EUR" },
-    ).format(data.totals.moy || 0);
+      document.getElementById("ca-total").textContent = new Intl.NumberFormat(
+        "fr-FR",
+        { style: "currency", currency: "EUR" },
+      ).format(data.totals.ca || 0);
+      document.getElementById("commandes-total").textContent =
+        data.totals.nb || 0;
+      document.getElementById("panier-moyen").textContent = new Intl.NumberFormat(
+        "fr-FR",
+        { style: "currency", currency: "EUR" },
+      ).format(data.totals.moy || 0);
 
-    updateChart(data.chart);
+      updateChart(data.chart);
+    } catch (error) {
+      console.error("Erreur lors du filtrage des statistiques :", error);
+    }
   });
 
   function renderChart(canvas, data) {
+    const labels = data.labels || [];
+    const commandes = data.commandes || [];
+    const ca = data.ca || [];
     myChart = new Chart(canvas, {
       type: "bar",
       data: {
-        labels: data.labels,
+        labels,
         datasets: [
           {
             label: "Commandes (unités)",
-            data: data.commandes,
+            data: commandes,
             backgroundColor: "#c1440e",
             yAxisID: "y",
             maxBarThickness: 50,
@@ -84,9 +94,9 @@ export function initAdminChart() {
   }
 
   function updateChart(newData) {
-    myChart.data.labels = newData.labels;
-    myChart.data.datasets[0].data = newData.commandes;
-    myChart.data.datasets[1].data = newData.ca;
+    myChart.data.labels = newData.labels || [];
+    myChart.data.datasets[0].data = newData.commandes || [];
+    myChart.data.datasets[1].data = newData.ca || [];
     myChart.update();
   }
 }

@@ -129,8 +129,8 @@ ob_start();
                   />
                   </div>
                   <p class="form-hint">
-                    Livraison gratuite à Bordeaux. Hors Bordeaux : 5€ +
-                    0,59€/km.
+                    Livraison gratuite à Bordeaux. Hors Bordeaux : 5€
+                    forfaitaires.
                   </p>
                 </div>
 
