@@ -199,25 +199,18 @@ class Kernel
             }
 
             $controller->$method();
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $logger->log('critical_error', ['message' => $e->getMessage(), 'page' => $page]);
-            echo "Une erreur est survenue : " . htmlspecialchars($e->getMessage());
+            http_response_code(500);
+            echo "Une erreur est survenue. Veuillez réessayer plus tard.";
         }
     }
 
     private function handleNotFound(string $page): void
     {
-        if (!preg_match('/^[a-zA-Z0-9_-]+$/', $page)) {
-            header('HTTP/1.0 404 Not Found');
-            echo "Page non trouvée";
-            return;
-        }
-        $file = $page . '.php';
-        if (file_exists($file)) {
-            require $file;
-            return;
-        }
         header('HTTP/1.0 404 Not Found');
-        echo "Page non trouvée";
+        $title = 'Page non trouvée';
+        $description = 'La page que vous recherchez n\'existe pas ou a été déplacée.';
+        require __DIR__ . '/../../views/404.php';
     }
 }

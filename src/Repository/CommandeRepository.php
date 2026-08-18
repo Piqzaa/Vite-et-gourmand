@@ -151,7 +151,7 @@ class CommandeRepository {
 
         $sql = '
             SELECT
-                COUNT(*) AS nb_commandes,
+                COUNT(*) AS nombre_commandes,
                 COALESCE(SUM(prix_total_ttc), 0) AS total_ttc,
                 COALESCE(AVG(prix_total_ttc), 0) AS panier_moyen
             FROM commande
