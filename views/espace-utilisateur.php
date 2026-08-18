@@ -33,14 +33,14 @@ ob_start();
                 </div>
             <?php else: ?>
                 <?php foreach ($commandes as $cmd): ?>
-                    <div class="commande-card <?= $cmd['statut'] === 'terminée' ? 'commande-card--done' : '' ?>">
+                    <div class="commande-card <?= htmlspecialchars($cmd['statut']) === 'terminée' ? 'commande-card--done' : '' ?>">
                         <div class="commande-card__header">
                             <div>
                                 <span class="commande-card__id">#CMD-<?= $cmd['commande_id'] ?></span>
                                 <h2 class="commande-card__menu"><?= htmlspecialchars($cmd['menu_nom']) ?></h2>
                             </div>
                             <span class="commande-card__status <?= App\Helper\ViewHelper::getStatusClass($cmd['statut']) ?>">
-                                <?= ucfirst($cmd['statut']) ?>
+                                <?= htmlspecialchars(ucfirst($cmd['statut'])) ?>
                             </span>
                         </div>
 

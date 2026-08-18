@@ -74,11 +74,6 @@ class CommandeController {
             exit;
         }
 
-        if (!$this->securityService->validateCsrfToken($_POST['csrf_token'] ?? null)) {
-            header('Location: index.php?page=commande&error=csrf_invalid');
-            exit;
-        }
-
         try {
             $data = [
                 'menu_id'           => (int)($_POST['menu_id'] ?? 0),
@@ -88,6 +83,12 @@ class CommandeController {
                 'date_livraison'    => $_POST['date_livraison'] ?? '',
                 'heure_livraison'   => $_POST['heure_livraison'] ?? ''
             ];
+
+            // Validation du format de l'heure (HH:MM)
+            if (!preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $data['heure_livraison'])) {
+                header('Location: index.php?page=commande&error=heure_invalide');
+                exit;
+            }
 
             // Validation date (min 72h)
             $dateObj = new DateTime($data['date_livraison']);

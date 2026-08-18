@@ -42,10 +42,9 @@ class CommandeService {
             $prixMenu *= 0.90; // Réduction 10%
         }
 
-        // Frais de livraison (CGV : forfait 5€ + 0,59€/km hors Bordeaux)
+        // Frais de livraison (CGV : forfait 5€ hors Bordeaux, gratuit à Bordeaux)
         $estHorsBordeaux = (stripos($data['ville'], 'bordeaux') === false);
-        $distanceKm = (int)($data['distance_km'] ?? 0);
-        $prixLivraison = $estHorsBordeaux ? (5.00 + $distanceKm * 0.59) : 0.00;
+        $prixLivraison = $estHorsBordeaux ? 5.00 : 0.00;
         $prixTotal = round($prixMenu + $prixLivraison, 2);
 
         try {

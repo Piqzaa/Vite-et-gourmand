@@ -25,7 +25,18 @@ class HoraireController {
 
         $horaires = $_POST['horaire'] ?? [];
         foreach ($horaires as $id => $valeurs) {
-            $this->horaireRepo->update((int)$id, $valeurs['ouverture'], $valeurs['fermeture']);
+            $ouverture = $valeurs['ouverture'] ?? '';
+            $fermeture = $valeurs['fermeture'] ?? '';
+
+            // Validation du format HH:MM
+            if (!preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $ouverture)
+                || !preg_match('/^([01][0-9]|2[0-3]):[0-5][0-9]$/', $fermeture)) {
+                $redirect = $this->authService->isAdmin() ? 'espace-admin' : 'espace-employe';
+                header("Location: index.php?page=$redirect&error=horaires_invalides#horaires");
+                exit;
+            }
+
+            $this->horaireRepo->update((int)$id, $ouverture, $fermeture);
         }
 
         $redirect = $this->authService->isAdmin() ? 'espace-admin' : 'espace-employe';

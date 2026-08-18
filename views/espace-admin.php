@@ -108,11 +108,11 @@ ob_start();
             <div class="admin-chart">
               <h2 class="admin-chart__title">Commandes par menu</h2>
               <canvas id="chart-commandes" 
-                data-stats='<?= json_encode([
+                data-stats='<?= htmlspecialchars(json_encode([
                     "labels" => array_column($statsParMenu, "titre"),
                     "commandes" => array_column($statsParMenu, "nombre_commandes"),
                     "ca" => array_column($statsParMenu, "ca")
-                ]) ?>' 
+                ], JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES) ?>' 
                 height="80">
             </canvas>
             </div>
@@ -170,7 +170,7 @@ ob_start();
             <div class="employe-commandes">
               <?php foreach ($commandes as $cmd): ?>
                   <div class="space-sm"></div>
-                  <article class="commande-card" data-statut="<?= $cmd['statut'] ?>" data-client="<?= htmlspecialchars(strtolower($cmd['client_nom'] . ' ' . $cmd['client_email'])) ?>">
+                  <article class="commande-card" data-statut="<?= htmlspecialchars($cmd['statut']) ?>" data-client="<?= htmlspecialchars(strtolower($cmd['client_nom'] . ' ' . $cmd['client_email'])) ?>">
                       <div class="commande-card__header">
                           <div>
                               <span class="commande-card__id">#CMD-<?= $cmd['commande_id'] ?></span>
@@ -179,7 +179,7 @@ ob_start();
                                   <?= htmlspecialchars($cmd['client_prenom'] . ' ' . $cmd['client_nom']) ?>
                               </h2>
                           </div>
-                          <span class="commande-card__status"><?= ucfirst($cmd['statut']) ?></span>
+                          <span class="commande-card__status"><?= htmlspecialchars(ucfirst($cmd['statut'])) ?></span>
                       </div>
 
                       <div class="commande-card__infos">
@@ -193,7 +193,7 @@ ob_start();
                           </div>
                           <div class="commande-card__info">
                               <span class="commande-card__info-label">Date prestation</span>
-                              <span><?= date('d/m/Y', strtotime($cmd['date_prestation'])) ?> à <?= $cmd['heure_prestation'] ?></span>
+                              <span><?= date('d/m/Y', strtotime($cmd['date_prestation'])) ?> à <?= htmlspecialchars($cmd['heure_prestation']) ?></span>
                           </div>
                           <div class="commande-card__info">
                               <span class="commande-card__info-label">Adresse</span>
@@ -433,11 +433,11 @@ ob_start();
                       <td><?= $jours[$i] ?></td>
                       <td>
                           <input type="time" name="horaire[<?= $h['horaire_id'] ?>][ouverture]" 
-                                class="form-input" value="<?= $h['heure_ouverture'] ?>" />
+                                class="form-input" value="<?= htmlspecialchars($h['heure_ouverture']) ?>" />
                       </td>
                       <td>
                           <input type="time" name="horaire[<?= $h['horaire_id'] ?>][fermeture]" 
-                                class="form-input" value="<?= $h['heure_fermeture'] ?>" />
+                                class="form-input" value="<?= htmlspecialchars($h['heure_fermeture']) ?>" />
                       </td>
                   </tr>
                   <?php endforeach; ?>
