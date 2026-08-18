@@ -104,7 +104,7 @@ ob_start();
               </div>
             </div>
 
-            <!-- Graphique commandes par menu (données MongoDB) -->
+            <!-- Graphique commandes par menu (données SQL) -->
             <div class="admin-chart">
               <h2 class="admin-chart__title">Commandes par menu</h2>
               <canvas id="chart-commandes" 
