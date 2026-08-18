@@ -25,12 +25,6 @@ class RateLimiter {
         unset($_SESSION['rate_limit_' . $action]);
     }
 
-    public function getRemainingAttempts(string $action): int {
-        $key = 'rate_limit_' . $action;
-        $entry = $_SESSION[$key] ?? ['count' => 0, 'reset_at' => time() + self::WINDOW_SECONDS];
-        return max(0, self::MAX_ATTEMPTS - $entry['count']);
-    }
-
     private function cleanExpired(): void {
         foreach ($_SESSION as $key => $value) {
             if (str_starts_with($key, 'rate_limit_') && isset($value['reset_at']) && time() > $value['reset_at']) {

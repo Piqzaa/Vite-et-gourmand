@@ -120,55 +120,44 @@ class Kernel
         $this->router->add('menu-edit', new Route(GestionMenuController::class, defaultAction: 'edit', actionMap: ['process' => 'processEdit']));
 
         $this->router->add('espace-admin', new Route(
-            handler: function (Container $c, string $action) {
-                if ($action === 'index' || $action === '') {
-                    $c->resolve(AdminController::class)->index();
-                    return;
-                }
-
-                $map = [
-                    'create-employe'       => [GestionEmployeController::class, 'create'],
-                    'toggle-employe'       => [GestionEmployeController::class, 'toggle'],
-                    'update-horaires'      => [HoraireController::class, 'update'],
-                    'moderer-avis'         => [AvisModerationController::class, 'moderer'],
-                    'delete-menu'          => [GestionMenuController::class, 'delete'],
-                    'delete-plat'          => [GestionPlatController::class, 'delete'],
-                    'update-commande-statut' => [GestionCommandeController::class, 'updateStatut'],
-                    'annuler-commande'     => [GestionCommandeController::class, 'annuler'],
-                    'api-stats'            => [StatsController::class, 'api'],
-                ];
-
-                if (isset($map[$action])) {
-                    [$controllerClass, $method] = $map[$action];
-                    $c->resolve($controllerClass)->$method();
-                }
-            }
+            handler: $this->buildBackOfficeHandler(AdminController::class, [
+                'create-employe'       => [GestionEmployeController::class, 'create'],
+                'toggle-employe'       => [GestionEmployeController::class, 'toggle'],
+                'api-stats'            => [StatsController::class, 'api'],
+            ])
         ));
 
         $this->router->add('espace-employe', new Route(
-            handler: function (Container $c, string $action) {
-                if ($action === 'index' || $action === '') {
-                    $c->resolve(EmployeController::class)->index();
-                    return;
-                }
-
-                $map = [
-                    'update-commande-statut' => [GestionCommandeController::class, 'updateStatut'],
-                    'annuler-commande'       => [GestionCommandeController::class, 'annuler'],
-                    'update-horaires'        => [HoraireController::class, 'update'],
-                    'moderer-avis'           => [AvisModerationController::class, 'moderer'],
-                    'delete-menu'            => [GestionMenuController::class, 'delete'],
-                    'delete-plat'            => [GestionPlatController::class, 'delete'],
-                ];
-
-                if (isset($map[$action])) {
-                    [$controllerClass, $method] = $map[$action];
-                    $c->resolve($controllerClass)->$method();
-                }
-            }
+            handler: $this->buildBackOfficeHandler(EmployeController::class, [])
         ));
         $this->router->add('cgv', new Route(LegalController::class, defaultAction: 'cgv'));
         $this->router->add('mentions', new Route(LegalController::class, defaultAction: 'mentions'));
+    }
+
+    private function buildBackOfficeHandler(string $indexController, array $extraActions): callable
+    {
+        $commonActions = [
+            'update-commande-statut' => [GestionCommandeController::class, 'updateStatut'],
+            'annuler-commande'       => [GestionCommandeController::class, 'annuler'],
+            'update-horaires'        => [HoraireController::class, 'update'],
+            'moderer-avis'           => [AvisModerationController::class, 'moderer'],
+            'delete-menu'            => [GestionMenuController::class, 'delete'],
+            'delete-plat'            => [GestionPlatController::class, 'delete'],
+        ];
+
+        $actionMap = array_merge($commonActions, $extraActions);
+
+        return function (Container $c, string $action) use ($indexController, $actionMap): void {
+            if ($action === 'index' || $action === '') {
+                $c->resolve($indexController)->index();
+                return;
+            }
+
+            if (isset($actionMap[$action])) {
+                [$controllerClass, $method] = $actionMap[$action];
+                $c->resolve($controllerClass)->$method();
+            }
+        };
     }
 
     public function handle(): void

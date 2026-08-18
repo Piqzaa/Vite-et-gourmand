@@ -4,6 +4,30 @@ namespace App\Helper;
 
 class ViewHelper {
     /**
+     * Transforme une liste d'entités Commande en tableau pour les vues back-office
+     */
+    public static function mapCommandes(array $commandesRaw): array {
+        $commandes = [];
+        foreach ($commandesRaw as $cmd) {
+            $commandes[] = [
+                'commande_id' => $cmd->getId(),
+                'menu_nom' => $cmd->getMenuNom(),
+                'client_nom' => $cmd->getClientNom(),
+                'client_prenom' => $cmd->getClientPrenom(),
+                'client_email' => $cmd->getClientEmail(),
+                'client_gsm' => $cmd->getClientGsm(),
+                'statut' => $cmd->getStatut(),
+                'date_prestation' => $cmd->getDatePrestation()->format('Y-m-d'),
+                'heure_prestation' => $cmd->getHeurePrestation(),
+                'adresse_livraison' => $cmd->getAdresseLivraison(),
+                'prix_total_ttc' => $cmd->getPrixTotalTtc(),
+                'nombre_personnes' => $cmd->getNombrePersonnes()
+            ];
+        }
+        return $commandes;
+    }
+
+    /**
      * Génère un item de navigation desktop
      */
     public static function navItem(string $lien, string $titre): string {
